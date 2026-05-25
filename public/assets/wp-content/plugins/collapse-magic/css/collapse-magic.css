@@ -1,0 +1,49 @@
+@CHARSET "ISO-8859-1";
+/* define the inner text areas block position */
+.claps-text-inner {
+    position: relative;
+}
+/* collapse and set the height of the toggle text */
+.claps-toggle-text .claps-text-inner {
+    max-height: 300px;
+    transition: max-height 0.5s ease-out;
+    overflow: hidden;
+}
+/* add gradient to the collapsed text */
+.claps-toggle-text .claps-text-toggle-collapsed:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    pointer-events: none;
+    height: 80px;
+    width: 100%;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(0deg, #fff 20%, transparent);
+    /*border: 1px solid orange;*/
+}
+/* style the expand text link */
+.claps-toggle-text .claps-text-expand-button {
+    padding: 0.5em;
+    text-align: left;
+    /*color: #ff0000!important;*/
+}
+/* change the cursor to a pointed when hovering over the expand text link */
+.claps-toggle-text .claps-text-expand-button span {
+    cursor: pointer;
+}
+/* define the font family for the toggle icon */
+.claps-toggle-text1 .claps-text-expand-button .claps-text-toggle-icon {
+    font-family: ETMODULES, "sans-serif";
+    /*font-weight: bold;*/
+}
+/* set the max height and transition of the expanded toggle */
+.claps-toggle-text .claps-text-toggle-expanded {
+    max-height: none;
+    transition: max-height 0.5s ease-in;
+}
+/* hide the gradient when the toggle is expanded */
+.claps-toggle-text .claps-text-toggle-expanded .claps-text-inner:after {
+    background: none;
+}

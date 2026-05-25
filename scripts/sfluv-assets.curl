@@ -1,0 +1,380 @@
+location
+silent
+show-error
+fail
+create-dirs
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/cropped-SFLUV-Currency-Symbol-Logo-1.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/cropped-SFLUV-Currency-Symbol-Logo-1.png"
+next
+url = "https://sfluv.org/wp-includes/blocks/spacer/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-2be6982d4fbc.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/group/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-021100926c0b.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/site-logo/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-f6b3f0c4f355.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/navigation-link/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-457c2127f77e.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/navigation/style.min.css?ver=7.0"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-f96458bdf76c.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/heading/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-3046ab5cc6f6.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/paragraph/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-6889366ff17b.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/image/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-e081dfbc6e27.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/columns/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-ae2c54cb294e.css"
+next
+url = "https://sfluv.org/wp-includes/blocks/social-links/style.min.css"
+output = "/Users/coding/webpage/public/assets/external/sfluv.org/style.min-ab5fb10c137e.css"
+next
+url = "https://sfluv.org/wp-content/plugins/collapse-magic/css/collapse-magic.css?ver=1.0.2"
+output = "/Users/coding/webpage/public/assets/wp-content/plugins/collapse-magic/css/collapse-magic.css"
+next
+url = "https://sfluv.org/wp-content/plugins/ultimate-addons-for-gutenberg/assets/css/aos.min.css?ver=2.13.4"
+output = "/Users/coding/webpage/public/assets/wp-content/plugins/ultimate-addons-for-gutenberg/assets/css/aos.min.css"
+next
+url = "https://sfluv.org/wp-content/uploads/uag-plugin/custom-style-blocks.css?ver=2.13.4"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/uag-plugin/custom-style-blocks.css"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/style.css?ver=1.0.2"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/style.css"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_normal_200.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_normal_200.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_normal_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_normal_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_normal_500.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_normal_500.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_normal_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_normal_600.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_normal_700.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_normal_700.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_italic_700.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_italic_700.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_italic_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_italic_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_italic_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_italic_600.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_italic_200.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_italic_200.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/sora_italic_500.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/sora_italic_500.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/pt-serif_normal_400.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/pt-serif_normal_400.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/pt-serif_italic_400.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/pt-serif_italic_400.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/pt-serif_normal_700.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/pt-serif_normal_700.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/pt-serif_italic_700.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/pt-serif_italic_700.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_normal_200.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_normal_200.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_normal_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_normal_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_normal_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_normal_600.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_italic_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_italic_600.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_italic_200.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_italic_200.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/fraunces_italic_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/fraunces_italic_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/crimson-pro_normal_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/crimson-pro_normal_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/crimson-pro_italic_300.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/crimson-pro_italic_300.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/crimson-pro_normal_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/crimson-pro_normal_600.ttf"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/fonts/crimson-pro_italic_600.ttf"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/fonts/crimson-pro_italic_600.ttf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/SFLUV-RESIZED-ICON.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/SFLUV-RESIZED-ICON.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/10/updated-sfluv-partners.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/10/updated-sfluv-partners.png"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/images/image-2.webp"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/images/image-2.webp"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/images/image-1.webp"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/images/image-1.webp"
+next
+url = "https://sfluv.org/wp-content/themes/lativ/assets/images/image-3.webp"
+output = "/Users/coding/webpage/public/assets/wp-content/themes/lativ/assets/images/image-3.webp"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/AdobeStock_599890447-resize.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/AdobeStock_599890447-resize.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/AdobeStock_528499316-resize.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/AdobeStock_528499316-resize.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/03/tenderloin_tree_steward_banner.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/03/tenderloin_tree_steward_banner.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/Tenderloin-Weekly-Cleanup-._001_20240703164325983424_20250215031301212105.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/Tenderloin-Weekly-Cleanup-._001_20240703164325983424_20250215031301212105.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/05/glide-logo.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/05/glide-logo.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/05/Afternoon-of-ideas-compressed.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/05/Afternoon-of-ideas-compressed.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/05/Night-of-Ideas.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/05/Night-of-Ideas.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/03/Eid-Festival-Mosaic-Booth-Facebook-Cover.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/03/Eid-Festival-Mosaic-Booth-Facebook-Cover.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/03/Oasis-for-Girls-Elm-Alley-Gardens-Web-Banner1774989816.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/03/Oasis-for-Girls-Elm-Alley-Gardens-Web-Banner1774989816.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/St-Anthony-Dining-volunteer-image.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/St-Anthony-Dining-volunteer-image.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/Super-Bowl-Saturday.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/Super-Bowl-Saturday.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/IMG_7194.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/IMG_7194.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/DPW-Falafel-L-2.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/DPW-Falafel-L-2.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_6819.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_6819.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_6603-1.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_6603-1.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_6474.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_6474.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_5903-1.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_5903-1.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_5529.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_5529.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/IMG_5198-2.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/IMG_5198-2.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/image000004.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/image000004.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/Beth-OLeary-Head-Shot-1.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/Beth-OLeary-Head-Shot-1.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/Vipul-Vyas-Head-Shot.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/Vipul-Vyas-Head-Shot.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/Billy-Riggs-Head-Shot.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/Billy-Riggs-Head-Shot.jpg"
+next
+url = "https://transweb.sjsu.edu/sites/default/files/2165-Riggs-Blockchain-Financial-Ecosystem-Infrastructure.pdf"
+output = "/Users/coding/webpage/public/assets/external/transweb.sjsu.edu/2165-Riggs-Blockchain-Financial-Ecosystem-Infrastructure-2f02c6278a52.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/Paul-OLeary-Head-Shot.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/Paul-OLeary-Head-Shot.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/07/pj_profile.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/07/pj_profile.jpeg"
+next
+url = "https://m.media-amazon.com/images/I/71tgNZQXn-L._AC_UF1000,1000_QL80_.jpg"
+output = "/Users/coding/webpage/public/assets/external/m.media-amazon.com/71tgNZQXn-L._AC_UF1000-1000_QL80_-bc19111b1df6.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/HowToDao.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/HowToDao.jpg"
+next
+url = "https://pup-assets.imgix.net/onix/images/9780691178974.jpg?w=1500&auto=format"
+output = "/Users/coding/webpage/public/assets/external/pup-assets.imgix.net/9780691178974-a9264b85d7b8.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31-2.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31-2.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/02/SFLuv20StatementofCashFlows202025_12_31.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/02/SFLuv20StatementofCashFlows202025_12_31.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/02/SFLuv-StatementofFinancialPosition-2025_12_31.pdf-SFLuv-StatementofActivity-2025_12_31.pdf-SFLuv-StatementofCashFlows-2025_12_31.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/02/SFLuv-StatementofFinancialPosition-2025_12_31.pdf-SFLuv-StatementofActivity-2025_12_31.pdf-SFLuv-StatementofCashFlows-2025_12_31.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/2025-09-30-Statement-of-Activity-.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/2025-09-30-Statement-of-Activity-.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/2025-09-30-Statement-of-Cash-Flows.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/2025-09-30-Statement-of-Cash-Flows.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/2025-09-30-Statement-of-Financial-Position.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/2025-09-30-Statement-of-Financial-Position.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/07/2025_06_30-FYE-StatementofActivity.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/07/2025_06_30-FYE-StatementofActivity.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/07/2025_06_30-FYE_StatementofCashFlows.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/07/2025_06_30-FYE_StatementofCashFlows.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/07/2025_06_30-FYE-Statement-of-Financial-Position.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/07/2025_06_30-FYE-Statement-of-Financial-Position.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/07/2025_06_30_Stmnt-of-Activity_Comparison.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/07/2025_06_30_Stmnt-of-Activity_Comparison.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/09/FYE-2025_199N-Confirmation.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/09/FYE-2025_199N-Confirmation.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/09/FYE-2025_990N.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/09/FYE-2025_990N.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2025-03-31-Statement-of-Activity.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2025-03-31-Statement-of-Activity.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2025-03-31-Statement-of-Cash-Flows.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2025-03-31-Statement-of-Cash-Flows.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2025-03-31-Statement-of-Financial-Position.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2025-03-31-Statement-of-Financial-Position.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2024-12-31-Statement-of-Activity-.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2024-12-31-Statement-of-Activity-.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2024-12-31-Statement-of-Cash-Flows.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2024-12-31-Statement-of-Cash-Flows.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/06/2024-12-31-Statement-of-Financial-Position.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/06/2024-12-31-Statement-of-Financial-Position.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/11/2024-06-30-Statement-of-Activity.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/11/2024-06-30-Statement-of-Activity.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/11/2024-06-30-Statement-of-Cash-Flows.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/11/2024-06-30-Statement-of-Cash-Flows.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/11/2024-06-30-Statement-of-Financial-Position.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/11/2024-06-30-Statement-of-Financial-Position.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/09/FYE-2024_199N-Confirmation.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/09/FYE-2024_199N-Confirmation.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/09/FYE-2024_990N.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/09/FYE-2024_990N.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/SFLuv-501c3-Determination-Letter.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/SFLuv-501c3-Determination-Letter.pdf"
+next
+url = "https://images.getbento.com/accounts/f8194d40a15b976a1bce5338d622a254/media/images/99097CKmJL5kTBytRFQHlzNzO_533593_567145296630856_962075461_n.png?w=1000&fit=max&auto=compress,format&h=1000"
+output = "/Users/coding/webpage/public/assets/external/images.getbento.com/99097CKmJL5kTBytRFQHlzNzO_533593_567145296630856_962075461_n-e4590a521a7e.png"
+next
+url = "https://pbs.twimg.com/profile_images/1532916835925909505/kYMkMFps_400x400.jpg"
+output = "/Users/coding/webpage/public/assets/external/pbs.twimg.com/kYMkMFps_400x400-086d5a43e2e9.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/Estrellitas-logo_edited-1.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/Estrellitas-logo_edited-1.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/Screenshot-2025-11-23-at-1.39.14-PM.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/Screenshot-2025-11-23-at-1.39.14-PM.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/Outta-Sight-Pizza-Orange-Logo.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/Outta-Sight-Pizza-Orange-Logo.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/sf-organica.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/sf-organica.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/z-zoul.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/z-zoul.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31-1.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31-1.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/02/SFLuv20StatementofActivity202025_12_31.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/Falafelland-Logo-square.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/Falafelland-Logo-square.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2026/01/DPW-Falafel-L-1-Edited-min.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2026/01/DPW-Falafel-L-1-Edited-min.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/Estrellitas-logo_edited.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/Estrellitas-logo_edited.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/337B7ADF-0CAF-4BAC-8E63-1849E407B5E5_1_105_c.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/337B7ADF-0CAF-4BAC-8E63-1849E407B5E5_1_105_c.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/12/337B7ADF-0CAF-4BAC-8E63-1849E407B5E5_1_105_c.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/12/337B7ADF-0CAF-4BAC-8E63-1849E407B5E5_1_105_c.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/10/photo_2025-10-23-15.09.45.jpeg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/10/photo_2025-10-23-15.09.45.jpeg"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/10/st-anthonys.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/10/st-anthonys.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2025/08/Little-Saigon-Street-Trees.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2025/08/Little-Saigon-Street-Trees.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/PJ-OLeary-Head-Shot.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/PJ-OLeary-Head-Shot.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/Beth-OLeary-Head-Shot.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/Beth-OLeary-Head-Shot.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/SFLuv-How-it-Works-Graphic.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/SFLuv-How-it-Works-Graphic.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/08/SFLuv_How_it_Works.pdf"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/08/SFLuv_How_it_Works.pdf"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/IMG_2608-cropped.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/IMG_2608-cropped.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/IMG_2608.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/IMG_2608.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/image.webp"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/image.webp"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/AdobeStock_703012093.jpg"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/AdobeStock_703012093.jpg"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/SFLUV-Currency-Symbol-1.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/SFLUV-Currency-Symbol-1.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/SFLUV-Currency-Symbol.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/SFLUV-Currency-Symbol.png"
+next
+url = "https://sfluv.org/wp-content/uploads/2024/06/SFLUV-LOGO.png"
+output = "/Users/coding/webpage/public/assets/wp-content/uploads/2024/06/SFLUV-LOGO.png"
