@@ -6,7 +6,7 @@ import type { AudiencePage } from "@/content/get-involved";
 /** The shared intro panel used by the donors/community/merchants/improvers pages. */
 export function AudienceIntro({ page }: { page: AudiencePage }) {
   return (
-    <section className="pt-10 pb-4 sm:pt-16">
+    <section className="pt-4 pb-4 sm:pt-8">
       <Container>
         <Panel padding="lg" className="text-center">
           <h1 className="text-headline">{page.title}</h1>

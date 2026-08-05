@@ -26,6 +26,8 @@ type LinkProps = BaseProps & {
   href: string;
   /** Force target/rel for off-site links. Auto-detected from the href otherwise. */
   external?: boolean;
+  /** Side effect on activation, e.g. closing the menu a link sits inside. */
+  onClick?: () => void;
 };
 
 type ButtonProps = BaseProps &
@@ -51,20 +53,20 @@ export function isExternalHref(href: string) {
 /** Primary call-to-action. Renders a Link, an anchor, or a button from its props. */
 export function Button(props: LinkProps | ButtonProps) {
   if (typeof props.href === "string") {
-    const { href, external, children, variant, size, className } = props as LinkProps;
+    const { href, external, children, variant, size, className, onClick } = props as LinkProps;
     const classes = classesFor({ children, variant, size, className });
     const isExternal = external ?? isExternalHref(href);
 
     if (isExternal) {
       return (
-        <a className={classes} href={href} target="_blank" rel="noreferrer">
+        <a className={classes} href={href} target="_blank" rel="noreferrer" onClick={onClick}>
           {children}
         </a>
       );
     }
 
     return (
-      <Link className={classes} href={href}>
+      <Link className={classes} href={href} onClick={onClick}>
         {children}
       </Link>
     );

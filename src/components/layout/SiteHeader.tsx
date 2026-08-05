@@ -81,10 +81,13 @@ export function SiteHeader() {
         </Link>
 
         <div className="flex items-center gap-5">
-          <Button href={externalLinks.webWallet} size="sm">
-            <span>Web Wallet</span>
-            <ArrowRightIcon className="size-3.5 fill-current" />
-          </Button>
+          {/* On mobile this lives in the slide-out menu instead. */}
+          <div className="hidden lg:block">
+            <Button href={externalLinks.webWallet} size="sm">
+              <span>Web Wallet</span>
+              <ArrowRightIcon className="size-3.5 fill-current" />
+            </Button>
+          </div>
 
           <nav className="hidden items-center gap-6 lg:flex" aria-label="Primary">
             {primaryNav.map((group) => (
@@ -232,6 +235,16 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
         >
           <CloseIcon className="size-6 fill-current" />
         </button>
+
+        <Button
+          href={externalLinks.webWallet}
+          size="lg"
+          className="w-full"
+          onClick={onClose}
+        >
+          <span>Web Wallet</span>
+          <ArrowRightIcon className="size-3.5 fill-current" />
+        </Button>
 
         <nav className="flex flex-col gap-6" aria-label="Mobile">
           {primaryNav.map((group) => (

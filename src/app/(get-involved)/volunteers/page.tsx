@@ -46,7 +46,7 @@ export default async function VolunteersPage({ searchParams }: { searchParams: S
 
   return (
     <>
-      <section className="pt-10 pb-8 sm:pt-16">
+      <section className="pt-4 pb-8 sm:pt-8">
         <Container width="wide">
           <EventSearchSection
             title={volunteersContent.title}

@@ -14,7 +14,7 @@ export function PageHeader({ title, lead, actions, align = "center" }: PageHeade
   const alignment = align === "center" ? "text-center items-center" : "text-left items-start";
 
   return (
-    <header className="pt-10 pb-2 sm:pt-16">
+    <header className="pt-4 pb-2 sm:pt-8">
       <Container>
         <div className={`flex flex-col ${alignment}`}>
           <h1 className="text-headline">{title}</h1>
