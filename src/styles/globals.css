@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+/*
+ * SFLuv design tokens.
+ *
+ * Colors are carried over from the original WordPress theme presets so the
+ * rebuilt site stays on-brand:
+ *   background #fef4ee, foreground #0b303b, brand #eb6c6c, muted #eeeeee.
+ */
+@theme {
+  --color-brand: #eb6c6c;
+  --color-brand-hover: #d55c5c;
+  --color-brand-deep: #8f2e2e;
+  --color-brand-soft: #fcd9d2;
+  --color-brand-tint: rgb(235 108 108 / 0.12);
+
+  --color-ink: #0b303b;
+  --color-ink-muted: #4a6069;
+  --color-ink-subtle: #6b7f87;
+  /* Headings were pure black on the original site, not the teal ink. */
+  --color-heading: #000000;
+
+  --color-canvas: #fef4ee;
+  --color-surface: #ffffff;
+  --color-surface-muted: #eeeeee;
+  --color-line: #d9dfe1;
+
+  --color-success: #137333;
+  --color-danger: #b00020;
+
+  --font-sans: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-panel: 20px;
+
+  --shadow-panel: 0 6px 20px rgb(11 48 59 / 0.06);
+  --shadow-raised: 0 10px 30px rgb(11 48 59 / 0.1);
+
+  /*
+   * Heading scale carried over from the original theme, including its 1.125
+   * line height. `display` is the home hero; `headline` is the theme's "large"
+   * preset (31.55px at a 1280px viewport); `title` is a step below it.
+   */
+  --text-display: clamp(2.46rem, 2.46rem + ((1vw - 0.2rem) * 3.17), 4.6rem);
+  --text-display--line-height: 1.125;
+  --text-headline: clamp(1.75rem, 1.75rem + ((1vw - 0.2rem) * 0.37), 2rem);
+  --text-headline--line-height: 1.125;
+  --text-title: clamp(1.25rem, 1.25rem + ((1vw - 0.2rem) * 0.37), 1.5rem);
+  --text-title--line-height: 1.125;
+  --text-body: clamp(0.95rem, 0.95rem + ((1vw - 0.2rem) * 0.353), 1.0625rem);
+  --text-body--line-height: 1.65;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    background-image: linear-gradient(
+      127deg,
+      var(--color-brand) 0%,
+      var(--color-surface-muted) 29%,
+      var(--color-brand-soft) 65%,
+      var(--color-surface-muted) 100%
+    );
+    background-attachment: fixed;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    font-weight: 300;
+    line-height: 1.65;
+    min-width: 320px;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-tint);
+    outline-offset: 2px;
+  }
+
+  /*
+   * The original theme set every heading to weight 400 at a 1.125 line height,
+   * and leaned on 600 for the hero and the home section titles. Components
+   * override the weight where the reference design was heavier or lighter.
+   */
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--color-heading);
+    font-weight: 400;
+    line-height: 1.125;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-brand);
+    color: var(--color-surface);
+  }
+}
+
+@layer utilities {
+  /* Shared page-panel treatment: the rounded white cards the site is built on. */
+  .panel {
+    background: var(--color-surface);
+    border-radius: var(--radius-panel);
+    box-shadow: var(--shadow-panel);
+  }
+}
+
+@layer components {
+  /*
+   * Continuously scrolling logo strip.
+   *
+   * The track holds two identical halves and slides left by exactly half its
+   * width, so the loop is seamless. Edges fade out via a mask.
+   */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      black 8%,
+      black 92%,
+      transparent
+    );
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 45s linear infinite;
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* Let visitors stop the motion to read a logo. */
+  .marquee:hover .marquee__track,
+  .marquee:focus-within .marquee__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      mask-image: none;
+    }
+
+    .marquee__track {
+      width: 100%;
+      animation: none;
+      justify-content: center;
+    }
+
+    /* One static, centred row is enough when motion is unwelcome. */
+    .marquee__group {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .marquee__group + .marquee__group {
+      display: none;
+    }
+  }
+}

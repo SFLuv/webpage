@@ -1,35 +1,43 @@
 import type { Metadata } from "next";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import "./wp-extracted.css";
-import "./uag.css";
-import "./lativ.css";
-import "./globals.css";
+import localFont from "next/font/local";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { OrganizationJsonLd } from "@/components/layout/OrganizationJsonLd";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { siteConfig } from "@/lib/site";
+import "@/styles/globals.css";
+
+const sora = localFont({
+  src: [
+    { path: "../assets/fonts/sora_normal_200.ttf", weight: "200", style: "normal" },
+    { path: "../assets/fonts/sora_normal_300.ttf", weight: "300", style: "normal" },
+    { path: "../assets/fonts/sora_italic_300.ttf", weight: "300", style: "italic" },
+    { path: "../assets/fonts/sora_normal_500.ttf", weight: "500", style: "normal" },
+    { path: "../assets/fonts/sora_normal_600.ttf", weight: "600", style: "normal" },
+    { path: "../assets/fonts/sora_italic_600.ttf", weight: "600", style: "italic" },
+    { path: "../assets/fonts/sora_normal_700.ttf", weight: "700", style: "normal" }
+  ],
+  variable: "--font-sora",
+  display: "swap"
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sfluv.org"),
+  metadataBase: new URL(siteConfig.url),
   title: {
-    default: "SFLuv | Empowering Merchants, Empowering Communities",
-    template: "%s | SFLuv"
+    default: `${siteConfig.name} | ${siteConfig.tagline}`,
+    template: `%s | ${siteConfig.name}`
   },
-  description: "Empowering merchants, empowering communities.",
+  description: siteConfig.description,
+  alternates: { canonical: "/" },
   icons: {
-    icon: "/assets/wp-content/uploads/2024/06/SFLUV-RESIZED-ICON.png",
-    apple: "/assets/wp-content/uploads/2024/06/SFLUV-RESIZED-ICON.png"
+    icon: siteConfig.icon,
+    apple: siteConfig.icon
   },
   openGraph: {
-    title: "SFLuv",
-    description: "Empowering merchants, empowering communities.",
-    url: "https://sfluv.org/",
-    siteName: "SFLuv",
-    images: [
-      {
-        url: "/assets/wp-content/uploads/2024/06/cropped-SFLUV-Currency-Symbol-Logo-1.png",
-        width: 512,
-        height: 512,
-        alt: "SFLuv"
-      }
-    ],
+    title: siteConfig.name,
+    description: siteConfig.description,
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    images: [{ url: siteConfig.logo, width: 512, height: 512, alt: siteConfig.name }],
     locale: "en_US",
     type: "website"
   }
@@ -37,13 +45,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-US">
-      <body>
-        <div className="site-shell">
-          <Header />
-          {children}
-          <Footer />
-        </div>
+    <html lang="en-US" className={sora.variable}>
+      <body className="flex min-h-screen flex-col">
+        <OrganizationJsonLd />
+        <SiteHeader />
+        <main className="grow">{children}</main>
+        <SiteFooter />
       </body>
     </html>
   );

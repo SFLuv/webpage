@@ -4,3 +4,10 @@ out/
 dist/
 .DS_Store
 *.log
+*.tsbuildinfo
+
+# Local env files can hold the proxy secret — never commit them.
+# `.env.example` is the documented template and is tracked deliberately.
+.env
+.env.*
+!.env.example
