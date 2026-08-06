@@ -76,7 +76,8 @@ export default async function VolunteersPage({ searchParams }: { searchParams: S
               </Panel>
             ) : (
               <>
-                <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {/* auto-rows-fr keeps every row the same height, not just every card in a row. */}
+                <ul className="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {result.events.map((event) => (
                     <li key={event.id} className="flex">
                       <VolunteerEventCard event={event} />

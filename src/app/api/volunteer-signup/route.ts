@@ -73,7 +73,12 @@ export async function POST(request: Request) {
   if (usingStubs()) {
     // Local development against fixtures — never reachable in production.
     return NextResponse.json(
-      { status: "pending_confirmation", signup_id: "fixture", volunteer_list: "pending_confirmation" },
+      {
+        status: "pending_confirmation",
+        signup_id: "fixture",
+        spots_remaining: 11,
+        volunteer_list: "pending_confirmation"
+      },
       { status: 201 }
     );
   }

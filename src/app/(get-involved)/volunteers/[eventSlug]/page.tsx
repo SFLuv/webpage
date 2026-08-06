@@ -5,11 +5,12 @@ import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
 import { CoverPhotoGallery } from "@/features/volunteers/CoverPhotoGallery";
 import { EventJsonLd } from "@/features/volunteers/EventJsonLd";
+import { EventSpotsProvider, EventSpotsText } from "@/features/volunteers/EventSpotsContext";
 import { EventTime } from "@/features/volunteers/EventTime";
 import { OrganizerBadge } from "@/features/volunteers/OrganizerBadge";
 import { SignupPanel } from "@/features/volunteers/SignupPanel";
 import { getEvent } from "@/lib/volunteer-events/client";
-import { formatCapacity, formatReward, formatSpots } from "@/lib/volunteer-events/format";
+import { formatReward } from "@/lib/volunteer-events/format";
 import { eventPath, parseEventId } from "@/lib/volunteer-events/map";
 import { siteConfig } from "@/lib/site";
 
@@ -63,8 +64,6 @@ export default async function VolunteerEventPage({ params }: PageProps) {
   if (`/volunteers/${eventSlug}` !== canonical) redirect(canonical);
 
   const reward = formatReward(event.rewardAmountSfluv);
-  // Availability where we manage signups, otherwise the honest capacity figure.
-  const spots = formatSpots(event) ?? formatCapacity(event);
 
   return (
     <article className="py-8 sm:py-12">
@@ -97,6 +96,8 @@ export default async function VolunteerEventPage({ params }: PageProps) {
           </div>
         </header>
 
+        {/* Shared so a signup updates the count in both columns at once. */}
+        <EventSpotsProvider initial={event.spotsRemaining}>
         <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
           <div>
             {event.description ? (
@@ -148,7 +149,11 @@ export default async function VolunteerEventPage({ params }: PageProps) {
                     ) : null}
                   </DetailRow>
                 ) : null}
-                {spots ? <DetailRow label="Capacity">{spots}</DetailRow> : null}
+                {event.maxParticipants || event.spotsRemaining !== null ? (
+                  <DetailRow label="Capacity">
+                    <EventSpotsText event={event} />
+                  </DetailRow>
+                ) : null}
                 {reward ? <DetailRow label="Volunteer reward">{reward}</DetailRow> : null}
               </dl>
             </Panel>
@@ -158,6 +163,7 @@ export default async function VolunteerEventPage({ params }: PageProps) {
             <SignupPanel event={event} />
           </div>
         </div>
+        </EventSpotsProvider>
       </Container>
     </article>
   );

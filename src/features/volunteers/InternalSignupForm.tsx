@@ -4,10 +4,12 @@ import { useId, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
 import { Checkbox, Field, TextInput } from "@/components/ui/Field";
 import { StatusMessage, type Status } from "@/components/ui/StatusMessage";
+import { useEventSpots } from "./EventSpotsContext";
 
 type InternalSignupFormProps = {
   eventId: string;
   eventTitle: string;
+  spotsRemaining: number | null;
 };
 
 const FAILURE_MESSAGES: Record<string, string> = {
@@ -27,15 +29,14 @@ const FAILURE_MESSAGES: Record<string, string> = {
  * backend host stays private and rate limiting happens before the request
  * leaves our infrastructure.
  */
-export function InternalSignupForm({ eventId, eventTitle }: InternalSignupFormProps) {
+export function InternalSignupForm({ eventId, eventTitle, spotsRemaining }: InternalSignupFormProps) {
   const id = useId();
+  const { setSpotsRemaining } = useEventSpots(spotsRemaining);
   const fieldId = (name: string) => `${id}-${name}`;
 
   const [status, setStatus] = useState<Status>(null);
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
-  /** Server-reported subscription outcome: active | pending_confirmation | none. */
-  const [listState, setListState] = useState<string>("none");
   /** Server-reported signup outcome: confirmed | pending_confirmation. */
   const [signupState, setSignupState] = useState<string>("confirmed");
 
@@ -74,8 +75,6 @@ export function InternalSignupForm({ eventId, eventTitle }: InternalSignupFormPr
          * checkbox, so the copy stays true if that policy ever changes —
          * see comms.md [13], Q-M1.
          */
-        setListState(payload?.volunteer_list ?? (data.get("volunteer_list_opt_in") === "on" ? "pending_confirmation" : "none"));
-
         /*
          * Anonymous portal signups now land `pending_confirmation` — the spot
          * is held, but the address is unproven until they click the emailed
@@ -84,6 +83,15 @@ export function InternalSignupForm({ eventId, eventTitle }: InternalSignupFormPr
          */
         const state = payload?.status === "pending_confirmation" ? "pending_confirmation" : "confirmed";
         setSignupState(state);
+
+        /*
+         * Take the new count from the response rather than refetching. It
+         * decrements immediately at `pending_confirmation` — the spot is held
+         * while they confirm — so the page reflects that straight away.
+         */
+        if (typeof payload?.spots_remaining === "number") {
+          setSpotsRemaining(payload.spots_remaining);
+        }
 
         setStatus({
           tone: "success",
@@ -128,18 +136,6 @@ export function InternalSignupForm({ eventId, eventTitle }: InternalSignupFormPr
           <p className="mt-3 text-sm text-ink-muted">
             We&rsquo;ll hold it for 24 hours while you confirm. If the email hasn&rsquo;t arrived in a few
             minutes, check your spam folder.
-          </p>
-        ) : null}
-
-        {listState === "pending_confirmation" ? (
-          <p className="mt-3 text-sm text-ink-muted">
-            You also asked to hear about future volunteer events — click the confirmation link in that email
-            to join the list. Your spot is already held either way.
-          </p>
-        ) : null}
-        {listState === "active" ? (
-          <p className="mt-3 text-sm text-ink-muted">
-            You&rsquo;re also on the volunteer email list, so you&rsquo;ll hear about future events.
           </p>
         ) : null}
 

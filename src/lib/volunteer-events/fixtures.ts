@@ -119,10 +119,18 @@ export const fixtureEvents: ApiVolunteerEvent[] = [
     description:
       "Water, mulch, and check on the 18 young street trees planted along Larkin and Eddy. Training provided on the day — this is the easiest possible way to start as a BUFEES volunteer.",
     cover_photos: [
+      // Deliberately out of order, to prove `position` wins over array order.
+      {
+        url: "/assets/wp-content/uploads/2025/12/IMG_5903-1.jpg",
+        width: 4032,
+        height: 3024,
+        position: 1
+      },
       {
         url: "/assets/wp-content/uploads/2026/03/tenderloin_tree_steward_banner.png",
         width: 1800,
-        height: 900
+        height: 900,
+        position: 0
       }
     ],
     organizer: SFLUV,

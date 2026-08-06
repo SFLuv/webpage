@@ -1,6 +1,9 @@
+"use client";
+
 import { Button } from "@/components/ui/Button";
 import { Panel } from "@/components/ui/Panel";
-import { formatCapacity, formatSpots, signupClosedMessage } from "@/lib/volunteer-events/format";
+import { signupClosedMessage } from "@/lib/volunteer-events/format";
+import { EventSpotsText } from "./EventSpotsContext";
 import type { VolunteerEvent } from "@/lib/volunteer-events/types";
 import { eventPath } from "@/lib/volunteer-events/map";
 import { InternalSignupForm } from "./InternalSignupForm";
@@ -28,8 +31,6 @@ function AddToCalendar({ event }: { event: VolunteerEvent }) {
 
 /** Renders whichever signup path the event was configured with. */
 export function SignupPanel({ event }: { event: VolunteerEvent }) {
-  const spots = formatSpots(event);
-  const capacity = formatCapacity(event);
 
   if (event.status === "cancelled") {
     return (
@@ -68,7 +69,9 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
         <p className="mt-2 text-ink-muted">
           Signups for this event are handled by {event.organizer.name}.
         </p>
-        {capacity ? <p className="mt-1 text-sm text-ink-subtle">{capacity}</p> : null}
+        <p className="mt-1 text-sm text-ink-subtle">
+          <EventSpotsText event={event} />
+        </p>
         <div className="mt-5">
           <Button href={event.signup.url} size="lg">
             Sign up for this event
@@ -97,11 +100,15 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
     return (
       <Panel padding="lg" bordered>
         <h2 className="text-title font-medium">Sign up</h2>
-        <p className="mt-2 mb-6 text-ink-muted">
-          Tell us who you are and we&rsquo;ll save you a spot.
-          {spots ? ` ${spots}.` : ""}
+        <p className="mt-2 text-ink-muted">Tell us who you are and we&rsquo;ll save you a spot.</p>
+        <p className="mt-1 mb-6 text-sm text-ink-subtle">
+          <EventSpotsText event={event} />
         </p>
-        <InternalSignupForm eventId={event.id} eventTitle={event.title} />
+        <InternalSignupForm
+          eventId={event.id}
+          eventTitle={event.title}
+          spotsRemaining={event.spotsRemaining}
+        />
         <AddToCalendar event={event} />
       </Panel>
     );
