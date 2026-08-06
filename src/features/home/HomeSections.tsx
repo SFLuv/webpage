@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
 import { cn } from "@/lib/cn";
-import { homeContent } from "@/content/home";
+import { homeContent, homeSplits } from "@/content/home";
 import { getPartners } from "@/lib/partners";
+import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
+import { EventCarousel } from "./EventCarousel";
 import { PartnerCarousel } from "./PartnerCarousel";
 
 export async function Hero() {
@@ -64,7 +66,7 @@ export function ValueCards() {
 export function SplitSections() {
   return (
     <>
-      {homeContent.splits.map((split) => (
+      {homeSplits.map((split) => (
         <section key={split.title} className="py-14">
           <Container width="wide">
             <div className="grid items-center gap-10 lg:grid-cols-2">
@@ -92,5 +94,44 @@ export function SplitSections() {
         </section>
       ))}
     </>
+  );
+}
+
+/**
+ * Upcoming volunteer events on the homepage.
+ *
+ * Renders nothing when there are no upcoming events or the API is unreachable —
+ * an empty carousel on the front page is worse than no section at all.
+ */
+export async function UpcomingEvents() {
+  const { upcomingEvents } = homeContent;
+  const result = await listEvents({ ...emptyFilters, page: 1 });
+
+  /*
+   * Cancelled events are deliberately kept on /volunteers, where someone who
+   * signed up needs to find out. Here the section exists to recruit, so an
+   * event nobody can attend is just noise.
+   */
+  const events = result.events.filter((event) => event.status !== "cancelled").slice(0, 9);
+
+  if (events.length === 0) return null;
+
+  return (
+    <section className="py-14">
+      <Container width="wide">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 className="text-headline font-semibold">{upcomingEvents.title}</h2>
+            <p className="mt-3 max-w-2xl text-ink-muted">{upcomingEvents.lead}</p>
+          </div>
+
+          <Button href={upcomingEvents.cta.href} variant="secondary">
+            {upcomingEvents.cta.label}
+          </Button>
+        </div>
+
+        <EventCarousel events={events} />
+      </Container>
+    </section>
   );
 }

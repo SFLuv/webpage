@@ -10,6 +10,8 @@ import { RemoteImage } from "./RemoteImage";
 type CoverPhotoGalleryProps = {
   photos: CoverPhoto[];
   title: string;
+  /** Sizing for the media box, so the caller can match a neighbouring card. */
+  className?: string;
 };
 
 /**
@@ -20,11 +22,11 @@ type CoverPhotoGalleryProps = {
  * with no photo get the styled placeholder at the same size, so the page never
  * reflows depending on whether an organizer uploaded anything.
  */
-export function CoverPhotoGallery({ photos, title }: CoverPhotoGalleryProps) {
+export function CoverPhotoGallery({ photos, title, className }: CoverPhotoGalleryProps) {
   const [index, setIndex] = useState(0);
 
   if (photos.length === 0) {
-    return <EventImagePlaceholder className="aspect-[16/9] w-full rounded-panel" />;
+    return <EventImagePlaceholder className={cn("w-full rounded-panel", className)} />;
   }
 
   const current = photos[Math.min(index, photos.length - 1)];
@@ -34,15 +36,15 @@ export function CoverPhotoGallery({ photos, title }: CoverPhotoGalleryProps) {
     setIndex((value) => (value + delta + photos.length) % photos.length);
 
   return (
-    <div className="relative">
+    <div className={cn("relative", className)}>
       <RemoteImage
         src={current.url}
         alt={`${title} — photo ${index + 1} of ${photos.length}`}
         width={current.width}
         height={current.height}
-        sizes="(max-width: 1024px) 100vw, 900px"
+        sizes="(max-width: 1024px) 100vw, 560px"
         priority
-        className="aspect-[16/9] w-full rounded-panel object-cover"
+        className="h-full w-full rounded-panel object-cover"
       />
 
       {multiple ? (

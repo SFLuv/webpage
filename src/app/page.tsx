@@ -1,4 +1,4 @@
-import { Hero, SplitSections, ValueCards } from "@/features/home/HomeSections";
+import { Hero, SplitSections, UpcomingEvents, ValueCards } from "@/features/home/HomeSections";
 
 export default function HomePage() {
   return (
@@ -6,6 +6,7 @@ export default function HomePage() {
       <Hero />
       <ValueCards />
       <SplitSections />
+      <UpcomingEvents />
     </>
   );
 }

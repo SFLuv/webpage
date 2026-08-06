@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
 import { CoverPhotoGallery } from "@/features/volunteers/CoverPhotoGallery";
 import { EventJsonLd } from "@/features/volunteers/EventJsonLd";
-import { EventSpotsProvider, EventSpotsText } from "@/features/volunteers/EventSpotsContext";
+import { EventSpotsProvider } from "@/features/volunteers/EventSpotsContext";
 import { EventTime } from "@/features/volunteers/EventTime";
 import { OrganizerBadge } from "@/features/volunteers/OrganizerBadge";
 import { SignupPanel } from "@/features/volunteers/SignupPanel";
@@ -68,16 +68,19 @@ export default async function VolunteerEventPage({ params }: PageProps) {
   return (
     <article className="py-8 sm:py-12">
       <EventJsonLd event={event} />
-      <Container>
+      <Container width="wide">
         <nav className="mb-6 text-sm" aria-label="Breadcrumb">
           <Link className="text-ink-muted no-underline hover:text-brand" href="/volunteers">
             ← All volunteer events
           </Link>
         </nav>
 
-        <CoverPhotoGallery photos={event.coverPhotos} title={event.title} />
-
-        <header className={event.coverPhotos.length ? "mt-8" : undefined}>
+        {/*
+          Title first, then a single row of matched-height panels: carousel,
+          details, signup. Sized so the whole page lands inside one desktop
+          viewport rather than requiring a scroll to reach the signup form.
+        */}
+        <header className="mb-6">
           {event.status === "cancelled" ? (
             <p className="mb-3 inline-block rounded-full bg-danger/10 px-3 py-1 text-sm font-medium text-danger">
               Cancelled
@@ -86,7 +89,7 @@ export default async function VolunteerEventPage({ params }: PageProps) {
 
           <h1 className="text-headline">{event.title}</h1>
 
-          <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
             <OrganizerBadge organizer={event.organizer} size="md" />
             {reward ? (
               <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-medium text-brand-deep">
@@ -98,25 +101,18 @@ export default async function VolunteerEventPage({ params }: PageProps) {
 
         {/* Shared so a signup updates the count in both columns at once. */}
         <EventSpotsProvider initial={event.spotsRemaining}>
-        <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-          <div>
-            {event.description ? (
-              <div className="text-ink-muted">
-                {event.description
-                  .split(/\n{2,}/)
-                  .map((paragraph) => paragraph.trim())
-                  .filter(Boolean)
-                  .map((paragraph) => (
-                    <p key={paragraph} className="mt-4 leading-relaxed whitespace-pre-line first:mt-0">
-                      {paragraph}
-                    </p>
-                  ))}
-              </div>
-            ) : null}
+          <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_20rem]">
+            <CoverPhotoGallery
+              photos={event.coverPhotos}
+              title={event.title}
+              className="aspect-[16/10] lg:aspect-auto lg:h-[26rem]"
+            />
 
-            <Panel padding="md" tone="muted" className="mt-8">
-              <h2 className="mb-3 font-medium text-ink">Event details</h2>
-              <dl>
+            <Panel padding="md" tone="muted" className="flex flex-col lg:h-[26rem]">
+              <h2 className="mb-3 shrink-0 font-medium text-ink">Event details</h2>
+
+              {/* Key facts stay pinned; only the prose below them scrolls. */}
+              <dl className="shrink-0">
                 <DetailRow label="When">
                   <EventTime
                     startAt={event.startAt}
@@ -149,20 +145,27 @@ export default async function VolunteerEventPage({ params }: PageProps) {
                     ) : null}
                   </DetailRow>
                 ) : null}
-                {event.maxParticipants || event.spotsRemaining !== null ? (
-                  <DetailRow label="Capacity">
-                    <EventSpotsText event={event} />
-                  </DetailRow>
-                ) : null}
-                {reward ? <DetailRow label="Volunteer reward">{reward}</DetailRow> : null}
               </dl>
-            </Panel>
-          </div>
 
-          <div className="lg:sticky lg:top-6">
-            <SignupPanel event={event} />
+              {event.description ? (
+                <div className="mt-4 min-h-0 shrink overflow-y-auto border-t border-line pt-4 text-ink-muted">
+                  {event.description
+                    .split(/\n{2,}/)
+                    .map((paragraph) => paragraph.trim())
+                    .filter(Boolean)
+                    .map((paragraph) => (
+                      <p key={paragraph} className="mt-3 leading-relaxed whitespace-pre-line first:mt-0">
+                        {paragraph}
+                      </p>
+                    ))}
+                </div>
+              ) : null}
+            </Panel>
+
+            <div className="lg:h-[26rem]">
+              <SignupPanel event={event} />
+            </div>
           </div>
-        </div>
         </EventSpotsProvider>
       </Container>
     </article>

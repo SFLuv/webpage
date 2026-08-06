@@ -16,7 +16,7 @@ type FieldProps = {
 /** Label + control + optional hint, at consistent spacing. */
 export function Field({ label, htmlFor, required, hint, children }: FieldProps) {
   return (
-    <div className="mb-5">
+    <div className="mb-4">
       <label className="mb-1.5 block font-medium text-ink" htmlFor={htmlFor}>
         {label}
         {required ? (
@@ -48,7 +48,7 @@ type CheckboxProps = InputHTMLAttributes<HTMLInputElement> & { children: ReactNo
 
 export function Checkbox({ children, className, ...props }: CheckboxProps) {
   return (
-    <label className="mb-5 flex items-start gap-3 text-ink-muted">
+    <label className="mb-4 flex items-start gap-3 text-ink-muted">
       <input
         type="checkbox"
         className={cn("mt-1 size-4 shrink-0 accent-brand", className)}

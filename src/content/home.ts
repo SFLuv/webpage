@@ -67,6 +67,12 @@ export const homeContent = {
 
   whyTitle: "Why SFLuv",
 
+  upcomingEvents: {
+    title: "Upcoming volunteer opportunities",
+    lead: "Join a cleanup, a planting, or a meal service — and earn SFLuv you can spend with local merchants.",
+    cta: { href: routes.volunteers, label: "More opportunities" } satisfies Cta
+  },
+
   valueCards: [
     {
       image: {
@@ -98,9 +104,11 @@ export const homeContent = {
       title: "Our Solution",
       body: "We propose leveraging a blockchain-based community project management platform to deliver the structure, clarity, and predictability essential for efficient capital deployment. Local stable tokens will minimize capital leakage and enhance the velocity of money within the community. Decentralized ledgers will ensure transparency in asset allocation, while smart contracts will streamline workflows. Together these technologies will empower merchants to efficiently allocate funds and make community-driven decisions that directly address the needs they observe in their neighborhoods, fueling the flywheel of economic development."
     }
-  ] satisfies ValueCard[],
+  ] satisfies ValueCard[]
+};
 
-  splits: [
+/** Explicitly typed so `imageSide` stays a union even when one side is unused. */
+export const homeSplits: SplitSection[] = [
     {
       title: "Our Mission",
       body: "At SFLuv, our mission is to support local merchants and small businesses in underserved neighborhoods through community improvements, civic engagement, and purposeful development of local economies. By harnessing blockchain technology, we are developing a community project management platform that enables small businesses and merchants to identify community needs, cultivate consensus, and direct improvement funds effectively. We further boost economic development by rewarding laborers and others who address these needs with SFLuv tokens, encouraging them to redeem their rewards at participating merchants.",
@@ -112,18 +120,5 @@ export const homeContent = {
         height: 3869
       },
       imageSide: "left"
-    },
-    {
-      title: "Why Blockchain?",
-      body: "Blockchain technology is open and standards-based, ensuring interoperability and reusability. This transparency creates enormous technical leverage, as code written once can be used by all. Moreover, blockchain’s community-defined rules ensure that the system remains fair and incorruptible, promoting trust and engagement.",
-      cta: { href: routes.resources, label: "Learn More" },
-      image: {
-        src: "/assets/wp-content/uploads/2024/06/AdobeStock_528499316-resize.jpg",
-        alt: "",
-        width: 4655,
-        height: 3103
-      },
-      imageSide: "right"
     }
-  ] satisfies SplitSection[]
-};
+];

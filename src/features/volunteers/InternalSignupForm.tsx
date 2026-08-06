@@ -195,7 +195,7 @@ export function InternalSignupForm({ eventId, eventTitle, spotsRemaining }: Inte
         Keep me posted about other SFLuv volunteer events. You can unsubscribe at any time.
       </Checkbox>
 
-      <Button type="submit" size="lg" disabled={submitting}>
+      <Button type="submit" disabled={submitting}>
         {submitting ? "Signing up…" : "Sign up"}
       </Button>
 
