@@ -9,6 +9,10 @@ export const externalLinks = {
   getInvolvedForm:
     "https://docs.google.com/forms/d/e/1FAIpQLSe5WDo_iwW2mblew-6RuUQhr9w7Zsc38s3UBCD7_2w-p8NsqA/viewform?usp=sf_link",
   treeStewardSignup: "https://forms.gle/5qRpV47YFmQk6PHh9",
+  appStore: {
+    ios: "https://apps.apple.com/us/app/sfluv/id6762672190",
+    android: "https://play.google.com/store/apps/details?id=org.sfluv.wallet&pcampaignid=web_share"
+  },
   partners: {
     intnCity: "https://intn.city",
     citizenWallet: "https://citizenwallet.xyz",

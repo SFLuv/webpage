@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { socialIcons } from "@/components/icons";
+import { AppStoreButtons } from "@/components/layout/AppStoreButtons";
 import { isExternalHref } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { footerNav, siteConfig, socialLinks } from "@/lib/site";
@@ -40,7 +41,11 @@ export function SiteFooter() {
             ))}
           </div>
 
-          <ul className="flex gap-3" aria-label="Social links">
+          <div className="flex flex-col gap-5">
+            {/* Desktop only — on mobile these live in the slide-out menu. */}
+            <AppStoreButtons className="hidden lg:flex" />
+
+            <ul className="flex gap-3 lg:justify-end" aria-label="Social links">
             {socialLinks.map((social) => {
               const Icon = socialIcons[social.icon];
               return (
@@ -57,7 +62,8 @@ export function SiteFooter() {
                 </li>
               );
             })}
-          </ul>
+            </ul>
+          </div>
         </div>
 
         <div className="mt-10 flex flex-col items-center gap-4 border-t border-line pt-8 sm:flex-row sm:justify-between">

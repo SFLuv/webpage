@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRightIcon, ChevronDownIcon, CloseIcon, MenuIcon } from "@/components/icons";
+import { AppStoreButtons } from "@/components/layout/AppStoreButtons";
 import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/cn";
 import { externalLinks, primaryNav, siteConfig, type NavGroup, type NavItem } from "@/lib/site";
@@ -237,13 +238,13 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
         </button>
 
         <Button
-          href={externalLinks.webWallet}
+          href={externalLinks.donate}
+          variant="secondary"
           size="lg"
           className="w-full"
           onClick={onClose}
         >
-          <span>Web Wallet</span>
-          <ArrowRightIcon className="size-3.5 fill-current" />
+          Donate
         </Button>
 
         <nav className="flex flex-col gap-6" aria-label="Mobile">
@@ -256,16 +257,17 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
             </div>
           ))}
 
-          <a
-            className="rounded-lg px-3 py-2 font-medium text-ink no-underline transition-colors hover:bg-brand-tint"
-            href={externalLinks.donate}
-            target="_blank"
-            rel="noreferrer"
-            onClick={onClose}
-          >
-            Donate
-          </a>
         </nav>
+
+        {/* App actions grouped together at the foot of the menu. */}
+        <div className="mt-auto flex flex-col gap-4 pt-4">
+          <Button href={externalLinks.webWallet} size="lg" className="w-full" onClick={onClose}>
+            <span>Web Wallet</span>
+            <ArrowRightIcon className="size-3.5 fill-current" />
+          </Button>
+
+          <AppStoreButtons className="flex-col" />
+        </div>
       </div>
     </div>
   );
