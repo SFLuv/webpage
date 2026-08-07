@@ -1,75 +1,121 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ChevronDownIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
 import type { VolunteerEvent } from "@/lib/volunteer-events/types";
 import { VolunteerEventCard } from "@/features/volunteers/VolunteerEventCard";
 
-/**
- * Horizontally scrolling strip of upcoming events.
- *
- * Built on native overflow scrolling with snap points rather than a JS slider:
- * it works with a trackpad, a touch swipe, and keyboard scrolling for free, and
- * degrades to a plain scrollable row if JavaScript never runs. The buttons are
- * an enhancement on top, not the mechanism.
- */
-export function EventCarousel({ events }: { events: VolunteerEvent[] }) {
-  const trackRef = useRef<HTMLUListElement>(null);
-  const [atStart, setAtStart] = useState(true);
-  const [atEnd, setAtEnd] = useState(false);
+/** One slide: an event, optionally flagged as a past event. */
+export type CarouselEvent = { event: VolunteerEvent; past?: boolean };
 
-  const sync = () => {
+/**
+ * Paged carousel of events: one active card centred on screen, with the
+ * previous and next cards peeking in on either side.
+ *
+ * Still built on native scroll-snap rather than a transform-driven slider, so
+ * trackpad, touch swipe and keyboard scrolling keep working and it degrades to
+ * a scrollable row without JavaScript. The arrows, dots and active-card styling
+ * are enhancements layered on the scroll position, not the mechanism.
+ */
+export function EventCarousel({ events }: { events: CarouselEvent[] }) {
+  const trackRef = useRef<HTMLUListElement>(null);
+  const [active, setActive] = useState(0);
+
+  /** The card whose centre is nearest the viewport centre is the active one. */
+  const syncActive = useCallback(() => {
     const track = trackRef.current;
     if (!track) return;
-    const max = track.scrollWidth - track.clientWidth;
-    setAtStart(track.scrollLeft <= 1);
-    setAtEnd(track.scrollLeft >= max - 1);
-  };
 
-  useEffect(() => {
-    sync();
-    window.addEventListener("resize", sync);
-    return () => window.removeEventListener("resize", sync);
+    const centre = track.scrollLeft + track.clientWidth / 2;
+    let nearest = 0;
+    let best = Infinity;
+
+    Array.from(track.children).forEach((child, index) => {
+      const item = child as HTMLElement;
+      const distance = Math.abs(item.offsetLeft + item.offsetWidth / 2 - centre);
+      if (distance < best) {
+        best = distance;
+        nearest = index;
+      }
+    });
+
+    setActive(nearest);
   }, []);
 
-  /** Scrolls by roughly one card, so a click never skips past an event. */
-  const scrollBy = (direction: 1 | -1) => {
+  useEffect(() => {
+    syncActive();
+    window.addEventListener("resize", syncActive);
+    return () => window.removeEventListener("resize", syncActive);
+  }, [syncActive]);
+
+  const goTo = (index: number) => {
     const track = trackRef.current;
-    if (!track) return;
-    const card = track.querySelector("li");
-    const step = card ? card.getBoundingClientRect().width + 24 : track.clientWidth;
-    track.scrollBy({ left: step * direction, behavior: "smooth" });
+    const item = track?.children[index] as HTMLElement | undefined;
+    if (!track || !item) return;
+
+    track.scrollTo({
+      left: item.offsetLeft + item.offsetWidth / 2 - track.clientWidth / 2,
+      behavior: "smooth"
+    });
   };
 
   return (
     <div className="relative">
       <ul
         ref={trackRef}
-        onScroll={sync}
+        onScroll={syncActive}
         className={cn(
-          "flex snap-x snap-mandatory gap-6 overflow-x-auto scroll-smooth pb-2",
-          // Hide the scrollbar without disabling scrolling.
+          "flex snap-x snap-mandatory items-stretch gap-6 overflow-x-auto scroll-smooth py-2",
+          // Side padding centres the first and last cards, so every slide can
+          // sit in the middle of the screen with its neighbours peeking in.
+          "px-[10vw] sm:px-[calc(50%-12rem)] lg:px-[calc(50%-14rem)]",
           "[-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         )}
       >
-        {events.map((event) => (
+        {events.map(({ event, past }, index) => (
           <li
             key={event.id}
-            className="flex w-[85%] shrink-0 snap-start sm:w-[calc((100%-1.5rem)/2)] lg:w-[calc((100%-3rem)/3)]"
+            aria-current={index === active ? "true" : undefined}
+            className={cn(
+              "flex w-[80vw] shrink-0 snap-center sm:w-[24rem] lg:w-[28rem]",
+              "transition-all duration-300",
+              // Inactive slides recede so the active one reads as the subject.
+              index === active ? "opacity-100" : "scale-95 opacity-55"
+            )}
           >
-            <VolunteerEventCard event={event} />
+            <VolunteerEventCard event={event} showPastBadge={past} />
           </li>
         ))}
       </ul>
 
-      <ScrollButton side="left" disabled={atStart} onClick={() => scrollBy(-1)} />
-      <ScrollButton side="right" disabled={atEnd} onClick={() => scrollBy(1)} />
+      <PageButton side="left" disabled={active === 0} onClick={() => goTo(active - 1)} />
+      <PageButton
+        side="right"
+        disabled={active === events.length - 1}
+        onClick={() => goTo(active + 1)}
+      />
+
+      <div className="mt-6 flex justify-center gap-2">
+        {events.map(({ event }, index) => (
+          <button
+            key={event.id}
+            type="button"
+            onClick={() => goTo(index)}
+            aria-label={`Show event ${index + 1} of ${events.length}`}
+            aria-current={index === active}
+            className={cn(
+              "h-2.5 rounded-full transition-all",
+              index === active ? "w-6 bg-brand" : "w-2.5 bg-ink/20 hover:bg-ink/40"
+            )}
+          />
+        ))}
+      </div>
     </div>
   );
 }
 
-function ScrollButton({
+function PageButton({
   side,
   disabled,
   onClick
@@ -83,12 +129,13 @@ function ScrollButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      aria-label={side === "left" ? "Previous events" : "Next events"}
+      aria-label={side === "left" ? "Previous event" : "Next event"}
       className={cn(
-        "absolute top-1/2 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full",
+        // Centred on the cards, not on the dots below them.
+        "absolute top-[45%] hidden size-12 -translate-y-1/2 items-center justify-center rounded-full",
         "bg-surface text-ink shadow-raised transition-opacity hover:bg-brand-tint sm:flex",
         "disabled:pointer-events-none disabled:opacity-0",
-        side === "left" ? "-left-4" : "-right-4"
+        side === "left" ? "left-4 lg:left-10" : "right-4 lg:right-10"
       )}
     >
       <ChevronDownIcon

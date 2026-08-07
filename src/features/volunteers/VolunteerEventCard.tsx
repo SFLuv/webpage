@@ -34,7 +34,18 @@ function Pill({
  * lines, and the meta row is pushed to the bottom. A ragged grid is what you
  * get otherwise.
  */
-export function VolunteerEventCard({ event }: { event: VolunteerEvent }) {
+export function VolunteerEventCard({
+  event,
+  showPastBadge = false
+}: {
+  event: VolunteerEvent;
+  /**
+   * Marks the card as a past event. Opt-in rather than derived from `status`,
+   * because on the /volunteers "Past" filter every card is past and the badge
+   * would be noise — it earns its place only in a mixed list.
+   */
+  showPastBadge?: boolean;
+}) {
   // Only the first photo appears on a card; the rest live on the detail page.
   const cover = event.coverPhotos[0];
   const reward = formatReward(event.rewardAmountSfluv);
@@ -69,6 +80,7 @@ export function VolunteerEventCard({ event }: { event: VolunteerEvent }) {
 
       <div className="flex grow flex-col gap-3 p-5">
         <div className="flex flex-wrap items-center gap-2">
+          {showPastBadge ? <Pill>Past event</Pill> : null}
           {cancelled ? <Pill tone="danger">Cancelled</Pill> : null}
           {event.recurrenceSummary ? <Pill>{event.recurrenceSummary}</Pill> : null}
           {reward ? <Pill tone="brand">{reward}</Pill> : null}

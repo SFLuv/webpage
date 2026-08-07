@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 import { homeContent, homeSplits } from "@/content/home";
 import { getPartners } from "@/lib/partners";
 import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
-import { EventCarousel } from "./EventCarousel";
+import { EventCarousel, type CarouselEvent } from "./EventCarousel";
 import { PartnerCarousel } from "./PartnerCarousel";
 
 export async function Hero() {
@@ -97,6 +97,9 @@ export function SplitSections() {
   );
 }
 
+/** Total cards in the homepage carousel, including the past-event slot. */
+const SLOTS = 5;
+
 /**
  * Upcoming volunteer events on the homepage.
  *
@@ -105,33 +108,54 @@ export function SplitSections() {
  */
 export async function UpcomingEvents() {
   const { upcomingEvents } = homeContent;
-  const result = await listEvents({ ...emptyFilters, page: 1 });
+
+  const [upcoming, past] = await Promise.all([
+    listEvents({ ...emptyFilters, page: 1 }),
+    listEvents({ ...emptyFilters, when: "past", page: 1 })
+  ]);
 
   /*
-   * Cancelled events are deliberately kept on /volunteers, where someone who
-   * signed up needs to find out. Here the section exists to recruit, so an
-   * event nobody can attend is just noise.
+   * Cancelled events stay on /volunteers, where someone who signed up needs to
+   * find out. This section exists to recruit, so an event nobody can attend is
+   * just noise.
    */
-  const events = result.events.filter((event) => event.status !== "cancelled").slice(0, 9);
+  const attendable = upcoming.events.filter((event) => event.status !== "cancelled");
+  const recentPast = past.events[0];
+
+  /*
+   * Five slots, one of them reserved for a past event — a look at what actually
+   * happened is the strongest argument for turning up. If there is no past
+   * event to show, upcoming events take the whole strip rather than leaving a
+   * gap.
+   */
+  const events: CarouselEvent[] = attendable
+    .slice(0, recentPast ? SLOTS - 1 : SLOTS)
+    .map((event) => ({ event }));
+
+  if (recentPast) events.push({ event: recentPast, past: true });
 
   if (events.length === 0) return null;
 
   return (
     <section className="py-14">
       <Container width="wide">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h2 className="text-headline font-semibold">{upcomingEvents.title}</h2>
-            <p className="mt-3 max-w-2xl text-ink-muted">{upcomingEvents.lead}</p>
-          </div>
-
-          <Button href={upcomingEvents.cta.href} variant="secondary">
-            {upcomingEvents.cta.label}
-          </Button>
+        <div className="mb-8 text-center">
+          <h2 className="text-headline font-semibold">{upcomingEvents.title}</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-ink-muted">{upcomingEvents.lead}</p>
         </div>
-
-        <EventCarousel events={events} />
       </Container>
+
+      {/*
+        Outside the container: the track runs the full width so the previous and
+        next cards can peek in from the screen edges.
+      */}
+      <EventCarousel events={events} />
+
+      <div className="mt-8 flex justify-center">
+        <Button href={upcomingEvents.cta.href} size="lg">
+          {upcomingEvents.cta.label}
+        </Button>
+      </div>
     </section>
   );
 }
