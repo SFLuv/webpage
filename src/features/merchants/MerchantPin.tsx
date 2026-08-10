@@ -2,14 +2,15 @@ import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
 import {
   ICON_TEXT_COLOR,
-  PIN_GLYPH_INSET_RATIO,
-  PIN_GLYPH_RATIO,
+  PIN_EDGE_COLOR,
+  PIN_GLYPH_RADIUS,
+  PIN_RING_RADIUS,
   PIN_HEAD_CENTRE,
   PIN_PATH,
   PIN_VIEWBOX_HEIGHT,
   PIN_VIEWBOX_WIDTH,
   PIN_WIDTH,
-  iconFaceColor,
+  ICON_FACE,
   merchantInitials,
   pinColor
 } from "@/lib/merchants/icon";
@@ -60,7 +61,7 @@ export function MerchantIcon({ name, iconUrl, size = 40, className, state = "ope
       aria-hidden
       className={cn("flex h-full w-full items-center justify-center leading-none font-bold", className)}
       style={{
-        backgroundColor: iconFaceColor(state),
+        backgroundColor: ICON_FACE,
         color: ICON_TEXT_COLOR,
         // Two characters need to fit inside a circle that is mostly padding.
         fontSize: Math.max(8, Math.round(size * (initials.length > 1 ? 0.4 : 0.5))),
@@ -91,8 +92,7 @@ type MerchantPinProps = {
 export function MerchantPin({ name, iconUrl, state, width = PIN_WIDTH }: MerchantPinProps) {
   const height = Math.round((width * PIN_VIEWBOX_HEIGHT) / PIN_VIEWBOX_WIDTH);
   const unit = width / PIN_VIEWBOX_WIDTH;
-  const glyphSize = Math.round(width * PIN_GLYPH_RATIO);
-  const inset = Math.max(1, Math.round(glyphSize * PIN_GLYPH_INSET_RATIO));
+  const glyphSize = Math.round(PIN_GLYPH_RADIUS * 2 * unit);
 
   return (
     <div className="relative" style={{ width, height }}>
@@ -101,10 +101,16 @@ export function MerchantPin({ name, iconUrl, state, width = PIN_WIDTH }: Merchan
         width={width}
         height={height}
         className="absolute inset-0"
-        style={{ filter: "drop-shadow(0 1px 2px rgb(11 48 59 / 0.35))" }}
+        style={{ filter: "drop-shadow(0 1px 2px rgb(11 48 59 / 0.3))" }}
         aria-hidden
       >
-        <path d={PIN_PATH} fill={pinColor(state)} stroke="#ffffff" strokeWidth={1.2} />
+        <path d={PIN_PATH} fill={ICON_FACE} stroke={PIN_EDGE_COLOR} strokeWidth={0.6} />
+        <circle
+          cx={PIN_HEAD_CENTRE.x}
+          cy={PIN_HEAD_CENTRE.y}
+          r={PIN_RING_RADIUS}
+          fill={pinColor(state)}
+        />
       </svg>
       <div
         className="absolute overflow-hidden rounded-full"
@@ -113,15 +119,10 @@ export function MerchantPin({ name, iconUrl, state, width = PIN_WIDTH }: Merchan
           height: glyphSize,
           left: PIN_HEAD_CENTRE.x * unit - glyphSize / 2,
           top: PIN_HEAD_CENTRE.y * unit - glyphSize / 2,
-          backgroundColor: iconFaceColor(state),
-          // The inset keeps the pin's white rim visible around the artwork,
-          // which is what separates the mark from the map behind it.
-          padding: inset
+          backgroundColor: ICON_FACE
         }}
       >
-        <div className="h-full w-full overflow-hidden rounded-full">
-          <MerchantIcon name={name} iconUrl={iconUrl} size={glyphSize - inset * 2} state={state} />
-        </div>
+        <MerchantIcon name={name} iconUrl={iconUrl} size={glyphSize} state={state} />
       </div>
     </div>
   );

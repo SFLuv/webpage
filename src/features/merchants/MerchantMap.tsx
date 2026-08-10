@@ -14,6 +14,7 @@ import {
 } from "@/lib/merchants/config";
 import { currentWeekdayIndex, getOpenState, isTodayHoursLine, type OpenState } from "@/lib/merchants/hours";
 import type { Merchant } from "@/lib/merchants/types";
+import { MerchantListPanel } from "./MerchantListPanel";
 import { MerchantIcon, MerchantPin, OpenStatusBadge } from "./MerchantPin";
 
 type MerchantMapProps = {
@@ -60,13 +61,33 @@ function useMinuteTick(): Date | null {
 }
 
 /**
+ * Pans the map to whichever merchant the list is pointing at.
+ *
+ * A child of Map rather than a hook in MerchantMap, because useMap only
+ * resolves inside the map's own context. Renders nothing.
+ */
+function MapFocus({ target }: { target: Merchant | null }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map || !target) return;
+    map.panTo({ lat: target.lat, lng: target.lng });
+    // Only zoom in on someone already zoomed out; yanking the zoom back on
+    // every hover would fight a visitor who deliberately zoomed in.
+    if ((map.getZoom() ?? 0) < 15) map.setZoom(15);
+  }, [map, target]);
+
+  return null;
+}
+
+/**
  * Frames every merchant inside the middle of the map.
  *
  * The default San Francisco view wastes most of its area on ocean and the
  * avenues, leaving the pins as a smudge in one corner. Fitting to the actual
  * bounds with heavy padding starts the map already zoomed to the merchants,
- * with the padding keeping them off the edges — and, on the home page, clear of
- * the popup that slides over the bottom.
+ * with the padding keeping them off the edges — and clear of the popup that
+ * slides over the bottom.
  *
  * Runs once. Re-fitting on every render would fight anyone who has panned away.
  */
@@ -111,6 +132,8 @@ function FitToMerchants({ merchants }: { merchants: Merchant[] }) {
  */
 export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32rem]", className }: MerchantMapProps) {
   const [selected, setSelected] = useState<Merchant | null>(null);
+  const [focused, setFocused] = useState<Merchant | null>(null);
+  const [panelCollapsed, setPanelCollapsed] = useState(false);
   const now = useMinuteTick();
 
   const openStateFor = useCallback(
@@ -136,35 +159,47 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
 
   return (
     <div className={cn("relative overflow-hidden rounded-panel shadow-panel", className)}>
-      <div className={cn("w-full", heightClassName)}>
+      <div className={cn("flex w-full", heightClassName)}>
         <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
-          <Map
-            mapId={GOOGLE_MAPS_MAP_ID}
-            defaultCenter={MAP_CENTER}
-            defaultZoom={MAP_DEFAULT_ZOOM}
-            gestureHandling="cooperative"
-            disableDefaultUI
-            zoomControl
-            className="size-full"
-            // Tapping the map dismisses the card, which is what "click
-            // elsewhere" means when the map is most of the surface.
-            onClick={() => setSelected(null)}
-          >
-            <FitToMerchants merchants={placed} />
+          <div className="min-w-0 flex-1">
+            <Map
+              mapId={GOOGLE_MAPS_MAP_ID}
+              defaultCenter={MAP_CENTER}
+              defaultZoom={MAP_DEFAULT_ZOOM}
+              gestureHandling="cooperative"
+              disableDefaultUI
+              zoomControl
+              className="size-full"
+              // Tapping the map dismisses the card, which is what "click
+              // elsewhere" means when the map is most of the surface.
+              onClick={() => setSelected(null)}
+            >
+              <FitToMerchants merchants={placed} />
+              <MapFocus target={focused} />
 
-            {placed.map((merchant) => (
-              <AdvancedMarker
-                key={merchant.id}
-                position={{ lat: merchant.lat, lng: merchant.lng }}
-                title={merchant.name}
-                clickable
-                onClick={() => setSelected(merchant)}
-              >
-                <MerchantPin name={merchant.name} iconUrl={merchant.iconUrl} state={openStateFor(merchant)} />
-              </AdvancedMarker>
-            ))}
-          </Map>
+              {placed.map((merchant) => (
+                <AdvancedMarker
+                  key={merchant.id}
+                  position={{ lat: merchant.lat, lng: merchant.lng }}
+                  title={merchant.name}
+                  clickable
+                  onClick={() => setSelected(merchant)}
+                >
+                  <MerchantPin name={merchant.name} iconUrl={merchant.iconUrl} state={openStateFor(merchant)} />
+                </AdvancedMarker>
+              ))}
+            </Map>
+          </div>
         </APIProvider>
+
+        <MerchantListPanel
+          merchants={placed}
+          openStateFor={openStateFor}
+          onSelect={setSelected}
+          onFocus={setFocused}
+          collapsed={panelCollapsed}
+          onCollapsedChange={setPanelCollapsed}
+        />
       </div>
 
       <MerchantCard

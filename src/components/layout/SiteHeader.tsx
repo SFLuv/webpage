@@ -20,11 +20,104 @@ import { routes } from "@/lib/routes";
  */
 const MENU_CLOSE_DELAY_MS = 220;
 
+/**
+ * How the header is behaving right now.
+ *
+ * `docked` is its resting state at the top of the page: in normal flow, exactly
+ * where the layout puts it. `pinned` and `hidden` are both fixed to the
+ * viewport — the header only ever leaves the page's flow once you have started
+ * scrolling.
+ */
+type HeaderMode = "docked" | "pinned" | "hidden";
+
+/** Treated as "at the top". A couple of pixels of slop for momentum scrolling. */
+const DOCK_THRESHOLD_PX = 4;
+
+/**
+ * Drives the header's show/hide behaviour.
+ *
+ * Three rules, in order:
+ *
+ *  - At the top of the page it docks, falling back into its own place in the
+ *    layout rather than hovering over it.
+ *  - Any upward scroll pins it, however small — reaching for the nav is the
+ *    reason people scroll up, so it should already be there.
+ *  - Scrolling down keeps it fully visible until the page has moved further
+ *    than the header is tall, and only then collapses it in one go. Because it
+ *    is fixed throughout, it never sits half off the top edge: it is either all
+ *    the way there or all the way gone.
+ */
+function useHeaderMode(elementRef: React.RefObject<HTMLElement | null>, forcePinned: boolean) {
+  const [mode, setMode] = useState<HeaderMode>("docked");
+  const [height, setHeight] = useState(0);
+  const heightRef = useRef(0);
+  const lastYRef = useRef(0);
+  const frameRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const measure = () => {
+      const next = element.offsetHeight;
+      heightRef.current = next;
+      setHeight(next);
+    };
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [elementRef]);
+
+  useEffect(() => {
+    lastYRef.current = window.scrollY;
+
+    const evaluate = () => {
+      frameRef.current = null;
+      const y = window.scrollY;
+      const previous = lastYRef.current;
+      lastYRef.current = y;
+
+      if (y <= DOCK_THRESHOLD_PX) {
+        setMode("docked");
+        return;
+      }
+      if (y < previous) {
+        setMode("pinned");
+        return;
+      }
+      // Scrolling down: hold it in view until the page has travelled past the
+      // header's own height, which is the moment it would have scrolled away
+      // on its own.
+      setMode(y > heightRef.current ? "hidden" : "pinned");
+    };
+
+    const onScroll = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = window.requestAnimationFrame(evaluate);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    evaluate();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
+
+  // An open menu must never slide away underneath the person using it.
+  return { mode: forcePinned && mode === "hidden" ? "pinned" : mode, height };
+}
+
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const pathname = usePathname();
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const { mode, height } = useHeaderMode(headerRef, mobileOpen || openGroup !== null);
 
   const cancelPendingClose = useCallback(() => {
     if (closeTimer.current) {
@@ -74,8 +167,24 @@ export function SiteHeader() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [closeGroupNow]);
 
+  const floating = mode !== "docked";
+
   return (
-    <header className="p-5">
+    <>
+      {/*
+        Holds the header's place in the layout while it is fixed, so the page
+        does not jump by its height the instant it lifts off.
+      */}
+      {floating ? <div aria-hidden style={{ height }} /> : null}
+
+      <header
+        ref={headerRef}
+        className={cn(
+          "z-40 p-5",
+          floating && "fixed inset-x-0 top-0 transition-transform duration-300 ease-out motion-reduce:transition-none",
+          mode === "hidden" && "-translate-y-full"
+        )}
+      >
       <div className="mx-auto flex min-h-[78px] w-full max-w-[1400px] items-center justify-between gap-5 rounded-panel bg-canvas px-6 shadow-panel">
         <Link className="flex shrink-0 items-center" href={routes.home} aria-label={`${siteConfig.name} home`}>
           <Image src={siteConfig.logo} alt={siteConfig.name} width={78} height={78} priority />
@@ -125,7 +234,8 @@ export function SiteHeader() {
       </div>
 
       <MobileNav open={mobileOpen} pathname={pathname} onClose={() => setMobileOpen(false)} />
-    </header>
+      </header>
+    </>
   );
 }
 
