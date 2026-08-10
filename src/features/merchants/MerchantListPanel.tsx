@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 
 import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
-import { distanceKm, type Coordinates } from "@/lib/merchants/distance";
 import type { Merchant } from "@/lib/merchants/types";
 import { MerchantIcon, OpenStatusBadge } from "./MerchantPin";
 
@@ -19,8 +18,6 @@ type MerchantListPanelProps = {
   onSelect: (merchant: Merchant) => void;
   /** Moves the map to a merchant without opening anything. */
   onFocus: (merchant: Merchant) => void;
-  /** Sorts each open/closed band by distance. Null when unknown. */
-  viewerLocation: Coordinates | null;
   collapsed: boolean;
   onCollapsedChange: (collapsed: boolean) => void;
   /**
@@ -59,7 +56,6 @@ export function MerchantListPanel({
   openStateFor,
   onSelect,
   onFocus,
-  viewerLocation,
   collapsed,
   onCollapsedChange,
   mobileVisible
@@ -80,15 +76,11 @@ export function MerchantListPanel({
     // Merchants whose hours we never learned sit between the two rather than
     // being sunk with the closed: we have no grounds to rule them out.
     //
-    // Nearest first within each band, when we know where the visitor is —
-    // "open" alone still leaves a list too long to read.
-    return [...found].sort((left, right) => {
-      const byState = openRank(openStateFor(left)) - openRank(openStateFor(right));
-      if (byState !== 0 || viewerLocation === null) return byState;
-
-      return distanceKm(viewerLocation, left) - distanceKm(viewerLocation, right);
-    });
-  }, [merchants, openStateFor, query, viewerLocation]);
+    // No distance tiebreak: the site does not ask for the visitor's location,
+    // and prompting for it to reorder a list nobody asked to have reordered is
+    // not a trade worth making on a public page.
+    return [...found].sort((left, right) => openRank(openStateFor(left)) - openRank(openStateFor(right)));
+  }, [merchants, openStateFor, query]);
 
   return (
     <>

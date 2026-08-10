@@ -15,7 +15,6 @@ import {
 import { currentWeekdayIndex, getOpenState, isTodayHoursLine, type OpenState } from "@/lib/merchants/hours";
 import type { Merchant } from "@/lib/merchants/types";
 import { MerchantListPanel } from "./MerchantListPanel";
-import { useViewerLocation } from "./useViewerLocation";
 import { MerchantIcon, MerchantPin, OpenStatusBadge } from "./MerchantPin";
 
 type MerchantMapProps = {
@@ -138,7 +137,6 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
   // Only consulted below lg, where the map and the list cannot share the width
   // and one has to give way to the other.
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
-  const viewerLocation = useViewerLocation();
   const now = useMinuteTick();
 
   const openStateFor = useCallback(
@@ -226,7 +224,6 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
           openStateFor={openStateFor}
           onSelect={setSelected}
           onFocus={setFocused}
-          viewerLocation={viewerLocation}
           collapsed={panelCollapsed}
           onCollapsedChange={setPanelCollapsed}
           mobileVisible={showListOnMobile}
