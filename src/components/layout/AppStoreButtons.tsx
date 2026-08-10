@@ -25,25 +25,32 @@ const STORES = [
  * The badges carry their own "Download on the App Store" / "Get it on Google
  * Play" wordmarks, so no adjacent text is added — that would duplicate what the
  * artwork already says. The accessible name conveys it for screen readers.
+ *
+ * `fit` shrinks both badges to share one row inside a narrow container. At
+ * their natural width the pair overflows the mobile menu, and stacking them
+ * wastes the height a drawer has least of — so they scale instead.
  */
-export function AppStoreButtons({ className }: { className?: string }) {
+export function AppStoreButtons({ className, fit = false }: { className?: string; fit?: boolean }) {
   return (
-    <ul className={cn("flex flex-wrap gap-3", className)}>
+    <ul className={cn("flex gap-3", fit ? "flex-nowrap" : "flex-wrap", className)}>
       {STORES.map((store) => (
-        <li key={store.href} className="flex">
+        <li key={store.href} className={cn("flex", fit && "min-w-0 flex-1")}>
           <a
             href={store.href}
             target="_blank"
             rel="noreferrer"
             aria-label={store.label}
-            className="inline-flex rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-3 focus-visible:outline-brand-tint"
+            className={cn(
+              "inline-flex rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-3 focus-visible:outline-brand-tint",
+              fit && "w-full"
+            )}
           >
             <Image
               src={store.badge}
               alt=""
               width={BADGE_WIDTH}
               height={BADGE_HEIGHT}
-              className="h-11 w-auto"
+              className={cn(fit ? "h-auto w-full" : "h-11 w-auto")}
             />
           </a>
         </li>

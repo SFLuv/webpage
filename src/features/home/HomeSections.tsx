@@ -1,7 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Panel } from "@/components/ui/Panel";
 import { cn } from "@/lib/cn";
 import { homeContent, homeSplits } from "@/content/home";
 import { getPartners } from "@/lib/partners";
@@ -33,32 +32,6 @@ export async function Hero() {
       <div className="mt-6">
         <PartnerCarousel partners={partnerLogos} label={partners.title} />
       </div>
-    </section>
-  );
-}
-
-export function ValueCards() {
-  return (
-    <section className="py-14">
-      <Container width="wide">
-        <h2 className="text-center text-headline font-semibold">{homeContent.whyTitle}</h2>
-
-        <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {homeContent.valueCards.map((card) => (
-            <Panel key={card.title} tone="muted" padding="lg" as="article" className="flex flex-col gap-5">
-              <Image
-                className="h-auto w-44 grayscale"
-                src={card.image.src}
-                alt={card.image.alt}
-                width={card.image.width}
-                height={card.image.height}
-              />
-              <h3 className="text-headline font-light">{card.title}</h3>
-              <p className="text-ink-muted">{card.body}</p>
-            </Panel>
-          ))}
-        </div>
-      </Container>
     </section>
   );
 }

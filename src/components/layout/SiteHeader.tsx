@@ -228,24 +228,29 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
         )}
         onClick={(event) => event.stopPropagation()}
       >
-        <button
-          className="self-end rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
-          type="button"
-          onClick={onClose}
-          aria-label="Close menu"
-        >
-          <CloseIcon className="size-6 fill-current" />
-        </button>
+        {/* Donate shares the close row: it is the one action worth surfacing
+            above the nav, and a full-width button of its own pushed the
+            navigation itself below the fold on short screens. */}
+        <div className="flex items-center gap-3">
+          <Button
+            href={externalLinks.donate}
+            variant="secondary"
+            size="lg"
+            className="flex-1"
+            onClick={onClose}
+          >
+            Donate
+          </Button>
 
-        <Button
-          href={externalLinks.donate}
-          variant="secondary"
-          size="lg"
-          className="w-full"
-          onClick={onClose}
-        >
-          Donate
-        </Button>
+          <button
+            className="shrink-0 rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
+            type="button"
+            onClick={onClose}
+            aria-label="Close menu"
+          >
+            <CloseIcon className="size-6 fill-current" />
+          </button>
+        </div>
 
         <nav className="flex flex-col gap-6" aria-label="Mobile">
           {primaryNav.map((group) => (
@@ -266,7 +271,7 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
             <ArrowRightIcon className="size-3.5 fill-current" />
           </Button>
 
-          <AppStoreButtons className="flex-col" />
+          <AppStoreButtons fit />
         </div>
       </div>
     </div>

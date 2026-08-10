@@ -8,12 +8,6 @@ export type Partner = {
   logo: ImageAsset;
 };
 
-type ValueCard = {
-  image: ImageAsset;
-  title: string;
-  body: string;
-};
-
 type SplitSection = {
   title: string;
   body: string;
@@ -65,46 +59,11 @@ export const homeContent = {
     ] satisfies Partner[]
   },
 
-  whyTitle: "Why SFLuv",
-
   upcomingEvents: {
     title: "Upcoming volunteer opportunities",
     lead: "Join a cleanup, a planting, or a meal service — and earn SFLuv you can spend with local merchants.",
     cta: { href: routes.volunteers, label: "More opportunities" } satisfies Cta
-  },
-
-  valueCards: [
-    {
-      image: {
-        src: "/assets/wp-content/themes/lativ/assets/images/image-2.webp",
-        alt: "",
-        width: 964,
-        height: 508
-      },
-      title: "Problem Statement",
-      body: "Municipalities today grapple with significant challenges in delivering essential services like maintaining clean streets, ensuring safe living conditions, and streamlining various city services and approvals. Merchants and small business owners in underserved communities are among the hardest hit by these inefficiencies. As potential customers avoid their neighborhoods, these business owners face the dual burden of working harder to sustain their operations while having less capital and time to navigate the outdated systems their livelihoods depend on."
-    },
-    {
-      image: {
-        src: "/assets/wp-content/themes/lativ/assets/images/image-1.webp",
-        alt: "",
-        width: 964,
-        height: 508
-      },
-      title: "The Trapped Capital Challenge",
-      body: "Our cities are brimming with financial, human, and infrastructural capital, ready to be fully utilized. Yet, there remain barriers of distrust and inefficient organizational structures that hinder the effective use of these resources. By addressing these challenges, we can unlock this trapped capital and create more vibrant, livable urban environments."
-    },
-    {
-      image: {
-        src: "/assets/wp-content/themes/lativ/assets/images/image-3.webp",
-        alt: "",
-        width: 964,
-        height: 508
-      },
-      title: "Our Solution",
-      body: "We propose leveraging a blockchain-based community project management platform to deliver the structure, clarity, and predictability essential for efficient capital deployment. Local stable tokens will minimize capital leakage and enhance the velocity of money within the community. Decentralized ledgers will ensure transparency in asset allocation, while smart contracts will streamline workflows. Together these technologies will empower merchants to efficiently allocate funds and make community-driven decisions that directly address the needs they observe in their neighborhoods, fueling the flywheel of economic development."
-    }
-  ] satisfies ValueCard[]
+  }
 };
 
 /** Explicitly typed so `imageSide` stays a union even when one side is unused. */
