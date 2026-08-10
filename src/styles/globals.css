@@ -55,15 +55,24 @@
     scroll-behavior: smooth;
   }
 
-  body {
-    background-color: var(--color-canvas);
-    background-image: linear-gradient(
+  :root {
+    /*
+     * The page's own backdrop, named so the floating header can repaint the
+     * identical thing behind itself. Because it is viewport-fixed, a second
+     * element painting it lines up with the body's exactly.
+     */
+    --site-backdrop: linear-gradient(
       127deg,
       var(--color-brand) 0%,
       var(--color-surface-muted) 29%,
       var(--color-brand-soft) 65%,
       var(--color-surface-muted) 100%
     );
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    background-image: var(--site-backdrop);
     background-attachment: fixed;
     color: var(--color-ink);
     font-family: var(--font-sans);
@@ -111,6 +120,22 @@
 }
 
 @layer components {
+  /*
+   * The backdrop behind the floating header.
+   *
+   * Repaints the site background and fades out below the bar, so page content
+   * scrolling up dissolves into it rather than sliding visibly behind the panel
+   * and out of the top of the window. The strip above the bar therefore always
+   * shows the site background, never whatever happens to be passing under it.
+   */
+  .header-veil {
+    background-color: var(--color-canvas);
+    background-image: var(--site-backdrop);
+    background-attachment: fixed;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
+  }
+
   /*
    * Continuously scrolling logo strip.
    *

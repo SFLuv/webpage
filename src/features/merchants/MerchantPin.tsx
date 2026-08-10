@@ -2,6 +2,7 @@ import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
 import {
   ICON_TEXT_COLOR,
+  ICON_TEXT_NUDGE_EM,
   PIN_EDGE_COLOR,
   PIN_GLYPH_RADIUS,
   PIN_RING_RADIUS,
@@ -68,7 +69,7 @@ export function MerchantIcon({ name, iconUrl, size = 40, className, state = "ope
         letterSpacing: "-0.01em"
       }}
     >
-      {initials}
+      <span style={{ transform: `translateY(${ICON_TEXT_NUDGE_EM}em)` }}>{initials}</span>
     </div>
   );
 }

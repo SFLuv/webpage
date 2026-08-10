@@ -5,7 +5,16 @@ import { Panel } from "@/components/ui/Panel";
 import type { AudiencePage } from "@/content/get-involved";
 
 /** The shared intro panel used by the donors/community/merchants/improvers pages. */
-export function AudienceIntro({ page, children }: { page: AudiencePage; children?: ReactNode }) {
+export function AudienceIntro({
+  page,
+  children,
+  showBody = true
+}: {
+  page: AudiencePage;
+  children?: ReactNode;
+  /** Set false where the slot below the heading already makes the case. */
+  showBody?: boolean;
+}) {
   return (
     <section className="pt-4 pb-4 sm:pt-8">
       <Container>
@@ -19,7 +28,7 @@ export function AudienceIntro({ page, children }: { page: AudiencePage; children
           */}
           {children ? <div className="mt-6 text-left">{children}</div> : null}
 
-          <p className="mx-auto mt-5 max-w-2xl text-ink-muted">{page.body}</p>
+          {showBody ? <p className="mx-auto mt-5 max-w-2xl text-ink-muted">{page.body}</p> : null}
           <div className="mt-8">
             <Button href={page.cta.href} size="lg">
               {page.cta.label}

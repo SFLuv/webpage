@@ -15,6 +15,7 @@ import {
 import { currentWeekdayIndex, getOpenState, isTodayHoursLine, type OpenState } from "@/lib/merchants/hours";
 import type { Merchant } from "@/lib/merchants/types";
 import { MerchantListPanel } from "./MerchantListPanel";
+import { useViewerLocation } from "./useViewerLocation";
 import { MerchantIcon, MerchantPin, OpenStatusBadge } from "./MerchantPin";
 
 type MerchantMapProps = {
@@ -134,6 +135,10 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
   const [selected, setSelected] = useState<Merchant | null>(null);
   const [focused, setFocused] = useState<Merchant | null>(null);
   const [panelCollapsed, setPanelCollapsed] = useState(false);
+  // Only consulted below lg, where the map and the list cannot share the width
+  // and one has to give way to the other.
+  const [mobileView, setMobileView] = useState<"map" | "list">("map");
+  const viewerLocation = useViewerLocation();
   const now = useMinuteTick();
 
   const openStateFor = useCallback(
@@ -157,11 +162,35 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
 
   if (!mapConfigured() || placed.length === 0) return null;
 
+  const showListOnMobile = mobileView === "list";
+
   return (
-    <div className={cn("relative overflow-hidden rounded-panel shadow-panel", className)}>
+    <div className={cn("relative overflow-hidden rounded-panel bg-canvas shadow-panel", className)}>
+      {/*
+        Below lg the merchant list cannot sit beside the map without starving
+        both, so it takes the map's place instead and this chooses between
+        them. From lg up the two are side by side and the toggle is redundant.
+      */}
+      <div className="flex gap-1 border-b border-line p-2 lg:hidden" role="group" aria-label="Map or list view">
+        {(["map", "list"] as const).map((view) => (
+          <button
+            key={view}
+            type="button"
+            onClick={() => setMobileView(view)}
+            aria-pressed={mobileView === view}
+            className={cn(
+              "flex-1 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+              mobileView === view ? "bg-brand text-white" : "text-ink hover:bg-brand-tint"
+            )}
+          >
+            {view === "map" ? "Map" : "List"}
+          </button>
+        ))}
+      </div>
+
       <div className={cn("flex w-full", heightClassName)}>
         <APIProvider apiKey={GOOGLE_MAPS_API_KEY}>
-          <div className="min-w-0 flex-1">
+          <div className={cn("min-w-0 flex-1", showListOnMobile && "hidden lg:block")}>
             <Map
               mapId={GOOGLE_MAPS_MAP_ID}
               defaultCenter={MAP_CENTER}
@@ -197,8 +226,10 @@ export function MerchantMap({ merchants, heightClassName = "h-[26rem] sm:h-[32re
           openStateFor={openStateFor}
           onSelect={setSelected}
           onFocus={setFocused}
+          viewerLocation={viewerLocation}
           collapsed={panelCollapsed}
           onCollapsedChange={setPanelCollapsed}
+          mobileVisible={showListOnMobile}
         />
       </div>
 

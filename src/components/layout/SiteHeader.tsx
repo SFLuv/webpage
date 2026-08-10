@@ -34,14 +34,26 @@ type HeaderMode = "docked" | "pinned" | "hidden";
 const DOCK_THRESHOLD_PX = 4;
 
 /**
+ * How much of a deliberate scroll up it takes to call the header back.
+ *
+ * Half a viewport within a second. Reacting to any upward movement meant the
+ * header kept appearing during ordinary reading — a trackpad nudge, the bounce
+ * at the end of a fling — and covering the very text someone was reading. Half
+ * a page in a second is not something you do by accident.
+ */
+const UP_WINDOW_MS = 1000;
+const UP_FRACTION_OF_VIEWPORT = 0.5;
+
+/**
  * Drives the header's show/hide behaviour.
  *
  * Three rules, in order:
  *
  *  - At the top of the page it docks, falling back into its own place in the
  *    layout rather than hovering over it.
- *  - Any upward scroll pins it, however small — reaching for the nav is the
- *    reason people scroll up, so it should already be there.
+ *  - A deliberate scroll up — see UP_FRACTION_OF_VIEWPORT — pins it. Reaching
+ *    for the nav is why people scroll up in a hurry, so it should already be
+ *    there when they arrive.
  *  - Scrolling down keeps it fully visible until the page has moved further
  *    than the header is tall, and only then collapses it in one go. Because it
  *    is fixed throughout, it never sits half off the top edge: it is either all
@@ -53,6 +65,9 @@ function useHeaderMode(elementRef: React.RefObject<HTMLElement | null>, forcePin
   const heightRef = useRef(0);
   const lastYRef = useRef(0);
   const frameRef = useRef<number | null>(null);
+  // Recent scroll positions, so "how far up in the last second" can be answered
+  // without integrating every delta by hand.
+  const samplesRef = useRef<{ at: number; y: number }[]>([]);
 
   useEffect(() => {
     const element = elementRef.current;
@@ -79,18 +94,36 @@ function useHeaderMode(elementRef: React.RefObject<HTMLElement | null>, forcePin
       const previous = lastYRef.current;
       lastYRef.current = y;
 
+      const at = performance.now();
+      const samples = samplesRef.current;
+      samples.push({ at, y });
+      while (samples.length > 1 && at - samples[0].at > UP_WINDOW_MS) samples.shift();
+
       if (y <= DOCK_THRESHOLD_PX) {
+        samples.length = 0;
         setMode("docked");
         return;
       }
-      if (y < previous) {
+
+      // Peak-to-current over the window, which is how far up the page has
+      // actually come — not the sum of jitter in both directions.
+      let peak = y;
+      for (const sample of samples) peak = Math.max(peak, sample.y);
+
+      if (peak - y >= window.innerHeight * UP_FRACTION_OF_VIEWPORT) {
         setMode("pinned");
         return;
       }
-      // Scrolling down: hold it in view until the page has travelled past the
-      // header's own height, which is the moment it would have scrolled away
-      // on its own.
-      setMode(y > heightRef.current ? "hidden" : "pinned");
+
+      if (y > previous) {
+        // Scrolling down: hold it in view until the page has travelled past
+        // the header's own height, which is the moment it would have scrolled
+        // away on its own.
+        setMode(y > heightRef.current ? "hidden" : "pinned");
+      }
+      // Upward but short of the threshold, or standing still: leave it as it
+      // is. Anything else would drop the header a second after someone stopped
+      // scrolling up, purely because the window emptied.
     };
 
     const onScroll = () => {
@@ -180,12 +213,30 @@ export function SiteHeader() {
       <header
         ref={headerRef}
         className={cn(
-          "z-40 p-5",
+          "relative z-40 p-5",
           floating && "fixed inset-x-0 top-0 transition-transform duration-300 ease-out motion-reduce:transition-none",
           mode === "hidden" && "-translate-y-full"
         )}
       >
-      <div className="mx-auto flex min-h-[78px] w-full max-w-[1400px] items-center justify-between gap-5 rounded-panel bg-canvas px-6 shadow-panel">
+        {/*
+          Only while floating: docked, the header is part of the page and the
+          body's own background is already behind it.
+        */}
+        {floating ? (
+          <div
+            aria-hidden
+            className="header-veil pointer-events-none absolute inset-x-0 top-0 -z-10 h-[calc(100%+2rem)]"
+          />
+        ) : null}
+
+      <div
+        className={cn(
+          "mx-auto flex min-h-[78px] w-full max-w-[1400px] items-center justify-between gap-5 rounded-panel bg-canvas px-6",
+          // Lifted a step while floating so the bar reads as being above the
+          // page rather than part of whatever it happens to be covering.
+          floating ? "shadow-raised" : "shadow-panel"
+        )}
+      >
         <Link className="flex shrink-0 items-center" href={routes.home} aria-label={`${siteConfig.name} home`}>
           <Image src={siteConfig.logo} alt={siteConfig.name} width={78} height={78} priority />
         </Link>
