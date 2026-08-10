@@ -14,7 +14,12 @@ function PartnerLogo({ partner, decorative }: { partner: Partner; decorative?: b
   return (
     <li className="shrink-0">
       <a
-        className="flex items-center px-8 opacity-80 transition-opacity duration-200 hover:opacity-100"
+        // The lift on hover reads as "this one is under the cursor" while the
+        // strip is frozen — without it, stopping the marquee is the only
+        // feedback and it is easy to miss which logo caused it. The transform
+        // is on the inner box, not the link, so the layout does not shift and
+        // neighbours stay put.
+        className="group flex items-center px-8 opacity-80 transition-opacity duration-200 hover:opacity-100"
         href={partner.href}
         target="_blank"
         rel="noreferrer"
@@ -26,7 +31,7 @@ function PartnerLogo({ partner, decorative }: { partner: Partner; decorative?: b
           alone would blow up wide wordmarks like INTN.CITY next to logos with
           tall glyphs, which is why the original banner sized them by width.
         */}
-        <span className="flex h-14 w-36 items-center justify-center sm:w-44">
+        <span className="flex h-14 w-36 items-center justify-center transition-transform duration-200 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 sm:w-44">
           <Image
             className="max-h-full w-auto max-w-full object-contain"
             src={partner.logo.src}

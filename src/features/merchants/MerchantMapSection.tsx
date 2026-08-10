@@ -27,7 +27,6 @@ export async function MerchantMapPanel({ heightClassName, className }: MerchantM
 
 type MerchantMapSectionProps = MerchantMapPanelProps & {
   title?: string;
-  lead?: string;
   spacing?: "sm" | "md" | "lg";
 };
 

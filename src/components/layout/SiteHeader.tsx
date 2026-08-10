@@ -292,7 +292,10 @@ function DesktopNavGroup({
       >
         <div
           id={menuId}
-          className="flex flex-col overflow-hidden rounded-2xl bg-surface p-2 shadow-raised"
+          // gap-1: without it the tinted backgrounds of the current page and a
+          // hovered neighbour meet edge to edge and read as one block. A
+          // couple of pixels of surface between them keeps them separate.
+          className="flex flex-col gap-1 overflow-hidden rounded-2xl bg-surface p-2 shadow-raised"
         >
           {group.items.map((item) => (
             <NavLink key={item.href} item={item} pathname={pathname} onClick={onCloseNow} />

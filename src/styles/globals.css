@@ -119,6 +119,12 @@
    */
   .marquee {
     overflow: hidden;
+    /*
+     * Headroom for the hover lift. `overflow: hidden` clips vertically as well
+     * as horizontally, so without this the logo growing under the cursor is
+     * shaved off top and bottom.
+     */
+    padding-block: 0.5rem;
     mask-image: linear-gradient(
       to right,
       transparent,
