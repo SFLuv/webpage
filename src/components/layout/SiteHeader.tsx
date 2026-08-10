@@ -213,7 +213,12 @@ export function SiteHeader() {
       <header
         ref={headerRef}
         className={cn(
-          "relative z-40 p-5",
+          // No `relative` here, even though the veil below is absolute: it is
+          // only rendered while floating, and `fixed` is already a containing
+          // block for it. Adding `relative` unconditionally silently broke the
+          // whole thing — Tailwind emits `.relative` after `.fixed`, so at
+          // equal specificity it won and the header never left the flow.
+          "z-40 p-5",
           floating && "fixed inset-x-0 top-0 transition-transform duration-300 ease-out motion-reduce:transition-none",
           mode === "hidden" && "-translate-y-full"
         )}
