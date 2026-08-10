@@ -1,21 +1,18 @@
-import { Pin } from "@vis.gl/react-google-maps";
-
 import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
-import { merchantGradient, merchantInitials, pinColor } from "@/lib/merchants/icon";
-
-/**
- * Default pin scale.
- *
- * Google's pin at scale 1 leaves a glyph slot too small to read a logo in. 1.5
- * is the smallest that gives the mark room without the pins colliding on a
- * dense block. Matches the wallet app so the same merchant looks the same on
- * both maps.
- */
-const PIN_SCALE = 1.5;
-
-/** Glyph diameter in CSS pixels, sized to sit inside the pin head. */
-const GLYPH_SIZE = 22;
+import {
+  ICON_TEXT_COLOR,
+  PIN_GLYPH_INSET_RATIO,
+  PIN_GLYPH_RATIO,
+  PIN_HEAD_CENTRE,
+  PIN_PATH,
+  PIN_VIEWBOX_HEIGHT,
+  PIN_VIEWBOX_WIDTH,
+  PIN_WIDTH,
+  iconFaceColor,
+  merchantInitials,
+  pinColor
+} from "@/lib/merchants/icon";
 
 type MerchantIconProps = {
   name: string;
@@ -23,8 +20,8 @@ type MerchantIconProps = {
   /** Rendered edge length in pixels. */
   size?: number;
   className?: string;
-  /** Drains the colour out of a mark for a closed merchant. */
-  muted?: boolean;
+  /** Open state, which decides the face colour behind a generated mark. */
+  state?: OpenState;
 };
 
 /**
@@ -33,10 +30,11 @@ type MerchantIconProps = {
  *
  * The generated tile is not a placeholder awaiting a real logo — most merchants
  * will never upload one, and a map of identical grey dots is worse than a map
- * of distinct, on-brand initials.
+ * of distinct initials on a clean white face.
  */
-export function MerchantIcon({ name, iconUrl, size = 40, className, muted = false }: MerchantIconProps) {
+export function MerchantIcon({ name, iconUrl, size = 40, className, state = "open" }: MerchantIconProps) {
   const trimmed = (iconUrl ?? "").trim();
+  const closed = state === "closed";
 
   if (trimmed !== "") {
     return (
@@ -50,26 +48,23 @@ export function MerchantIcon({ name, iconUrl, size = 40, className, muted = fals
         height={size}
         loading="lazy"
         decoding="async"
-        className={cn("h-full w-full object-cover", muted && "opacity-90 grayscale-[0.65]", className)}
+        className={cn("h-full w-full object-cover", closed && "opacity-90 grayscale-[0.65]", className)}
       />
     );
   }
 
-  const [from, to] = merchantGradient(name);
   const initials = merchantInitials(name);
 
   return (
     <div
       aria-hidden
-      className={cn(
-        "flex h-full w-full items-center justify-center leading-none font-semibold text-white",
-        muted && "grayscale-[0.7]",
-        className
-      )}
+      className={cn("flex h-full w-full items-center justify-center leading-none font-bold", className)}
       style={{
-        backgroundImage: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
+        backgroundColor: iconFaceColor(state),
+        color: ICON_TEXT_COLOR,
         // Two characters need to fit inside a circle that is mostly padding.
-        fontSize: Math.max(9, Math.round(size * (initials.length > 1 ? 0.38 : 0.48)))
+        fontSize: Math.max(8, Math.round(size * (initials.length > 1 ? 0.4 : 0.5))),
+        letterSpacing: "-0.01em"
       }}
     >
       {initials}
@@ -81,26 +76,54 @@ type MerchantPinProps = {
   name: string;
   iconUrl?: string;
   state: OpenState;
-  scale?: number;
+  /** Rendered pin width in pixels; height follows the silhouette's ratio. */
+  width?: number;
 };
 
 /**
  * The map pin.
  *
- * Google's own PinElement carries the silhouette, shadow, anchor point and
- * z-ordering; we supply the colour and the glyph. Hand-drawing the teardrop is
- * possible but pointless — the proportions and the way it scales are exactly
- * the part a designed component gets right and a hand-rolled SVG does not.
- *
- * Must be rendered inside an AdvancedMarker: Pin reaches for that context.
+ * A teardrop in the merchant's state colour with their mark set into the head.
+ * Drawn here rather than with Google's PinElement because that shape is fixed:
+ * it cannot be made shorter, and it finishes on a needle point that reads badly
+ * at this size against a busy street map.
  */
-export function MerchantPin({ name, iconUrl, state, scale = PIN_SCALE }: MerchantPinProps) {
+export function MerchantPin({ name, iconUrl, state, width = PIN_WIDTH }: MerchantPinProps) {
+  const height = Math.round((width * PIN_VIEWBOX_HEIGHT) / PIN_VIEWBOX_WIDTH);
+  const unit = width / PIN_VIEWBOX_WIDTH;
+  const glyphSize = Math.round(width * PIN_GLYPH_RATIO);
+  const inset = Math.max(1, Math.round(glyphSize * PIN_GLYPH_INSET_RATIO));
+
   return (
-    <Pin background={pinColor(state)} borderColor="#ffffff" glyphColor="#ffffff" scale={scale}>
-      <div className="overflow-hidden rounded-full bg-surface" style={{ width: GLYPH_SIZE, height: GLYPH_SIZE }}>
-        <MerchantIcon name={name} iconUrl={iconUrl} size={GLYPH_SIZE} muted={state === "closed"} />
+    <div className="relative" style={{ width, height }}>
+      <svg
+        viewBox={`0 0 ${PIN_VIEWBOX_WIDTH} ${PIN_VIEWBOX_HEIGHT}`}
+        width={width}
+        height={height}
+        className="absolute inset-0"
+        style={{ filter: "drop-shadow(0 1px 2px rgb(11 48 59 / 0.35))" }}
+        aria-hidden
+      >
+        <path d={PIN_PATH} fill={pinColor(state)} stroke="#ffffff" strokeWidth={1.2} />
+      </svg>
+      <div
+        className="absolute overflow-hidden rounded-full"
+        style={{
+          width: glyphSize,
+          height: glyphSize,
+          left: PIN_HEAD_CENTRE.x * unit - glyphSize / 2,
+          top: PIN_HEAD_CENTRE.y * unit - glyphSize / 2,
+          backgroundColor: iconFaceColor(state),
+          // The inset keeps the pin's white rim visible around the artwork,
+          // which is what separates the mark from the map behind it.
+          padding: inset
+        }}
+      >
+        <div className="h-full w-full overflow-hidden rounded-full">
+          <MerchantIcon name={name} iconUrl={iconUrl} size={glyphSize - inset * 2} state={state} />
+        </div>
       </div>
-    </Pin>
+    </div>
   );
 }
 

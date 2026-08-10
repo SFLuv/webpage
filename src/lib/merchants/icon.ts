@@ -5,7 +5,7 @@ import type { OpenState } from "./hours";
  *
  * The same rules are implemented in the web app and the mobile client. They are
  * duplicated rather than shared because the three do not share a package — if
- * you change a colour or the initials rule here, change it in
+ * you change a colour, a dimension or the initials rule here, change it in
  * `app/frontend/lib/merchant-icon.ts` and
  * `mobile-app/mobile/src/utils/merchantIcon.ts` too.
  */
@@ -16,19 +16,49 @@ export const PIN_OPEN_COLOR = "#eb6c6c";
 export const PIN_CLOSED_COLOR = "#8d9ba3";
 
 /**
- * Gradients for generated icons, all drawn from the SFLuv palette (brand red,
- * its deep and warm neighbours, and the teal ink the site pairs it with).
- * Several rather than one so a street of merchants without logos still reads as
- * distinct pins rather than a row of identical marks.
+ * The face a generated icon is drawn on.
+ *
+ * White while open. Closed keeps a trace of brand red rather than going fully
+ * grey — a wholly desaturated pin reads as broken or unavailable, where these
+ * merchants are simply shut until tomorrow.
  */
-export const ICON_GRADIENTS: ReadonlyArray<readonly [string, string]> = [
-  ["#f08a7c", "#eb6c6c"],
-  ["#eb6c6c", "#c94f4f"],
-  ["#f2a17c", "#e07a5f"],
-  ["#12495a", "#0b303b"],
-  ["#2f7b86", "#12495a"],
-  ["#d98b8b", "#8f2e2e"]
-];
+export const ICON_FACE_OPEN = "#ffffff";
+export const ICON_FACE_CLOSED = "#f6eaea";
+
+/** Initials are black and bold: the strongest contrast against a white face. */
+export const ICON_TEXT_COLOR = "#111111";
+
+/**
+ * Pin geometry, shared with the marker SVG.
+ *
+ * Google's own PinElement is a good shape but a fixed one — it cannot be made
+ * shorter or given a blunter tip, both of which this needed. The silhouette
+ * below keeps Google's head-and-taper reading at a stubbier ratio (26:35 rather
+ * than 27:43) and finishes on a small rounded arc instead of a needle point.
+ */
+export const PIN_VIEWBOX_WIDTH = 26;
+export const PIN_VIEWBOX_HEIGHT = 35;
+export const PIN_PATH =
+  "M1.74 19.5A13 13 0 1 1 24.26 19.5C21.2 24.8 16.2 29.6 14.1 33.2a1.3 1.3 0 0 1-2.2 0C9.8 29.6 4.8 24.8 1.74 19.5Z";
+/** Head-circle centre in viewBox units — where the glyph sits. */
+export const PIN_HEAD_CENTRE = { x: 13, y: 13 };
+/** Glyph diameter as a fraction of pin width. */
+export const PIN_GLYPH_RATIO = 0.6;
+/**
+ * Inset of the artwork inside its circle, as a fraction of the glyph.
+ *
+ * Without it the icon runs to the very edge and the pin's white rim disappears
+ * behind it, so the mark loses the outline that separates it from the map.
+ */
+export const PIN_GLYPH_INSET_RATIO = 0.09;
+
+/** Default rendered pin width in CSS pixels. */
+export const PIN_WIDTH = 30;
+
+/** The face colour behind a generated mark. */
+export function iconFaceColor(state: OpenState): string {
+  return state === "closed" ? ICON_FACE_CLOSED : ICON_FACE_OPEN;
+}
 
 /**
  * Up to two initials for a business name.
@@ -52,19 +82,6 @@ export function merchantInitials(name: string): string {
   if (source.length === 0) return "?";
   if (source.length === 1) return source[0].slice(0, 2).toUpperCase();
   return (source[0][0] + source[1][0]).toUpperCase();
-}
-
-/**
- * A stable gradient for a name. Deterministic so a merchant's generated mark is
- * the same on every device and every reload — a pin that changes colour between
- * visits is not an identity.
- */
-export function merchantGradient(name: string): readonly [string, string] {
-  let hash = 0;
-  for (let index = 0; index < name.length; index++) {
-    hash = (hash * 31 + name.charCodeAt(index)) >>> 0;
-  }
-  return ICON_GRADIENTS[hash % ICON_GRADIENTS.length];
 }
 
 /**
