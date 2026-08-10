@@ -1,6 +1,21 @@
+import { Pin } from "@vis.gl/react-google-maps";
+
 import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
 import { merchantGradient, merchantInitials, pinColor } from "@/lib/merchants/icon";
+
+/**
+ * Default pin scale.
+ *
+ * Google's pin at scale 1 leaves a glyph slot too small to read a logo in. 1.5
+ * is the smallest that gives the mark room without the pins colliding on a
+ * dense block. Matches the wallet app so the same merchant looks the same on
+ * both maps.
+ */
+const PIN_SCALE = 1.5;
+
+/** Glyph diameter in CSS pixels, sized to sit inside the pin head. */
+const GLYPH_SIZE = 22;
 
 type MerchantIconProps = {
   name: string;
@@ -66,50 +81,26 @@ type MerchantPinProps = {
   name: string;
   iconUrl?: string;
   state: OpenState;
-  /** Pin width in pixels; the height follows the silhouette's ratio. */
-  size?: number;
+  scale?: number;
 };
 
 /**
- * The map pin: a teardrop in the merchant's state colour with their mark inset
- * at the top. Brand red while open, muted slate while shut, so the map answers
- * "can I go there now?" before anything is clicked.
+ * The map pin.
+ *
+ * Google's own PinElement carries the silhouette, shadow, anchor point and
+ * z-ordering; we supply the colour and the glyph. Hand-drawing the teardrop is
+ * possible but pointless — the proportions and the way it scales are exactly
+ * the part a designed component gets right and a hand-rolled SVG does not.
+ *
+ * Must be rendered inside an AdvancedMarker: Pin reaches for that context.
  */
-export function MerchantPin({ name, iconUrl, state, size = 40 }: MerchantPinProps) {
-  const color = pinColor(state);
-  const height = Math.round(size * 1.2);
-  const iconSize = Math.round(size * 0.68);
-
+export function MerchantPin({ name, iconUrl, state, scale = PIN_SCALE }: MerchantPinProps) {
   return (
-    <div className="relative" style={{ width: size, height }}>
-      <svg
-        viewBox="0 0 38 46"
-        width={size}
-        height={height}
-        className="absolute inset-0"
-        style={{ filter: "drop-shadow(0 2px 3px rgb(11 48 59 / 0.35))" }}
-        aria-hidden
-      >
-        <path
-          d="M19 45.5C19 45.5 3.5 27.6 3.5 17.5a15.5 15.5 0 1 1 31 0C34.5 27.6 19 45.5 19 45.5Z"
-          fill={color}
-          stroke="#ffffff"
-          strokeWidth="2"
-        />
-      </svg>
-      <div
-        className="absolute overflow-hidden rounded-full bg-surface"
-        style={{
-          width: iconSize,
-          height: iconSize,
-          left: "50%",
-          top: size * 0.1,
-          transform: "translateX(-50%)"
-        }}
-      >
-        <MerchantIcon name={name} iconUrl={iconUrl} size={iconSize} muted={state === "closed"} />
+    <Pin background={pinColor(state)} borderColor="#ffffff" glyphColor="#ffffff" scale={scale}>
+      <div className="overflow-hidden rounded-full bg-surface" style={{ width: GLYPH_SIZE, height: GLYPH_SIZE }}>
+        <MerchantIcon name={name} iconUrl={iconUrl} size={GLYPH_SIZE} muted={state === "closed"} />
       </div>
-    </div>
+    </Pin>
   );
 }
 
