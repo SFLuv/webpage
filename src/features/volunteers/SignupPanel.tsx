@@ -34,7 +34,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
 
   if (event.status === "cancelled") {
     return (
-      <Panel padding="md" bordered className="h-full overflow-y-auto">
+      <Panel padding="md" bordered>
         <h2 className="text-title font-medium">This event was cancelled</h2>
         <p className="mt-2 text-ink-muted">
           Keep an eye on this page — we often reschedule. You can also browse other upcoming events.
@@ -50,7 +50,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
 
   if (event.status === "ended") {
     return (
-      <Panel padding="md" bordered className="h-full overflow-y-auto">
+      <Panel padding="md" bordered>
         <h2 className="text-title font-medium">This event has already happened</h2>
         <p className="mt-2 text-ink-muted">Thank you to everyone who came out.</p>
         <div className="mt-5">
@@ -64,7 +64,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
 
   if (event.signup.mode === "external") {
     return (
-      <Panel padding="md" bordered className="h-full overflow-y-auto">
+      <Panel padding="md" bordered>
         <h2 className="text-title font-medium">Sign up</h2>
         <p className="mt-2 text-ink-muted">
           Signups for this event are handled by {event.organizer.name}.
@@ -85,7 +85,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
   if (event.signup.mode === "internal") {
     if (!event.signup.open) {
       return (
-        <Panel padding="md" bordered className="h-full overflow-y-auto">
+        <Panel padding="md" bordered>
           <h2 className="text-title font-medium">Signups are closed</h2>
           <p className="mt-2 text-ink-muted">{signupClosedMessage(event.signup.closedReason)}</p>
           <div className="mt-5">
@@ -98,7 +98,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
     }
 
     return (
-      <Panel padding="md" bordered className="h-full overflow-y-auto">
+      <Panel padding="md" bordered>
         <h2 className="text-title font-medium">Sign up</h2>
         <p className="mt-1 mb-5 text-sm text-ink-subtle">
           <EventSpotsText event={event} />
@@ -114,7 +114,7 @@ export function SignupPanel({ event }: { event: VolunteerEvent }) {
   }
 
   return (
-    <Panel padding="md" bordered className="h-full overflow-y-auto">
+    <Panel padding="md" bordered>
       <h2 className="text-title font-medium">Just show up</h2>
       <p className="mt-2 text-ink-muted">
         No signup is needed for this event. Come along at the start time and find the SFLuv team.

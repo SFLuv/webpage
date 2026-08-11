@@ -66,53 +66,70 @@ export default async function VolunteerEventPage({ params }: PageProps) {
   const reward = formatReward(event.rewardAmountSfluv);
 
   return (
-    <article className="py-8 sm:py-12">
+    <article className="pt-2 pb-4">
       <EventJsonLd event={event} />
       <Container width="wide">
-        <nav className="mb-6 text-sm" aria-label="Breadcrumb">
-          <Link className="text-ink-muted no-underline hover:text-brand" href="/volunteers">
-            ← All volunteer events
-          </Link>
-        </nav>
-
         {/*
-          Title first, then a single row of matched-height panels: carousel,
-          details, signup. Sized so the whole page lands inside one desktop
-          viewport rather than requiring a scroll to reach the signup form.
+          The whole page is meant to land inside one desktop viewport, so the
+          header carries only the chevron and the title. Who is hosting and what
+          it pays are facts about the event, so they read better as rows in
+          Event details than as badges competing with the title — and moving
+          them there buys the photo the height it needs.
         */}
-        <header className="mb-6">
+        <header className="mb-3">
           {event.status === "cancelled" ? (
-            <p className="mb-3 inline-block rounded-full bg-danger/10 px-3 py-1 text-sm font-medium text-danger">
+            <p className="mb-2 inline-block rounded-full bg-danger/10 px-3 py-1 text-sm font-medium text-danger">
               Cancelled
             </p>
           ) : null}
 
-          <h1 className="text-headline">{event.title}</h1>
+          <div className="flex flex-wrap items-center gap-x-3">
+            <Link
+              className="text-2xl leading-none text-ink-muted no-underline hover:text-brand"
+              href="/volunteers"
+              aria-label="All volunteer events"
+            >
+              &lsaquo;
+            </Link>
 
-          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <OrganizerBadge organizer={event.organizer} size="md" />
-            {reward ? (
-              <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-medium text-brand-deep">
-                {reward} reward
-              </span>
-            ) : null}
+            <h1 className="text-headline">{event.title}</h1>
           </div>
         </header>
 
         {/* Shared so a signup updates the count in both columns at once. */}
         <EventSpotsProvider initial={event.spotsRemaining}>
-          <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_20rem]">
-            <CoverPhotoGallery
-              photos={event.coverPhotos}
-              title={event.title}
-              className="aspect-[16/10] lg:aspect-auto lg:h-[26rem]"
-            />
+          {/* Two columns, not three: the photo stacks above the details so the
+              signup form gets a column of its own. Nothing carries a fixed
+              height any more — at 26rem the form was taller than its box and the
+              submit button sat below the fold, reachable only by scrolling
+              inside the panel. */}
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1fr)_26rem]">
+            <div className="flex flex-col gap-4">
+              {/* Capped rather than aspect-driven on desktop: a 16/10 photo in a
+                  full-width column was tall enough on its own to push the
+                  description off-screen. */}
+              <CoverPhotoGallery
+                photos={event.coverPhotos}
+                title={event.title}
+                className="aspect-[16/9] lg:aspect-auto lg:h-80"
+              />
 
-            <Panel padding="md" tone="muted" className="flex flex-col lg:h-[26rem]">
-              <h2 className="mb-3 shrink-0 font-medium text-ink">Event details</h2>
+              <Panel padding="md" tone="muted" className="flex flex-col">
+                {/* The organiser and the reward carry this line on their own —
+                    a visible "Event details" heading only restated what the
+                    panel obviously is, and cost a line the viewport needed. The
+                    heading stays for screen readers, which have no such context. */}
+                <h2 className="sr-only">Event details</h2>
+                <div className="mb-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <OrganizerBadge organizer={event.organizer} size="md" />
+                  {reward ? (
+                    <span className="rounded-full bg-brand-tint px-3 py-1 text-sm font-medium text-brand-deep">
+                      {reward}
+                    </span>
+                  ) : null}
+                </div>
 
-              {/* Key facts stay pinned; only the prose below them scrolls. */}
-              <dl className="shrink-0">
+                <dl>
                 <DetailRow label="When">
                   <EventTime
                     startAt={event.startAt}
@@ -145,24 +162,27 @@ export default async function VolunteerEventPage({ params }: PageProps) {
                     ) : null}
                   </DetailRow>
                 ) : null}
-              </dl>
+                </dl>
 
-              {event.description ? (
-                <div className="mt-4 min-h-0 shrink overflow-y-auto border-t border-line pt-4 text-ink-muted">
-                  {event.description
-                    .split(/\n{2,}/)
-                    .map((paragraph) => paragraph.trim())
-                    .filter(Boolean)
-                    .map((paragraph) => (
-                      <p key={paragraph} className="mt-3 leading-relaxed whitespace-pre-line first:mt-0">
-                        {paragraph}
-                      </p>
-                    ))}
-                </div>
-              ) : null}
-            </Panel>
+                {event.description ? (
+                  <div className="mt-4 border-t border-line pt-4 text-ink-muted">
+                    {event.description
+                      .split(/\n{2,}/)
+                      .map((paragraph) => paragraph.trim())
+                      .filter(Boolean)
+                      .map((paragraph) => (
+                        <p key={paragraph} className="mt-3 leading-relaxed whitespace-pre-line first:mt-0">
+                          {paragraph}
+                        </p>
+                      ))}
+                  </div>
+                ) : null}
+              </Panel>
+            </div>
 
-            <div className="lg:h-[26rem]">
+            {/* Sticky so the form stays in view as a long description scrolls
+                past it, rather than being left behind at the top. */}
+            <div className="lg:sticky lg:top-6">
               <SignupPanel event={event} />
             </div>
           </div>
