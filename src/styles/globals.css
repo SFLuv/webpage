@@ -132,6 +132,19 @@
     background-color: var(--color-canvas);
     background-image: var(--site-backdrop);
     background-attachment: fixed;
+    /*
+     * Pin the gradient to the viewport explicitly.
+     *
+     * `background-attachment: fixed` is supposed to do this on its own, but it
+     * is unreliable on non-body elements — where it degrades to `scroll` the
+     * origin becomes the veil itself, and a 127deg gradient squeezed into a
+     * ~150px-tall box lands its brand-red stop at the top left, which is the
+     * coloured banding that appeared beside the logo. Sizing it to the
+     * viewport works either way: the veil only ever renders while the header
+     * is fixed at top: 0, so the element's own top-left IS the viewport's.
+     */
+    background-size: 100vw 100vh;
+    background-position: 0 0;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
   }

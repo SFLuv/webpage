@@ -224,10 +224,15 @@ export function SiteHeader() {
         )}
       >
         {/*
-          Only while floating: docked, the header is part of the page and the
-          body's own background is already behind it.
+          Only while the bar is actually on screen.
+          
+          Docked, the header is part of the page and the body's own background
+          is already behind it. Hidden, the header is translated out of frame —
+          but the veil is taller than the bar, so its lower edge stayed in view
+          and went on fading content approaching the top of the window with no
+          bar there to justify it.
         */}
-        {floating ? (
+        {mode === "pinned" ? (
           <div
             aria-hidden
             className="header-veil pointer-events-none absolute inset-x-0 top-0 -z-10 h-[calc(100%+2rem)]"
@@ -397,29 +402,14 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
         )}
         onClick={(event) => event.stopPropagation()}
       >
-        {/* Donate shares the close row: it is the one action worth surfacing
-            above the nav, and a full-width button of its own pushed the
-            navigation itself below the fold on short screens. */}
-        <div className="flex items-center gap-3">
-          <Button
-            href={externalLinks.donate}
-            variant="secondary"
-            size="lg"
-            className="flex-1"
-            onClick={onClose}
-          >
-            Donate
-          </Button>
-
-          <button
-            className="shrink-0 rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
-            type="button"
-            onClick={onClose}
-            aria-label="Close menu"
-          >
-            <CloseIcon className="size-6 fill-current" />
-          </button>
-        </div>
+        <button
+          className="self-end rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          <CloseIcon className="size-6 fill-current" />
+        </button>
 
         <nav className="flex flex-col gap-6" aria-label="Mobile">
           {primaryNav.map((group) => (
@@ -433,8 +423,19 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
 
         </nav>
 
-        {/* App actions grouped together at the foot of the menu. */}
+        {/* Every action grouped at the foot of the menu, below the navigation
+            that most people opened it for. */}
         <div className="mt-auto flex flex-col gap-4 pt-4">
+          <Button
+            href={externalLinks.donate}
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            onClick={onClose}
+          >
+            Donate
+          </Button>
+
           <Button href={externalLinks.webWallet} size="lg" className="w-full" onClick={onClose}>
             <span>Web Wallet</span>
             <ArrowRightIcon className="size-3.5 fill-current" />
