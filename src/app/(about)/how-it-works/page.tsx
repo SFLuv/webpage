@@ -20,8 +20,10 @@ export default function HowItWorksPage() {
       <Container>
         <h1 className="text-center text-headline">{title}</h1>
 
+        {/* Rounded to match the panels below it — a square-cornered graphic in
+            among the site's rounded cards reads as an unstyled asset. */}
         <Image
-          className="mx-auto mt-10 h-auto w-full max-w-2xl"
+          className="mx-auto mt-10 h-auto w-full max-w-2xl rounded-panel"
           src={graphic.src}
           alt={graphic.alt}
           width={graphic.width}

@@ -1,6 +1,20 @@
 import { cn } from "@/lib/cn";
 import type { OpenState } from "@/lib/merchants/hours";
-import { merchantGradient, merchantInitials, pinColor } from "@/lib/merchants/icon";
+import {
+  ICON_TEXT_COLOR,
+  ICON_TEXT_NUDGE_EM,
+  PIN_EDGE_COLOR,
+  PIN_GLYPH_RADIUS,
+  PIN_RING_RADIUS,
+  PIN_HEAD_CENTRE,
+  PIN_PATH,
+  PIN_VIEWBOX_HEIGHT,
+  PIN_VIEWBOX_WIDTH,
+  PIN_WIDTH,
+  ICON_FACE,
+  merchantInitials,
+  pinColor
+} from "@/lib/merchants/icon";
 
 type MerchantIconProps = {
   name: string;
@@ -8,8 +22,8 @@ type MerchantIconProps = {
   /** Rendered edge length in pixels. */
   size?: number;
   className?: string;
-  /** Drains the colour out of a mark for a closed merchant. */
-  muted?: boolean;
+  /** Open state, which decides the face colour behind a generated mark. */
+  state?: OpenState;
 };
 
 /**
@@ -18,10 +32,11 @@ type MerchantIconProps = {
  *
  * The generated tile is not a placeholder awaiting a real logo — most merchants
  * will never upload one, and a map of identical grey dots is worse than a map
- * of distinct, on-brand initials.
+ * of distinct initials on a clean white face.
  */
-export function MerchantIcon({ name, iconUrl, size = 40, className, muted = false }: MerchantIconProps) {
+export function MerchantIcon({ name, iconUrl, size = 40, className, state = "open" }: MerchantIconProps) {
   const trimmed = (iconUrl ?? "").trim();
+  const closed = state === "closed";
 
   if (trimmed !== "") {
     return (
@@ -35,29 +50,26 @@ export function MerchantIcon({ name, iconUrl, size = 40, className, muted = fals
         height={size}
         loading="lazy"
         decoding="async"
-        className={cn("h-full w-full object-cover", muted && "opacity-90 grayscale-[0.65]", className)}
+        className={cn("h-full w-full object-cover", closed && "opacity-90 grayscale-[0.65]", className)}
       />
     );
   }
 
-  const [from, to] = merchantGradient(name);
   const initials = merchantInitials(name);
 
   return (
     <div
       aria-hidden
-      className={cn(
-        "flex h-full w-full items-center justify-center leading-none font-semibold text-white",
-        muted && "grayscale-[0.7]",
-        className
-      )}
+      className={cn("flex h-full w-full items-center justify-center leading-none font-bold", className)}
       style={{
-        backgroundImage: `linear-gradient(135deg, ${from} 0%, ${to} 100%)`,
+        backgroundColor: ICON_FACE,
+        color: ICON_TEXT_COLOR,
         // Two characters need to fit inside a circle that is mostly padding.
-        fontSize: Math.max(9, Math.round(size * (initials.length > 1 ? 0.38 : 0.48)))
+        fontSize: Math.max(8, Math.round(size * (initials.length > 1 ? 0.4 : 0.5))),
+        letterSpacing: "-0.01em"
       }}
     >
-      {initials}
+      <span style={{ transform: `translateY(${ICON_TEXT_NUDGE_EM}em)` }}>{initials}</span>
     </div>
   );
 }
@@ -66,48 +78,52 @@ type MerchantPinProps = {
   name: string;
   iconUrl?: string;
   state: OpenState;
-  /** Pin width in pixels; the height follows the silhouette's ratio. */
-  size?: number;
+  /** Rendered pin width in pixels; height follows the silhouette's ratio. */
+  width?: number;
 };
 
 /**
- * The map pin: a teardrop in the merchant's state colour with their mark inset
- * at the top. Brand red while open, muted slate while shut, so the map answers
- * "can I go there now?" before anything is clicked.
+ * The map pin.
+ *
+ * A teardrop in the merchant's state colour with their mark set into the head.
+ * Drawn here rather than with Google's PinElement because that shape is fixed:
+ * it cannot be made shorter, and it finishes on a needle point that reads badly
+ * at this size against a busy street map.
  */
-export function MerchantPin({ name, iconUrl, state, size = 40 }: MerchantPinProps) {
-  const color = pinColor(state);
-  const height = Math.round(size * 1.2);
-  const iconSize = Math.round(size * 0.68);
+export function MerchantPin({ name, iconUrl, state, width = PIN_WIDTH }: MerchantPinProps) {
+  const height = Math.round((width * PIN_VIEWBOX_HEIGHT) / PIN_VIEWBOX_WIDTH);
+  const unit = width / PIN_VIEWBOX_WIDTH;
+  const glyphSize = Math.round(PIN_GLYPH_RADIUS * 2 * unit);
 
   return (
-    <div className="relative" style={{ width: size, height }}>
+    <div className="relative" style={{ width, height }}>
       <svg
-        viewBox="0 0 38 46"
-        width={size}
+        viewBox={`0 0 ${PIN_VIEWBOX_WIDTH} ${PIN_VIEWBOX_HEIGHT}`}
+        width={width}
         height={height}
         className="absolute inset-0"
-        style={{ filter: "drop-shadow(0 2px 3px rgb(11 48 59 / 0.35))" }}
+        style={{ filter: "drop-shadow(0 1px 2px rgb(11 48 59 / 0.3))" }}
         aria-hidden
       >
-        <path
-          d="M19 45.5C19 45.5 3.5 27.6 3.5 17.5a15.5 15.5 0 1 1 31 0C34.5 27.6 19 45.5 19 45.5Z"
-          fill={color}
-          stroke="#ffffff"
-          strokeWidth="2"
+        <path d={PIN_PATH} fill={ICON_FACE} stroke={PIN_EDGE_COLOR} strokeWidth={0.6} />
+        <circle
+          cx={PIN_HEAD_CENTRE.x}
+          cy={PIN_HEAD_CENTRE.y}
+          r={PIN_RING_RADIUS}
+          fill={pinColor(state)}
         />
       </svg>
       <div
-        className="absolute overflow-hidden rounded-full bg-surface"
+        className="absolute overflow-hidden rounded-full"
         style={{
-          width: iconSize,
-          height: iconSize,
-          left: "50%",
-          top: size * 0.1,
-          transform: "translateX(-50%)"
+          width: glyphSize,
+          height: glyphSize,
+          left: PIN_HEAD_CENTRE.x * unit - glyphSize / 2,
+          top: PIN_HEAD_CENTRE.y * unit - glyphSize / 2,
+          backgroundColor: ICON_FACE
         }}
       >
-        <MerchantIcon name={name} iconUrl={iconUrl} size={iconSize} muted={state === "closed"} />
+        <MerchantIcon name={name} iconUrl={iconUrl} size={glyphSize} state={state} />
       </div>
     </div>
   );

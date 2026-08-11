@@ -13,8 +13,11 @@ export const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY?.
  * Cloud-styled map id. Advanced markers — which is what draws our pins —
  * require one, so an unset value disables the map rather than silently
  * downgrading it to default Google pins.
+ *
+ * Same variable names the wallet app reads, so one pair of values in the shared
+ * dev environment configures every surface that draws a map.
  */
-export const GOOGLE_MAPS_MAP_ID = process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID?.trim() ?? "";
+export const GOOGLE_MAPS_MAP_ID = process.env.NEXT_PUBLIC_MAP_ID?.trim() ?? "";
 
 /** San Francisco. Every merchant is here, so this is the map's home. */
 export const MAP_CENTER = { lat: 37.7749, lng: -122.4194 };

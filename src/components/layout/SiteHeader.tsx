@@ -20,11 +20,137 @@ import { routes } from "@/lib/routes";
  */
 const MENU_CLOSE_DELAY_MS = 220;
 
+/**
+ * How the header is behaving right now.
+ *
+ * `docked` is its resting state at the top of the page: in normal flow, exactly
+ * where the layout puts it. `pinned` and `hidden` are both fixed to the
+ * viewport — the header only ever leaves the page's flow once you have started
+ * scrolling.
+ */
+type HeaderMode = "docked" | "pinned" | "hidden";
+
+/** Treated as "at the top". A couple of pixels of slop for momentum scrolling. */
+const DOCK_THRESHOLD_PX = 4;
+
+/**
+ * How much of a deliberate scroll up it takes to call the header back.
+ *
+ * Half a viewport within a second. Reacting to any upward movement meant the
+ * header kept appearing during ordinary reading — a trackpad nudge, the bounce
+ * at the end of a fling — and covering the very text someone was reading. Half
+ * a page in a second is not something you do by accident.
+ */
+const UP_WINDOW_MS = 1000;
+const UP_FRACTION_OF_VIEWPORT = 0.5;
+
+/**
+ * Drives the header's show/hide behaviour.
+ *
+ * Three rules, in order:
+ *
+ *  - At the top of the page it docks, falling back into its own place in the
+ *    layout rather than hovering over it.
+ *  - A deliberate scroll up — see UP_FRACTION_OF_VIEWPORT — pins it. Reaching
+ *    for the nav is why people scroll up in a hurry, so it should already be
+ *    there when they arrive.
+ *  - Scrolling down keeps it fully visible until the page has moved further
+ *    than the header is tall, and only then collapses it in one go. Because it
+ *    is fixed throughout, it never sits half off the top edge: it is either all
+ *    the way there or all the way gone.
+ */
+function useHeaderMode(elementRef: React.RefObject<HTMLElement | null>, forcePinned: boolean) {
+  const [mode, setMode] = useState<HeaderMode>("docked");
+  const [height, setHeight] = useState(0);
+  const heightRef = useRef(0);
+  const lastYRef = useRef(0);
+  const frameRef = useRef<number | null>(null);
+  // Recent scroll positions, so "how far up in the last second" can be answered
+  // without integrating every delta by hand.
+  const samplesRef = useRef<{ at: number; y: number }[]>([]);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element) return;
+
+    const measure = () => {
+      const next = element.offsetHeight;
+      heightRef.current = next;
+      setHeight(next);
+    };
+    measure();
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [elementRef]);
+
+  useEffect(() => {
+    lastYRef.current = window.scrollY;
+
+    const evaluate = () => {
+      frameRef.current = null;
+      const y = window.scrollY;
+      const previous = lastYRef.current;
+      lastYRef.current = y;
+
+      const at = performance.now();
+      const samples = samplesRef.current;
+      samples.push({ at, y });
+      while (samples.length > 1 && at - samples[0].at > UP_WINDOW_MS) samples.shift();
+
+      if (y <= DOCK_THRESHOLD_PX) {
+        samples.length = 0;
+        setMode("docked");
+        return;
+      }
+
+      // Peak-to-current over the window, which is how far up the page has
+      // actually come — not the sum of jitter in both directions.
+      let peak = y;
+      for (const sample of samples) peak = Math.max(peak, sample.y);
+
+      if (peak - y >= window.innerHeight * UP_FRACTION_OF_VIEWPORT) {
+        setMode("pinned");
+        return;
+      }
+
+      if (y > previous) {
+        // Scrolling down: hold it in view until the page has travelled past
+        // the header's own height, which is the moment it would have scrolled
+        // away on its own.
+        setMode(y > heightRef.current ? "hidden" : "pinned");
+      }
+      // Upward but short of the threshold, or standing still: leave it as it
+      // is. Anything else would drop the header a second after someone stopped
+      // scrolling up, purely because the window emptied.
+    };
+
+    const onScroll = () => {
+      if (frameRef.current !== null) return;
+      frameRef.current = window.requestAnimationFrame(evaluate);
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    evaluate();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
+    };
+  }, []);
+
+  // An open menu must never slide away underneath the person using it.
+  return { mode: forcePinned && mode === "hidden" ? "pinned" : mode, height };
+}
+
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openGroup, setOpenGroup] = useState<string | null>(null);
   const pathname = usePathname();
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
+  const { mode, height } = useHeaderMode(headerRef, mobileOpen || openGroup !== null);
 
   const cancelPendingClose = useCallback(() => {
     if (closeTimer.current) {
@@ -74,9 +200,53 @@ export function SiteHeader() {
     return () => document.removeEventListener("keydown", onKeyDown);
   }, [closeGroupNow]);
 
+  const floating = mode !== "docked";
+
   return (
-    <header className="p-5">
-      <div className="mx-auto flex min-h-[78px] w-full max-w-[1400px] items-center justify-between gap-5 rounded-panel bg-canvas px-6 shadow-panel">
+    <>
+      {/*
+        Holds the header's place in the layout while it is fixed, so the page
+        does not jump by its height the instant it lifts off.
+      */}
+      {floating ? <div aria-hidden style={{ height }} /> : null}
+
+      <header
+        ref={headerRef}
+        className={cn(
+          // No `relative` here, even though the veil below is absolute: it is
+          // only rendered while floating, and `fixed` is already a containing
+          // block for it. Adding `relative` unconditionally silently broke the
+          // whole thing — Tailwind emits `.relative` after `.fixed`, so at
+          // equal specificity it won and the header never left the flow.
+          "z-40 p-5",
+          floating && "fixed inset-x-0 top-0 transition-transform duration-300 ease-out motion-reduce:transition-none",
+          mode === "hidden" && "-translate-y-full"
+        )}
+      >
+        {/*
+          Only while the bar is actually on screen.
+          
+          Docked, the header is part of the page and the body's own background
+          is already behind it. Hidden, the header is translated out of frame —
+          but the veil is taller than the bar, so its lower edge stayed in view
+          and went on fading content approaching the top of the window with no
+          bar there to justify it.
+        */}
+        {mode === "pinned" ? (
+          <div
+            aria-hidden
+            className="header-veil pointer-events-none absolute inset-x-0 top-0 -z-10 h-[calc(100%+2rem)]"
+          />
+        ) : null}
+
+      <div
+        className={cn(
+          "mx-auto flex min-h-[78px] w-full max-w-[1400px] items-center justify-between gap-5 rounded-panel bg-canvas px-6",
+          // Lifted a step while floating so the bar reads as being above the
+          // page rather than part of whatever it happens to be covering.
+          floating ? "shadow-raised" : "shadow-panel"
+        )}
+      >
         <Link className="flex shrink-0 items-center" href={routes.home} aria-label={`${siteConfig.name} home`}>
           <Image src={siteConfig.logo} alt={siteConfig.name} width={78} height={78} priority />
         </Link>
@@ -125,7 +295,8 @@ export function SiteHeader() {
       </div>
 
       <MobileNav open={mobileOpen} pathname={pathname} onClose={() => setMobileOpen(false)} />
-    </header>
+      </header>
+    </>
   );
 }
 
@@ -182,7 +353,10 @@ function DesktopNavGroup({
       >
         <div
           id={menuId}
-          className="flex flex-col overflow-hidden rounded-2xl bg-surface p-2 shadow-raised"
+          // gap-1: without it the tinted backgrounds of the current page and a
+          // hovered neighbour meet edge to edge and read as one block. A
+          // couple of pixels of surface between them keeps them separate.
+          className="flex flex-col gap-1 overflow-hidden rounded-2xl bg-surface p-2 shadow-raised"
         >
           {group.items.map((item) => (
             <NavLink key={item.href} item={item} pathname={pathname} onClick={onCloseNow} />
@@ -228,29 +402,14 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
         )}
         onClick={(event) => event.stopPropagation()}
       >
-        {/* Donate shares the close row: it is the one action worth surfacing
-            above the nav, and a full-width button of its own pushed the
-            navigation itself below the fold on short screens. */}
-        <div className="flex items-center gap-3">
-          <Button
-            href={externalLinks.donate}
-            variant="secondary"
-            size="lg"
-            className="flex-1"
-            onClick={onClose}
-          >
-            Donate
-          </Button>
-
-          <button
-            className="shrink-0 rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
-            type="button"
-            onClick={onClose}
-            aria-label="Close menu"
-          >
-            <CloseIcon className="size-6 fill-current" />
-          </button>
-        </div>
+        <button
+          className="self-end rounded-lg p-2 text-ink transition-colors hover:bg-ink/5"
+          type="button"
+          onClick={onClose}
+          aria-label="Close menu"
+        >
+          <CloseIcon className="size-6 fill-current" />
+        </button>
 
         <nav className="flex flex-col gap-6" aria-label="Mobile">
           {primaryNav.map((group) => (
@@ -264,8 +423,19 @@ function MobileNav({ open, pathname, onClose }: { open: boolean; pathname: strin
 
         </nav>
 
-        {/* App actions grouped together at the foot of the menu. */}
+        {/* Every action grouped at the foot of the menu, below the navigation
+            that most people opened it for. */}
         <div className="mt-auto flex flex-col gap-4 pt-4">
+          <Button
+            href={externalLinks.donate}
+            variant="secondary"
+            size="lg"
+            className="w-full"
+            onClick={onClose}
+          >
+            Donate
+          </Button>
+
           <Button href={externalLinks.webWallet} size="lg" className="w-full" onClick={onClose}>
             <span>Web Wallet</span>
             <ArrowRightIcon className="size-3.5 fill-current" />

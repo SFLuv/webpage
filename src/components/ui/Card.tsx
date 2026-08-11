@@ -13,7 +13,11 @@ type CardProps = {
 /** Content tile. Becomes an anchor when given an href, otherwise a plain box. */
 export function Card({ children, href, className }: CardProps) {
   const classes = cn(
-    "flex h-full flex-col gap-3 rounded-2xl border border-line bg-surface p-5 no-underline",
+    // w-full for the same reason as h-full: these sit in grid cells whose list
+    // item is a flex container, and a flex child without it sizes to its own
+    // content — which left cards with shorter text visibly narrower than their
+    // neighbours even though the grid tracks were equal all along.
+    "flex h-full w-full flex-col gap-3 rounded-2xl border border-line bg-surface p-5 no-underline",
     "text-ink shadow-panel transition-shadow duration-150",
     href && "hover:shadow-raised focus-visible:shadow-raised",
     className
