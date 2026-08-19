@@ -43,10 +43,10 @@ export const supportFormConfig: MailtoFormConfig = {
 };
 
 export const w9Content = {
-  title: "Please Submit a W9 Form to Continue",
+  title: "Complete your W-9 to keep receiving rewards",
   paragraphs: [
-    "Thank you for your continued involvement in SFLUV! In order to keep receiving perks, you will need to fill out a W9 form, which should only take a few minutes",
-    "Please fill out/validate the email below, then click Notify to let us know! We will follow up with a W9 form for you via email shortly."
+    "Thank you for your continued involvement in SFLuv! Once you have earned $600 in a year, the IRS requires us to have a W-9 on file before we can send you any more. It only takes a few minutes.",
+    "You fill it in yourself, signed in, on a secure form hosted by our tax provider — we never see or store your Social Security number. Open SFLuv and the form will be waiting for you."
   ]
 };
 

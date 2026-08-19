@@ -1,109 +1,63 @@
 "use client";
 
-import { useEffect, useId, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
-import { Field, TextInput } from "@/components/ui/Field";
-import { StatusMessage, type Status } from "@/components/ui/StatusMessage";
-
-const API_BASE_URL = "https://api.sfluv.org";
-const SUBMIT_PATH = "/w9/submit";
+import { externalLinks, contactEmails } from "@/lib/site";
 
 const WALLET_PATTERN = /^0x[a-fA-F0-9]{40}$/;
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /**
- * Notifies SFLuv that a wallet holder is ready to receive a W9.
+ * Points someone at the place a W-9 is actually completed.
  *
- * The wallet address arrives as a `?wallet=` query parameter; without a valid
- * one there is nothing to submit against, so the form stays disabled.
+ * This used to be a form. It POSTed a wallet address and an email to an
+ * unauthenticated `/w9/submit` endpoint, which then emailed an admin, who
+ * followed up by hand with a form. That endpoint has been removed — it let
+ * anyone file a submission against any wallet with any email, and that email
+ * received the notice.
+ *
+ * The form is now completed by the person themselves, signed in, through the
+ * tax vendor's hosted page. So there is nothing to collect here and nothing to
+ * submit: the useful thing this page can do is send them to the app.
+ *
+ * The route is kept because links to it have already gone out by email, some
+ * carrying a `?wallet=` parameter. Those links must still land somewhere that
+ * explains what to do rather than a 404.
  */
 export function W9NotifyForm() {
-  const id = useId();
   const searchParams = useSearchParams();
   const wallet = (searchParams.get("wallet") ?? "").trim();
-  const emailParam = (searchParams.get("email") ?? "").trim();
-
-  const [email, setEmail] = useState(emailParam);
-  const [status, setStatus] = useState<Status>(null);
-  const [submitting, setSubmitting] = useState(false);
-
-  const walletValid = WALLET_PATTERN.test(wallet);
-
-  useEffect(() => {
-    if (!walletValid) {
-      setStatus({ tone: "error", message: "Missing or invalid wallet address in the URL." });
-    }
-  }, [walletValid]);
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (!EMAIL_PATTERN.test(email.trim())) {
-      setStatus({ tone: "error", message: "Please enter a valid email address." });
-      return;
-    }
-
-    setSubmitting(true);
-    setStatus({ tone: "neutral", message: "Submitting..." });
-
-    try {
-      const response = await fetch(`${API_BASE_URL}${SUBMIT_PATH}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          wallet_address: wallet,
-          email: email.trim(),
-          year: new Date().getUTCFullYear()
-        })
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => null);
-
-        if (response.status === 409 && data?.error === "w9_pending") {
-          setStatus({ tone: "error", message: "This wallet already has a W9 submission pending approval." });
-          return;
-        }
-
-        if (response.status === 409 && data?.error === "w9_approved") {
-          setStatus({ tone: "error", message: "This wallet already has an approved W9 for this year." });
-          return;
-        }
-
-        throw new Error("W9 submit request failed");
-      }
-
-      setEmail("");
-      setStatus({
-        tone: "success",
-        message: "Thanks! Your submission has been recorded and admin has been notified."
-      });
-    } catch {
-      setStatus({ tone: "error", message: "Submission failed. Please try again or contact support." });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const knownWallet = WALLET_PATTERN.test(wallet);
 
   return (
-    <form className="mt-4 max-w-lg" onSubmit={handleSubmit}>
-      <Field label="Email" htmlFor={`${id}-email`}>
-        <TextInput
-          id={`${id}-email`}
-          type="email"
-          placeholder="you@example.com"
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          disabled={!walletValid}
-        />
-      </Field>
+    <div className="mt-6 max-w-lg">
+      <div className="flex flex-wrap gap-3">
+        <Button href={externalLinks.webWallet}>Open SFLuv in your browser</Button>
+      </div>
 
-      <Button type="submit" disabled={!walletValid || submitting}>
-        Notify
-      </Button>
+      <p className="mt-4 text-sm text-ink-muted">
+        Or open the SFLuv app and go to your wallet — if a form is needed, it is waiting for you there.
+      </p>
 
-      <StatusMessage status={status} className="mt-3" />
-    </form>
+      <div className="mt-3 flex flex-wrap gap-3">
+        <Button href={externalLinks.appStore.ios} variant="secondary" size="sm">
+          iPhone
+        </Button>
+        <Button href={externalLinks.appStore.android} variant="secondary" size="sm">
+          Android
+        </Button>
+      </div>
+
+      {knownWallet ? (
+        <p className="mt-5 text-sm text-ink-muted">
+          Sign in with the account holding {wallet.slice(0, 6)}…{wallet.slice(-4)}. The form covers your whole
+          account, not one wallet, so you only ever fill it in once a year.
+        </p>
+      ) : null}
+
+      <p className="mt-5 text-sm text-ink-muted">
+        Stuck, or not sure whether you need one? Email{" "}
+        <a href={`mailto:${contactEmails.support}`}>{contactEmails.support}</a>.
+      </p>
+    </div>
   );
 }
