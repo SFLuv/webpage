@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AutoRefresh } from "@/components/ui/AutoRefresh";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Container } from "@/components/ui/Container";
@@ -14,8 +15,12 @@ import { formatReward } from "@/lib/volunteer-events/format";
 import { eventPath, parseEventId } from "@/lib/volunteer-events/map";
 import { siteConfig } from "@/lib/site";
 
-/** Upstream event data is cached for 60s; see comms.md [5] D2. */
-export const revalidate = 60;
+/**
+ * Upstream event data is cached briefly (see comms.md [5] D2 for the original
+ * shield-the-backend rationale). 10s keeps that shield — the cache is shared —
+ * while letting a filled seat or edited detail show up almost immediately.
+ */
+export const revalidate = 10;
 
 type PageProps = { params: Promise<{ eventSlug: string }> };
 
@@ -67,6 +72,7 @@ export default async function VolunteerEventPage({ params }: PageProps) {
 
   return (
     <article className="pt-2 pb-4">
+      <AutoRefresh />
       <EventJsonLd event={event} />
       <Container width="wide">
         {/*

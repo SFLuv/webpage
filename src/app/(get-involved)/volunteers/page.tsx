@@ -1,3 +1,4 @@
+import { AutoRefresh } from "@/components/ui/AutoRefresh";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
 import { Section } from "@/components/ui/Section";
@@ -17,8 +18,13 @@ export const metadata = pageMetadata({
   path: routes.volunteers
 });
 
-/** Upstream event data is cached for 60s; see comms.md [5] D2. */
-export const revalidate = 60;
+/**
+ * Upstream event data is cached briefly (see comms.md [5] D2 for the original
+ * shield-the-backend rationale). 10s keeps that shield — the cache is shared,
+ * so this is at most six backend hits a minute site-wide — while letting a
+ * freshly created event or a filled seat show up almost immediately.
+ */
+export const revalidate = 10;
 
 type SearchParams = Promise<Record<string, string | string[] | undefined>>;
 
@@ -46,6 +52,7 @@ export default async function VolunteersPage({ searchParams }: { searchParams: S
 
   return (
     <>
+      <AutoRefresh />
       <section className="pt-4 pb-8 sm:pt-8">
         <Container width="wide">
           <EventSearchSection
