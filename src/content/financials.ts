@@ -33,6 +33,10 @@ export const fiscalYears: FiscalYear[] = [
             label: "2026-06-30 Statement of Activity"
           },
           {
+            href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Cash-Flows.pdf",
+            label: "2026-06-30 Statement of Cash Flows"
+          },
+          {
             href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Financial-Position.pdf",
             label: "2026-06-30 Statement of Financial Position"
           },
