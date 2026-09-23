@@ -22,6 +22,9 @@ export const financialsContent = {
   }
 };
 
+/** Fragment id of the impact reports block, for deep links like the homepage banner. */
+export const annualImpactReportsAnchor = "annual-impact-reports";
+
 /** Most recent first. Add each year's report to the top. */
 export const annualImpactReports: DocumentLink[] = [
   {

@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { RichInline } from "@/components/content/RichDocument";
-import { ArrowRightIcon } from "@/components/icons";
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { announcement } from "@/content/announcement";
 import { cn } from "@/lib/cn";
+import { AnnouncementButton } from "./AnnouncementButton";
 
 /**
  * Homepage announcement, switched on and off from `src/content/announcement.ts`.
@@ -59,16 +58,7 @@ export function AnnouncementBanner() {
               {actions.length > 0 ? (
                 <div className="mt-5 flex flex-wrap gap-3">
                   {actions.slice(0, 2).map((action, index) => (
-                    <Button
-                      key={action.href}
-                      href={action.href}
-                      external={action.newTab}
-                      variant={index === 0 ? "primary" : "secondary"}
-                      size="lg"
-                    >
-                      {action.label}
-                      {index === 0 ? <ArrowRightIcon className="size-4 fill-current" /> : null}
-                    </Button>
+                    <AnnouncementButton key={action.href} action={action} primary={index === 0} />
                   ))}
                 </div>
               ) : null}

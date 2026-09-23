@@ -1,10 +1,17 @@
 import type { InlineNode } from "@/components/content/document";
+import { annualImpactReportsAnchor } from "@/content/financials";
+import { routes } from "@/lib/routes";
 
 export type AnnouncementAction = {
   label: string;
   href: string;
   /** Open in a new tab. Use for PDFs and off-site links. */
   newTab?: boolean;
+  /**
+   * A second URL (e.g. a PDF) opened in a new tab on the same click, while
+   * this tab follows `href`.
+   */
+  alsoOpen?: string;
 };
 
 export type Announcement = {
@@ -35,7 +42,7 @@ export const announcement: Announcement = {
   eyebrow: "Now published",
   title: "Our 2025–2026 Annual Impact Report",
   body: [
-    "A look back at our first year of operations in San Francisco's Tenderloin: the merchants, volunteers, and neighbors building a community currency that keeps improvement in the neighborhood."
+    "A look back at our first year of operations in San Francisco's Tenderloin."
   ],
   image: {
     src: "/assets/announcements/impact-report-2025-2026-cover.jpg",
@@ -46,8 +53,8 @@ export const announcement: Announcement = {
   actions: [
     {
       label: "Read the report",
-      href: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf",
-      newTab: true
+      href: `${routes.financialsAndReports}#${annualImpactReportsAnchor}`,
+      alsoOpen: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf"
     }
   ]
 };
