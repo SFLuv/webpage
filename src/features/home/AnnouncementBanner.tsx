@@ -64,9 +64,10 @@ export function AnnouncementBanner() {
                       href={action.href}
                       external={action.newTab}
                       variant={index === 0 ? "primary" : "secondary"}
+                      size="lg"
                     >
                       {action.label}
-                      {index === 0 ? <ArrowRightIcon className="size-3.5 fill-current" /> : null}
+                      {index === 0 ? <ArrowRightIcon className="size-4 fill-current" /> : null}
                     </Button>
                   ))}
                 </div>

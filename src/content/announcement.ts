@@ -1,5 +1,4 @@
 import type { InlineNode } from "@/components/content/document";
-import { routes } from "@/lib/routes";
 
 export type AnnouncementAction = {
   label: string;
@@ -49,7 +48,6 @@ export const announcement: Announcement = {
       label: "Read the report",
       href: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf",
       newTab: true
-    },
-    { label: "All reports", href: routes.financialsAndReports }
+    }
   ]
 };
