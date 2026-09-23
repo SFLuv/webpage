@@ -26,6 +26,44 @@ export const fiscalYears: FiscalYear[] = [
     label: "FYE June 30, 2026",
     periods: [
       {
+        label: "Q4 / FYE",
+        documents: [
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Activity.pdf",
+            label: "2026-06-30 Statement of Activity"
+          },
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Financial-Position.pdf",
+            label: "2026-06-30 Statement of Financial Position"
+          },
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Activity-Comparison.pdf",
+            label: "2026-06-30 Statement of Activity Comparison"
+          },
+          {
+            href: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf",
+            label: "2025–2026 Annual Impact Report"
+          }
+        ]
+      },
+      {
+        label: "Q3",
+        documents: [
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-03-31-Statement-of-Activity.pdf",
+            label: "2026-03-31 Statement of Activity"
+          },
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-03-31-Statement-of-Cash-Flows.pdf",
+            label: "2026-03-31 Statement of Cash Flows"
+          },
+          {
+            href: "/assets/wp-content/uploads/2026/09/2026-03-31-Statement-of-Financial-Position.pdf",
+            label: "2026-03-31 Statement of Financial Position"
+          }
+        ]
+      },
+      {
         label: "Q2",
         documents: [
           {
