@@ -1,9 +1,10 @@
 import { Container } from "@/components/ui/Container";
+import { Disclosure } from "@/components/ui/Disclosure";
 import { DocumentLinkList } from "@/components/ui/DocumentLinkList";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Panel } from "@/components/ui/Panel";
 import { FiscalYearReports } from "@/features/financials/FiscalYearReports";
-import { financialsContent, fiscalYears } from "@/content/financials";
+import { annualImpactReports, financialsContent, fiscalYears } from "@/content/financials";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
@@ -23,6 +24,10 @@ export default function FinancialsAndReportsPage() {
       <section className="py-10">
         <Container>
           <FiscalYearReports years={fiscalYears} />
+
+          <Disclosure summary={financialsContent.annualImpactReportsTitle} className="mt-8">
+            <DocumentLinkList links={annualImpactReports} />
+          </Disclosure>
 
           <Panel padding="md" bordered className="mt-8">
             <h2 className="mb-2 font-medium text-ink">{determinationLetter.title}</h2>

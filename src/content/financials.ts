@@ -13,13 +13,22 @@ export type FiscalYear = {
 
 export const financialsContent = {
   title: "Financials and Reports",
-  lead: "Quarterly and fiscal year statements, tax filings, and our 501(c)(3) determination letter.",
+  lead: "Quarterly and fiscal year statements, tax filings, annual impact reports, and our 501(c)(3) determination letter.",
+  annualImpactReportsTitle: "Annual Impact Reports",
   determinationLetter: {
     title: "501(c)(3) Determination Letter",
     href: "/assets/wp-content/uploads/2024/08/SFLuv-501c3-Determination-Letter.pdf",
     label: "SFLuv 501c3 Determination Letter"
   }
 };
+
+/** Most recent first. Add each year's report to the top. */
+export const annualImpactReports: DocumentLink[] = [
+  {
+    href: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf",
+    label: "2025–2026 Annual Impact Report"
+  }
+];
 
 export const fiscalYears: FiscalYear[] = [
   {
@@ -43,10 +52,6 @@ export const fiscalYears: FiscalYear[] = [
           {
             href: "/assets/wp-content/uploads/2026/09/2026-06-30-FYE-Statement-of-Activity-Comparison.pdf",
             label: "2026-06-30 Statement of Activity Comparison"
-          },
-          {
-            href: "/assets/wp-content/uploads/2026/09/SFLuv-Annual-Impact-Report-2025-2026.pdf",
-            label: "2025–2026 Annual Impact Report"
           }
         ]
       },
