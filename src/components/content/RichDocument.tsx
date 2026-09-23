@@ -53,6 +53,11 @@ function renderBlock(block: BlockNode, index: number): ReactNode {
   return <p key={index}>{renderInline(block.children)}</p>;
 }
 
+/** Renders inline nodes (text, emphasis, links) without a wrapping block. */
+export function RichInline({ nodes }: { nodes: InlineNode[] }) {
+  return <>{renderInline(nodes)}</>;
+}
+
 /** Renders a document tree as semantic HTML. Wrap in `<Prose>` for typography. */
 export function RichDocument({ blocks }: { blocks: BlockNode[] }) {
   return <>{blocks.map(renderBlock)}</>;

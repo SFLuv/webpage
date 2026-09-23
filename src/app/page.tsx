@@ -1,9 +1,11 @@
+import { AnnouncementBanner } from "@/features/home/AnnouncementBanner";
 import { Hero, SplitSections, UpcomingEvents } from "@/features/home/HomeSections";
 import { MerchantMapSection } from "@/features/merchants/MerchantMapSection";
 
 export default function HomePage() {
   return (
     <>
+      <AnnouncementBanner />
       <Hero />
       {/* The map replaces the old "Why SFLuv" explainer cards: showing the
           merchants who already take SFLuv answers the same question faster than
