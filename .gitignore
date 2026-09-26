@@ -11,3 +11,6 @@ dist/
 .env
 .env.*
 !.env.example
+
+# Screenshots of UI changes for review. Local only.
+examples/

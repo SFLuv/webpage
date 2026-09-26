@@ -7,30 +7,84 @@ import { getPartners } from "@/lib/partners";
 import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
 import { EventCarousel, type CarouselEvent } from "./EventCarousel";
 import { PartnerCarousel } from "./PartnerCarousel";
+import { Spotlight } from "./Spotlight";
 
 export async function Hero() {
   const { hero, partners } = homeContent;
   const partnerLogos = await getPartners();
 
+  // The stacked layout's flexible gaps between title, card and partners.
+  const gap = "min-h-[clamp(1rem,2.5svh,1.5rem)] sm:min-h-[clamp(1.25rem,3.5svh,2.5rem)] lg:hidden";
+
   return (
-    <section className="pt-[8vh] pb-12">
-      <Container width="wide">
-        <h1 className="max-w-4xl text-display font-semibold">{hero.title}</h1>
+    /*
+     * Exactly one screen below the header, so the title, the spotlight card and
+     * the partner strip all land in the first view and the next section waits
+     * below the fold.
+     *
+     * Side by side (lg), they sit together as one centred group, so on a tall
+     * screen the spare room goes above and below it rather than opening a gap
+     * between the card and the partners. Stacked, the spare room goes mostly
+     * between them instead — a share above the title for every four between
+     * each of them — so a tall phone neither crowds them together nor leaves
+     * wide margins at the top and bottom.
+     */
+    <section className="flex h-[calc(100svh-var(--header-height))] flex-col justify-center-safe pt-[clamp(0.25rem,1svh,0.75rem)] pb-[clamp(0.75rem,2svh,1.5rem)] cramped:h-auto">
+      <Container width="wide" className="flex min-h-0 flex-col max-lg:grow">
+        {/*
+          A column below lg, with the card taking whatever height is left and
+          fitting itself into it; a two-column grid from lg. On tablets the
+          column is the card's width and centred, so title and card share a
+          left edge in the middle of the screen.
+        */}
+        <div
+          className={cn(
+            "flex min-h-0 grow flex-col sm:mx-auto sm:w-full sm:max-w-lg",
+            "lg:grid lg:max-w-none lg:grid-cols-[minmax(0,1fr)_clamp(26rem,32vw+6rem,40rem)] lg:items-center lg:gap-12 xl:gap-16"
+          )}
+        >
+          <div aria-hidden className="grow lg:hidden" />
 
-        <div className="mt-8">
-          <Button href={hero.cta.href} size="lg">
-            {hero.cta.label}
-          </Button>
-        </div>
+          {/*
+            One word to a line: a phrase to a line would need "Empowering
+            Communities", about 13.7em wide in Sora, to fit a phone, which
+            leaves the title tiny. Each size is also capped by the viewport's
+            height so the card below still has room, and the shortest phones
+            fall back to a phrase a line after all. From lg the title sits
+            beside the card, where the longest word, about 7em, sets the limit.
+          */}
+          <h1
+            className={cn(
+              "shrink-0 text-[clamp(1.75rem,min(10vw,4.7svh),2.6rem)] leading-[1.1] font-semibold",
+              "sm:text-[clamp(2.5rem,min(8.5vw,6.5svh),4.5rem)]",
+              "compact:text-[min(2.25rem,calc((100vw-2.5rem)/14))] compact:leading-[1.15]",
+              "lg:text-[clamp(3rem,min(3.9vw+1.25rem,11svh),5.4rem)]"
+            )}
+          >
+            {hero.title.map((line) => (
+              <span key={line} className="block">
+                {line}
+              </span>
+            ))}
+          </h1>
 
-        <div className="mt-16">
-          <p className="text-center font-medium">{partners.title}</p>
+          <div aria-hidden className={cn(gap, "grow-[4]")} />
+
+          <Spotlight className="max-h-full w-full" />
+
+          <div aria-hidden className={cn(gap, "grow-[4]")} />
         </div>
       </Container>
 
-      {/* Full-bleed: the strip should run edge to edge, not inside the gutters. */}
-      <div className="mt-6">
-        <PartnerCarousel partners={partnerLogos} label={partners.title} />
+      <div className="shrink-0 lg:mt-[clamp(1.25rem,5svh,3rem)]">
+        <Container width="wide">
+          <p className="text-center text-sm font-medium compact:sr-only sm:text-base">{partners.title}</p>
+        </Container>
+
+        {/* Full-bleed: the strip should run edge to edge, not inside the gutters. */}
+        <div className="mt-1 sm:mt-3">
+          <PartnerCarousel partners={partnerLogos} label={partners.title} />
+        </div>
       </div>
     </section>
   );

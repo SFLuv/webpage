@@ -19,8 +19,8 @@ type SplitSection = {
 
 export const homeContent = {
   hero: {
-    title: "Empowering Merchants, Empowering Communities",
-    cta: { href: routes.howItWorks, label: "How it Works" } satisfies Cta
+    /** Each phrase wraps on its own, so the title breaks after the comma or not at all. */
+    title: ["Empowering Merchants,", "Empowering Communities"]
   },
 
   partners: {

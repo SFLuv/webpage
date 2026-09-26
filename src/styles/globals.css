@@ -1,6 +1,28 @@
 @import "tailwindcss";
 
 /*
+ * Viewport-height steps for the homepage hero, which is sized to fit the title,
+ * the spotlight card and the partner strip on the first screen.
+ *
+ *   short    Not enough room for the card's full copy: its description goes.
+ *   compact  A short phone or tablet, e.g. an iPhone SE once Safari's toolbars
+ *            are showing: the title drops to two smaller lines as well.
+ *   cramped  Too short to fit at all, like a phone on its side: the hero stops
+ *            sizing itself to the screen and the page simply scrolls.
+ */
+@custom-variant short (@media (max-height: 42.5rem));
+@custom-variant compact (@media (max-width: 63.99rem) and (max-height: 37.5rem));
+@custom-variant cramped {
+  @media (max-height: 33rem) {
+    @slot;
+  }
+  /* Side by side from lg, the hero needs a little more height to fit. */
+  @media (min-width: 64rem) and (max-height: 36rem) {
+    @slot;
+  }
+}
+
+/*
  * SFLuv design tokens.
  *
  * Colors are carried over from the original WordPress theme presets so the
@@ -56,6 +78,9 @@
   }
 
   :root {
+    /* The docked SiteHeader: `p-5` around its 78px bar. */
+    --header-height: calc(78px + 2.5rem);
+
     /*
      * The page's own backdrop, named so the floating header can repaint the
      * identical thing behind itself. Because it is viewport-fixed, a second
@@ -147,6 +172,22 @@
     background-position: 0 0;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
     mask-image: linear-gradient(to bottom, #000 0%, #000 66%, transparent 100%);
+  }
+
+  /* The homepage spotlight's timer, filling the active dot. */
+  .spotlight-progress {
+    animation-name: spotlight-progress;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes spotlight-progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
   }
 
   /*
