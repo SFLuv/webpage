@@ -1,23 +1,31 @@
 @import "tailwindcss";
 
 /*
- * Viewport-height steps for the homepage hero, which is sized to fit the title,
- * the spotlight card and the partner strip on the first screen.
+ * Height steps for the homepage hero, which is sized to fit the title, the
+ * spotlight card and the partner strip on the first screen.
+ *
+ * Container queries on the hero rather than media queries on the viewport: the
+ * hero's height is set in `svh`, which holds still while a phone's toolbars
+ * collapse on scroll, whereas the viewport's height changes with them — a media
+ * query would flip mid-scroll and re-lay the whole first screen out.
  *
  *   short    Not enough room for the card's full copy: its description goes.
  *   compact  A short phone or tablet, e.g. an iPhone SE once Safari's toolbars
  *            are showing: the title drops to two smaller lines as well.
- *   cramped  Too short to fit at all, like a phone on its side: the hero stops
- *            sizing itself to the screen and the page simply scrolls.
+ *   roomy    A tall phone, with room for the description after all.
  */
-@custom-variant short (@media (max-height: 42.5rem));
-@custom-variant compact (@media (max-width: 63.99rem) and (max-height: 37.5rem));
-@custom-variant cramped {
-  @media (max-height: 33rem) {
+@custom-variant short {
+  @container hero (max-height: 35rem) {
     @slot;
   }
-  /* Side by side from lg, the hero needs a little more height to fit. */
-  @media (min-width: 64rem) and (max-height: 36rem) {
+}
+@custom-variant compact {
+  @container hero (max-width: 63.99rem) and (max-height: 30rem) {
+    @slot;
+  }
+}
+@custom-variant roomy {
+  @container hero (min-height: 43rem) {
     @slot;
   }
 }

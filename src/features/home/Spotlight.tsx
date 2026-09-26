@@ -68,8 +68,8 @@ function Slide({
           </p>
         ) : null}
 
-        {/* Phones keep the card to a photo, a title and a button. */}
-        <p className="mt-2 hidden text-sm text-ink-muted short:hidden sm:block [&_a]:font-medium [&_a]:text-brand-deep [&_a]:underline [&_a]:underline-offset-2">
+        {/* Phones keep the card to a photo, a title and a button unless they are tall. */}
+        <p className="mt-2 hidden text-sm text-ink-muted short:hidden roomy:block sm:block [&_a]:font-medium [&_a]:text-brand-deep [&_a]:underline [&_a]:underline-offset-2">
           <RichInline nodes={slide.body} />
         </p>
 

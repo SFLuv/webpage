@@ -8,6 +8,7 @@ import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
 import { EventCarousel, type CarouselEvent } from "./EventCarousel";
 import { PartnerCarousel } from "./PartnerCarousel";
 import { Spotlight } from "./Spotlight";
+import { SpotlightFitScript } from "./SpotlightCarousel";
 
 export async function Hero() {
   const { hero, partners } = homeContent;
@@ -28,19 +29,31 @@ export async function Hero() {
      * between them instead — a share above the title for every four between
      * each of them — so a tall phone neither crowds them together nor leaves
      * wide margins at the top and bottom.
+     *
+     * It is also the `hero` container the short/compact/roomy variants query.
+     * The floors are for screens too short to fit it at all, like a phone on
+     * its side: there it stops shrinking and the page simply scrolls.
      */
-    <section className="flex h-[calc(100svh-var(--header-height))] flex-col justify-center-safe pt-[clamp(0.25rem,1svh,0.75rem)] pb-[clamp(0.75rem,2svh,1.5rem)] cramped:h-auto">
+    <section
+      className={cn(
+        "flex flex-col justify-center-safe [container:hero/size]",
+        "pt-[clamp(0.25rem,1svh,0.75rem)] pb-[clamp(0.75rem,2svh,1.5rem)]",
+        "h-[max(calc(100svh-var(--header-height)),26rem)] sm:h-[max(calc(100svh-var(--header-height)),38rem)]",
+        "lg:h-[max(calc(100svh-var(--header-height)),31rem)]"
+      )}
+    >
       <Container width="wide" className="flex min-h-0 flex-col max-lg:grow">
         {/*
           A column below lg, with the card taking whatever height is left and
-          fitting itself into it; a two-column grid from lg. On tablets the
+          scaling itself to fit it; a two-column grid from lg. On tablets the
           column is the card's width and centred, so title and card share a
           left edge in the middle of the screen.
         */}
         <div
           className={cn(
             "flex min-h-0 grow flex-col sm:mx-auto sm:w-full sm:max-w-lg",
-            "lg:grid lg:max-w-none lg:grid-cols-[minmax(0,1fr)_clamp(26rem,32vw+6rem,40rem)] lg:items-center lg:gap-12 xl:gap-16"
+            "lg:grid lg:max-w-none lg:grid-cols-[minmax(0,1fr)_clamp(26rem,32vw+6rem,40rem)] lg:grid-rows-[minmax(0,1fr)]",
+            "lg:items-center lg:gap-12 xl:gap-16"
           )}
         >
           <div aria-hidden className="grow lg:hidden" />
@@ -86,6 +99,9 @@ export async function Hero() {
           <PartnerCarousel partners={partnerLogos} label={partners.title} />
         </div>
       </div>
+
+      {/* Last, so the whole hero is laid out by the time it measures. */}
+      <SpotlightFitScript />
     </section>
   );
 }
