@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { PauseIcon, PlayIcon } from "@/components/icons";
 import { cn } from "@/lib/cn";
-import { fitSpotlight, SPOTLIGHT_SLOT_ID } from "./fitSpotlight";
+import { fitSpotlight, SPOTLIGHT_SLOT_ID } from "./heroLayout";
 
 /** How long each slide stays up while the carousel is rotating. */
 const ROTATE_MS = 7000;
@@ -280,33 +280,3 @@ export function SpotlightCarousel({
   );
 }
 
-const neverChanges = () => () => {};
-
-/**
- * `fitSpotlight` as an inline script, for the end of the hero: it runs as the
- * page loads, once everything it measures is laid out, so the card's very
- * first paint is already the right size.
- *
- * Only in the server's HTML. A homepage rendered on the client, after an
- * in-app navigation, would never run it (React does not execute scripts it
- * creates, and says so), and does not need it: the carousel fits itself
- * before paint there.
- */
-export function SpotlightFitScript() {
-  // True while rendering on the server and hydrating, false otherwise.
-  const fromServer = useSyncExternalStore(
-    neverChanges,
-    () => false,
-    () => true
-  );
-
-  if (!fromServer) return null;
-
-  return (
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `(${fitSpotlight.toString()})(document.getElementById(${JSON.stringify(SPOTLIGHT_SLOT_ID)}))`
-      }}
-    />
-  );
-}

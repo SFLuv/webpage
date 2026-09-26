@@ -8,14 +8,15 @@ import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
 import { EventCarousel, type CarouselEvent } from "./EventCarousel";
 import { PartnerCarousel } from "./PartnerCarousel";
 import { Spotlight } from "./Spotlight";
-import { SpotlightFitScript } from "./SpotlightCarousel";
+import { HeroViewportScript, SpotlightFitScript } from "./HeroScripts";
+import { HERO_ID } from "./heroLayout";
 
 export async function Hero() {
   const { hero, partners } = homeContent;
   const partnerLogos = await getPartners();
 
   // The stacked layout's flexible gaps between title, card and partners.
-  const gap = "min-h-[clamp(1rem,2.5svh,1.5rem)] sm:min-h-[clamp(1.25rem,3.5svh,2.5rem)] lg:hidden";
+  const gap = "min-h-[clamp(1rem,calc(2.5*var(--hero-vh)),1.5rem)] sm:min-h-[clamp(1.25rem,calc(3.5*var(--hero-vh)),2.5rem)] lg:hidden";
 
   return (
     /*
@@ -30,18 +31,29 @@ export async function Hero() {
      * each of them — so a tall phone neither crowds them together nor leaves
      * wide margins at the top and bottom.
      *
+     * Everything is sized in `--hero-vh`, 1% of the viewport's height as it was
+     * on load (see `pinHeroViewport`), so nothing moves when a phone's toolbars
+     * collapse on scroll. The inline script sets it before the first paint;
+     * `1svh` stands in until then, and wherever scripts do not run.
+     *
      * It is also the `hero` container the short/compact/roomy variants query.
      * The floors are for screens too short to fit it at all, like a phone on
      * its side: there it stops shrinking and the page simply scrolls.
      */
     <section
+      id={HERO_ID}
+      // The inline script sets `--hero-vh` here before React loads.
+      suppressHydrationWarning
       className={cn(
-        "flex flex-col justify-center-safe [container:hero/size]",
-        "pt-[clamp(0.25rem,1svh,0.75rem)] pb-[clamp(0.75rem,2svh,1.5rem)]",
-        "h-[max(calc(100svh-var(--header-height)),26rem)] sm:h-[max(calc(100svh-var(--header-height)),38rem)]",
-        "lg:h-[max(calc(100svh-var(--header-height)),31rem)]"
+        "flex flex-col justify-center-safe [--hero-vh:1svh] [container:hero/size]",
+        "pt-[clamp(0.25rem,var(--hero-vh),0.75rem)] pb-[clamp(0.75rem,calc(2*var(--hero-vh)),1.5rem)]",
+        "h-[max(calc(100*var(--hero-vh)-var(--header-height)),26rem)]",
+        "sm:h-[max(calc(100*var(--hero-vh)-var(--header-height)),38rem)]",
+        "lg:h-[max(calc(100*var(--hero-vh)-var(--header-height)),31rem)]"
       )}
     >
+      <HeroViewportScript />
+
       <Container width="wide" className="flex min-h-0 flex-col max-lg:grow">
         {/*
           A column below lg, with the card taking whatever height is left and
@@ -68,10 +80,10 @@ export async function Hero() {
           */}
           <h1
             className={cn(
-              "shrink-0 text-[clamp(1.75rem,min(10vw,4.7svh),2.6rem)] leading-[1.1] font-semibold",
-              "sm:text-[clamp(2.5rem,min(8.5vw,6.5svh),4.5rem)]",
+              "shrink-0 text-[clamp(1.75rem,min(10vw,calc(4.7*var(--hero-vh))),2.6rem)] leading-[1.1] font-semibold",
+              "sm:text-[clamp(2.5rem,min(8.5vw,calc(6.5*var(--hero-vh))),4.5rem)]",
               "compact:text-[min(2.25rem,calc((100vw-2.5rem)/14))] compact:leading-[1.15]",
-              "lg:text-[clamp(3rem,min(3.9vw+1.25rem,11svh),5.4rem)]"
+              "lg:text-[clamp(3rem,min(3.9vw+1.25rem,calc(11*var(--hero-vh))),5.4rem)]"
             )}
           >
             {hero.title.map((line) => (
@@ -89,7 +101,7 @@ export async function Hero() {
         </div>
       </Container>
 
-      <div className="shrink-0 lg:mt-[clamp(1.25rem,5svh,3rem)]">
+      <div className="shrink-0 lg:mt-[clamp(1.25rem,calc(5*var(--hero-vh)),3rem)]">
         <Container width="wide">
           <p className="text-center text-sm font-medium compact:sr-only sm:text-base">{partners.title}</p>
         </Container>
