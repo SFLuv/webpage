@@ -1,9 +1,11 @@
 import { fiscalYears, annualImpactReports } from "@/content/financials";
-import { fallbackAnnouncement } from "@/content/announcement";
+import { spotlightSlides } from "@/content/spotlight";
+import type { SpotlightSlide } from "@/content/spotlight";
 import { API_BASE_URL } from "@/lib/volunteer-events/config";
+import { toSpotlightSlide } from "./spotlight";
 import type {
   FormLookup,
-  PublicAnnouncement,
+  PublicSpotlight,
   PublicFinancials,
   PublicForm,
   PublicFormSummary
@@ -38,19 +40,20 @@ async function get<T>(path: string, revalidate = REVALIDATE_SECONDS): Promise<Fe
 }
 
 /**
- * The homepage banner, or null to show nothing.
+ * The slides in the homepage carousel, in order.
  *
  * Failure policy: a 404 can only mean the backend predates this feature, so the
- * banner that ships with the site is used. Any other failure shows nothing —
- * announcing something that may since have been switched off is worse than a
- * missing banner.
+ * slides that ship with the site are used. Any other failure shows none —
+ * advertising something that may since have been switched off is worse than a
+ * missing card. (Once a response has been cached, a failed refresh keeps
+ * serving the last good one, so this only bites a cold start.)
  */
-export async function getAnnouncement(): Promise<PublicAnnouncement | null> {
-  const result = await get<PublicAnnouncement>("/site/announcement");
+export async function getSpotlightSlides(): Promise<SpotlightSlide[]> {
+  const result = await get<PublicSpotlight>("/site/spotlight");
 
-  if (result.ok) return result.data.enabled && result.data.title ? result.data : null;
-  if (result.status === 404 || !API_BASE_URL) return fallbackAnnouncement.enabled ? fallbackAnnouncement : null;
-  return null;
+  if (result.ok) return result.data.slides.map(toSpotlightSlide);
+  if (result.status === 404 || !API_BASE_URL) return spotlightSlides.filter((slide) => slide.enabled);
+  return [];
 }
 
 /**

@@ -3,7 +3,7 @@ import type { InlineNode } from "@/components/content/document";
 const LINK = /\[([^\]\n]{1,120})\]\(([^)\s]{1,500})\)/g;
 
 /**
- * Turns banner text into inline nodes: `[label](url)` becomes a link, everything
+ * Turns highlight text into inline nodes: `[label](url)` becomes a link, everything
  * else stays plain text.
  *
  * Only on-site paths and http(s)/mailto URLs become links. Editors paste this

@@ -6,20 +6,27 @@ import type { DocumentLink } from "@/components/ui/DocumentLinkList";
  * there for the full contract.
  */
 
-export type PublicAnnouncement = {
-  enabled: boolean;
-  eyebrow?: string;
-  title?: string;
+export type PublicSlide = {
+  id: string;
+  label: string;
+  title: string;
   /** Plain text. `[label](url)` becomes a link; see `parseInline`. */
-  body?: string;
-  image?: { url: string; width: number; height: number };
-  button?: {
+  body: string;
+  image: { url: string; width: number; height: number; alt: string };
+  /** CSS `object-position` for the strip the photo is cropped to. */
+  image_position: string;
+  action: {
     label: string;
     href: string;
+    new_tab: boolean;
     /** Opened in a new tab on the same click, while this tab follows `href`. */
-    also_open?: string;
+    also_open: string;
   };
+  /** Words from a recurring volunteer event's title; the site finds its next occurrence. */
+  event_match: string;
 };
+
+export type PublicSpotlight = { slides: PublicSlide[] };
 
 export type PublicFinancialDocument = { label: string; href: string; kind?: string };
 
