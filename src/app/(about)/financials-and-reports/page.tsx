@@ -5,7 +5,8 @@ import { DocumentLinkList } from "@/components/ui/DocumentLinkList";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { Panel } from "@/components/ui/Panel";
 import { FiscalYearReports } from "@/features/financials/FiscalYearReports";
-import { annualImpactReports, annualImpactReportsAnchor, financialsContent, fiscalYears } from "@/content/financials";
+import { annualImpactReportsAnchor, financialsContent } from "@/content/financials";
+import { getFinancials } from "@/lib/site-content/client";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
@@ -15,8 +16,12 @@ export const metadata = pageMetadata({
   path: routes.financialsAndReports
 });
 
-export default function FinancialsAndReportsPage() {
+/** Document uploads made in the admin panel appear within this many seconds. */
+export const revalidate = 30;
+
+export default async function FinancialsAndReportsPage() {
   const { determinationLetter } = financialsContent;
+  const { years, impact_reports: impactReports } = await getFinancials();
 
   return (
     <>
@@ -24,15 +29,17 @@ export default function FinancialsAndReportsPage() {
 
       <section className="py-10">
         <Container>
-          <FiscalYearReports years={fiscalYears} />
+          <FiscalYearReports years={years} />
 
-          <Disclosure
-            id={annualImpactReportsAnchor}
-            summary={financialsContent.annualImpactReportsTitle}
-            className="mt-8 scroll-mt-32"
-          >
-            <DocumentLinkList links={annualImpactReports} />
-          </Disclosure>
+          {impactReports.length > 0 ? (
+            <Disclosure
+              id={annualImpactReportsAnchor}
+              summary={financialsContent.annualImpactReportsTitle}
+              className="mt-8 scroll-mt-32"
+            >
+              <DocumentLinkList links={impactReports} />
+            </Disclosure>
+          ) : null}
 
           <Panel padding="md" bordered className="mt-8">
             <h2 className="mb-2 font-medium text-ink">{determinationLetter.title}</h2>

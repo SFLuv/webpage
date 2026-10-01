@@ -1,6 +1,9 @@
 import { Hero, SplitSections, UpcomingEvents } from "@/features/home/HomeSections";
 import { MerchantMapSection } from "@/features/merchants/MerchantMapSection";
 
+/** Banner edits made in the admin panel appear within this many seconds. */
+export const revalidate = 30;
+
 export default function HomePage() {
   return (
     <>
