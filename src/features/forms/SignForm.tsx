@@ -211,7 +211,6 @@ function SignFormInner({ form, onAnother }: { form: PublicForm; onAnother: () =>
               value={contact}
               onChange={(e) => setContact(e.target.value)}
               autoComplete="email"
-              inputMode="email"
               maxLength={200}
             />
           </Field>

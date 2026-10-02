@@ -12,14 +12,23 @@ import { API_BASE_URL, PROXY_KEY } from "@/lib/volunteer-events/config";
  */
 
 const WINDOW_MS = 10 * 60_000;
-// Generous: a room of people signs from one venue network at a shoot.
-const MAX_PER_WINDOW = 40;
+// A speed bump, not the limit: the backend counts signatures (60 per address per
+// 10 minutes) and attempts (300). Generous because a room of people signs from
+// one venue network at a shoot, and typos should not lock anyone out.
+const MAX_PER_WINDOW = 120;
+const MAX_TRACKED = 5000;
 const MAX_BODY_BYTES = 2 * 1024 * 1024;
 
 const attempts = new Map<string, { count: number; resetAt: number }>();
+let warnedNoProxyKey = false;
 
 function rateLimited(key: string) {
   const now = Date.now();
+  // Drop expired entries now and then, so a long-lived instance does not keep
+  // every address it has ever seen.
+  if (attempts.size > MAX_TRACKED) {
+    for (const [k, v] of attempts) if (now > v.resetAt) attempts.delete(k);
+  }
   const entry = attempts.get(key);
   if (!entry || now > entry.resetAt) {
     attempts.set(key, { count: 1, resetAt: now + WINDOW_MS });
@@ -84,6 +93,16 @@ export async function POST(request: Request, { params }: { params: Promise<{ slu
     return NextResponse.json(
       { message: "Signing is temporarily unavailable. Please try again later." },
       { status: 502 }
+    );
+  }
+
+  // Without the shared key the backend cannot trust the visitor's address, so
+  // every signature through the site lands in one rate-limit bucket and a busy
+  // event locks people out. Say so loudly rather than fail mysteriously.
+  if (!PROXY_KEY && process.env.NODE_ENV === "production" && !warnedNoProxyKey) {
+    warnedNoProxyKey = true;
+    console.error(
+      "[forms] SFLUV_VOLUNTEER_PROXY_KEY is not set: all signers share one backend rate-limit bucket. Set it to the backend's VOLUNTEER_PROXY_KEY."
     );
   }
 
