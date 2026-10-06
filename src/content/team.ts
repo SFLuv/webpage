@@ -47,11 +47,18 @@ const photos = {
     width: 860,
     height: 999
   },
+  // PJ's and Sanchez's head shots are from the 2025–2026 Annual Impact Report.
   pj: {
-    src: "/assets/wp-content/uploads/2025/07/pj_profile.jpeg",
+    src: "/assets/team/pj-oleary-2026.jpg",
     alt: "PJ O’Leary",
-    width: 730,
-    height: 856
+    width: 500,
+    height: 500
+  },
+  sanchez: {
+    src: "/assets/team/sanchez-oleary-2026.jpg",
+    alt: "Sanchez O’Leary",
+    width: 500,
+    height: 500
   }
 } satisfies Record<string, ImageAsset>;
 
@@ -89,7 +96,7 @@ export const teamSections: TeamSection[] = [
           }
         ]
       },
-      { name: "Sanchez O’Leary", role: "Software Developer" }
+      { name: "Sanchez O’Leary", role: "Software Developer", photo: photos.sanchez }
     ]
   },
   {
