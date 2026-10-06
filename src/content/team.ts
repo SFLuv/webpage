@@ -69,7 +69,7 @@ export const teamSections: TeamSection[] = [
     title: "Our Staff",
     members: [
       {
-        name: "Beth O’Leary",
+        name: "Beth O’Leary, CPA/MPA",
         role: "Executive Director, Board President and Co-Creator",
         photo: photos.beth,
         bio: bethBio
@@ -96,7 +96,7 @@ export const teamSections: TeamSection[] = [
     title: "Our Board",
     members: [
       {
-        name: "Beth O’Leary",
+        name: "Beth O’Leary, CPA/MPA",
         role: "President, Executive Director and Co-Creator",
         photo: photos.beth,
         bio: bethBio
@@ -104,7 +104,7 @@ export const teamSections: TeamSection[] = [
       { name: "Jamie Flanagan" },
       { name: "Marci Harris" },
       {
-        name: "Vipul Vyas",
+        name: "Vipul Vyas, MBA",
         role: "Treasurer and Co-Creator",
         photo: photos.vipul,
         bio: [
@@ -123,7 +123,7 @@ export const teamSections: TeamSection[] = [
     title: "Our Advisors",
     members: [
       {
-        name: "Billy Riggs",
+        name: "Billy Riggs, PhD",
         role: "Co-Creator and Strategic Adviser",
         photo: photos.billy,
         bio: [
@@ -154,7 +154,7 @@ export const teamSections: TeamSection[] = [
           {
             type: "paragraph",
             children: [
-              "Paul has lived in San Francisco for over 30 years and raised three sons in The City with his wife Beth. Paul is a Silicon Valley veteran having worked as an engineer, technical leader, founder and CEO of multiple successful software startups. His passion for innovation and transformational technology has recently led him to focus on blockchain and applied cryptographic applications that have the potential to radically improve the way that value is created."
+              "Paul has lived in San Francisco for over 30 years and raised three sons in The City with his wife Beth. Paul is a Silicon Valley veteran having worked as an engineer, technical leader, founder and CEO of multiple successful software startups. His passion for innovation and transformational technology has recently led him to focus on blockchain and applied cryptographic applications that have the potential to radically improve the way that value is created and distributed in local and global communities."
             ]
           }
         ]
