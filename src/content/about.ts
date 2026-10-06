@@ -23,49 +23,67 @@ export const missionContent = {
   }
 };
 
-type FlywheelStep = {
+export type HowItWorksStep = {
+  /** Two short lines for the loop diagram. */
+  loopLabel: [string, string];
   title: string;
+  /** "First impact" / "Second impact", where the step is one. */
+  impact?: string;
   body: string;
 };
 
+/*
+ * Drawn from the 2025–2026 Annual Impact Report ("One Contribution. Two
+ * impacts.") and the Boundless SF application. Figures are the report's own.
+ * Resident voting is left out until it exists.
+ */
 export const howItWorksContent = {
-  title: "SFLuv’s Flywheel Effect",
+  title: "How SFLuv Works",
+  eyebrow: "One contribution. Two impacts.",
   metaDescription:
-    "How the SFLuv flywheel works: donors fund a community treasury, merchants vote on proposals, and improvers earn tokens they spend locally.",
-  graphic: {
-    src: "/assets/wp-content/uploads/2024/08/SFLuv-How-it-Works-Graphic.png",
-    alt: "Diagram of the SFLuv flywheel: donors donate, merchants vote, improvers improve and transact, and the community collects",
-    width: 2480,
-    height: 2480
-  } satisfies ImageAsset,
+    "How SFLuv works: donations become SFLUV, which thanks the people improving the neighborhood and is then spent at local merchants, so each dollar has an amplified effect.",
+  image: "/assets/announcements/impact-report-2025-2026-photo.jpg",
+  intro:
+    "In most neighborhoods, donations, volunteer energy, and local businesses operate separately: donations fund projects, volunteers give their time, and merchants work on their own to attract customers. SFLuv connects them using SFLUV, a local currency backed one-to-one by U.S. dollars, so that a single donation first improves the neighborhood and then becomes revenue for the businesses in it.",
   steps: [
     {
-      title: "Donors Donate",
-      body: "Donors and grantors multiply their impact by supporting community improvement and economic development through SFLuv. Their donations are placed into a community treasury to be voted on by participating merchants."
+      loopLabel: ["Supporters", "donate"],
+      title: "Supporters donate",
+      body: "Supporters donate funds to SFLuv, and we convert those dollars into SFLUV, which is backed one-to-one by U.S. dollars. On top of that, every SFLUV transaction is recorded publicly, so donors can see exactly where their money went."
     },
     {
-      title: "Merchants Vote",
-      body: "Participating merchants vote on allocation of the community treasury towards community improvement proposals (CIP). These proposals can be put forth by both merchants and participating improvers."
+      loopLabel: ["Neighbors", "improve"],
+      title: "Neighbors improve the neighborhood",
+      impact: "First impact",
+      body: "SFLUV is then distributed to the people doing the work. Volunteers at our cleanups, tree plantings, and other community events receive it as a thank you for their time, and Improvers (neighborhood residents we pay for skilled or ongoing work) receive part of their pay in SFLUV. This is the first impact: the neighborhood itself is improved."
     },
     {
-      title: "Improvers Improve",
-      body: "Local service providers and individual community members who improve their neighborhoods by accepting, completing, and validating CIPs are rewarded with SFLuv tokens."
+      loopLabel: ["Spent at local", "merchants"],
+      title: "SFLUV is spent at local merchants",
+      impact: "Second impact",
+      body: "Volunteers and Improvers then spend their SFLUV at our partner small businesses, which accept it on their phones in seconds. This is the second impact: the same dollar that improved the block becomes revenue for a local business, and often brings it a new customer. At SFOrganiCA, a Tenderloin grocery and deli, an estimated 90 percent of SFLUV spending came from volunteers who had never shopped there before."
     },
     {
-      title: "Improvers Transact",
-      body: "Rewarded improvers use SFLuv tokens to pay for goods and services provided by local merchants."
-    },
-    {
-      title: "Community Collects",
-      body: "A small portion of each transaction in SFLuv is sent back to the community treasury, keeping the momentum going for future proposals."
-    },
-    {
-      title: "Merchants Exchange",
-      body: "Merchants may convert SFLuv tokens to USD, or continue to reinvest in their community by making purchases in SFLuv at other local businesses."
+      loopLabel: ["Merchants spend", "or cash out"],
+      title: "Merchants spend it or cash it out",
+      body: "Merchants can spend the SFLUV they receive at other participating businesses, which keeps the money circulating in the neighborhood, or convert it back into U.S. dollars. Since every SFLUV is backed by a real dollar, a merchant never has to hold onto it longer than they want to."
     }
-  ] satisfies FlywheelStep[],
-  outcome: {
-    title: "The Flywheel Effect",
-    body: "Each dollar donated to the SFLuv treasury yields double the economic impact: first, by strengthening the community infrastructure when an improvement is completed, and second, by driving economic development when an improver redeems SFLuv with a local merchant."
+  ] satisfies HowItWorksStep[],
+  amplification: {
+    title: "The amplification effect",
+    paragraphs: [
+      "Consider a $100 donation to a neighborhood cleanup. In a traditional model, that $100 might pay for supplies and a crew, and once it is spent, its job is done. With SFLUV, the $100 goes to the volunteers and Improvers who do the cleanup, and they then spend it at a local grocery or cafe, so the same $100 is counted twice: once as a cleaner block, and once as revenue for a neighborhood business.",
+      "We measure this directly. In our first year, counting the SFLUV spent at local merchants alongside our regular program spending, our amplification factor was 1.43x, which means each dollar of program spending produced about $1.43 of combined neighborhood and local business impact. It is below 2x because not all of our program spending is distributed as SFLUV yet."
+    ]
+  },
+  numbers: {
+    title: "Our first year, 2025–2026",
+    items: [
+      { value: "1.43x", label: "amplification factor" },
+      { value: "$17,000", label: "SFLUV spent at local merchants" },
+      { value: "8", label: "merchant partners" },
+      { value: "1,038", label: "volunteer hours" }
+    ],
+    cta: { label: "Read the Annual Impact Report", href: "/financials-and-reports#annual-impact-reports" }
   }
 };
