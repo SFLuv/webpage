@@ -47,7 +47,7 @@ const photos = {
     width: 860,
     height: 999
   },
-  // PJ's and Sanchez's head shots are from the 2025–2026 Annual Impact Report.
+  // PJ's, Sanchez's and Jacky's head shots are from the 2025–2026 Annual Impact Report.
   pj: {
     src: "/assets/team/pj-oleary-2026.jpg",
     alt: "PJ O’Leary",
@@ -59,6 +59,12 @@ const photos = {
     alt: "Sanchez O’Leary",
     width: 500,
     height: 500
+  },
+  jacky: {
+    src: "/assets/team/jacky-2026.jpg",
+    alt: "Jacky Gomez-Tijerino",
+    width: 500,
+    height: 667
   }
 } satisfies Record<string, ImageAsset>;
 
@@ -82,7 +88,7 @@ export const teamSections: TeamSection[] = [
         bio: bethBio
       },
       { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
-      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator" },
+      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
       {
         name: "PJ O’Leary",
         role: "Lead Software Developer",
