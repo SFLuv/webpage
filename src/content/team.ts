@@ -47,18 +47,19 @@ const photos = {
     width: 860,
     height: 999
   },
-  // PJ's, Sanchez's and Jacky's head shots are from the 2025–2026 Annual Impact Report.
+  // Jacky's head shot is from the 2025–2026 Annual Impact Report; PJ's and Sanchez's are the
+  // originals behind it, cropped square.
   pj: {
     src: "/assets/team/pj-oleary-2026.jpg",
     alt: "PJ O’Leary",
-    width: 500,
-    height: 500
+    width: 800,
+    height: 800
   },
   sanchez: {
     src: "/assets/team/sanchez-oleary-2026.jpg",
     alt: "Sanchez O’Leary",
-    width: 500,
-    height: 500
+    width: 800,
+    height: 800
   },
   jacky: {
     src: "/assets/team/jacky-2026.jpg",
