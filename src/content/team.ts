@@ -88,8 +88,6 @@ export const teamSections: TeamSection[] = [
         photo: photos.beth,
         bio: bethBio
       },
-      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
-      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
       {
         name: "PJ O’Leary",
         role: "Lead Software Developer",
@@ -103,6 +101,8 @@ export const teamSections: TeamSection[] = [
           }
         ]
       },
+      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
+      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
       { name: "Sanchez O’Leary", role: "Software Developer", photo: photos.sanchez }
     ]
   },
@@ -115,8 +115,6 @@ export const teamSections: TeamSection[] = [
         photo: photos.beth,
         bio: bethBio
       },
-      { name: "Jamie Flanagan" },
-      { name: "Marci Harris" },
       {
         name: "Vipul Vyas, MBA",
         role: "Treasurer and Co-Creator",
@@ -130,12 +128,28 @@ export const teamSections: TeamSection[] = [
           }
         ],
         links: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/vipulnvyas" }]
-      }
+      },
+      { name: "Marci Harris" },
+      { name: "Jamie Flanagan" }
     ]
   },
   {
     title: "Our Advisors",
     members: [
+      {
+        name: "Paul O’Leary",
+        role: "Co-Creator and Technical Adviser",
+        photo: photos.paul,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Paul has lived in San Francisco for over 30 years and raised three sons in The City with his wife Beth. Paul is a Silicon Valley veteran having worked as an engineer, technical leader, founder and CEO of multiple successful software startups. His passion for innovation and transformational technology has recently led him to focus on blockchain and applied cryptographic applications that have the potential to radically improve the way that value is created and distributed in local and global communities."
+            ]
+          }
+        ]
+      },
+      { name: "Nimisha Ganesh", role: "Strategic Adviser" },
       {
         name: "Billy Riggs, PhD",
         role: "Co-Creator and Strategic Adviser",
@@ -157,20 +171,6 @@ export const teamSections: TeamSection[] = [
         links: [
           { label: "LinkedIn", href: "https://www.linkedin.com/in/billyriggs" },
           { label: "Twitter", href: "https://twitter.com/billyriggs" }
-        ]
-      },
-      { name: "Nimisha Ganesh", role: "Strategic Adviser" },
-      {
-        name: "Paul O’Leary",
-        role: "Co-Creator and Technical Adviser",
-        photo: photos.paul,
-        bio: [
-          {
-            type: "paragraph",
-            children: [
-              "Paul has lived in San Francisco for over 30 years and raised three sons in The City with his wife Beth. Paul is a Silicon Valley veteran having worked as an engineer, technical leader, founder and CEO of multiple successful software startups. His passion for innovation and transformational technology has recently led him to focus on blockchain and applied cryptographic applications that have the potential to radically improve the way that value is created and distributed in local and global communities."
-            ]
-          }
         ]
       }
     ]
