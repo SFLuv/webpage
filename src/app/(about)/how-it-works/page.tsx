@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
 import { howItWorksContent } from "@/content/about";
-import { AmplificationLoop } from "@/features/how-it-works/AmplificationLoop";
+import { AmplificationRing } from "@/features/how-it-works/AmplificationRing";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
@@ -14,7 +14,7 @@ export const metadata = pageMetadata({
 });
 
 export default function HowItWorksPage() {
-  const { title, eyebrow, intro, steps, amplification, numbers } = howItWorksContent;
+  const { title, eyebrow, intro, chart, steps, amplification, numbers } = howItWorksContent;
 
   return (
     <section className="py-12 sm:py-16">
@@ -25,8 +25,8 @@ export default function HowItWorksPage() {
           <p className="mx-auto mt-5 max-w-3xl text-ink-muted">{intro}</p>
         </header>
 
-        <Panel padding="md" className="mt-10">
-          <AmplificationLoop steps={steps} />
+        <Panel padding="lg" className="mt-10">
+          <AmplificationRing chart={chart} />
         </Panel>
 
         <ol className="mt-8 grid gap-5 sm:grid-cols-2">

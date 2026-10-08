@@ -1,0 +1,225 @@
+"use client";
+
+import { Fragment, useEffect, useId, useRef, useState } from "react";
+import type { AmplificationChart } from "@/content/about";
+import { cn } from "@/lib/cn";
+
+/*
+ * Geometry, in a 240-unit square. The inner ring is the program dollar. The
+ * outer one, dotted, is the second dollar the goal asks for, so the arc drawn
+ * along it is how much of that second dollar is reached so far.
+ */
+const CENTRE = 120;
+const INNER = 82;
+const OUTER = 108;
+
+/** Rings use `pathLength={100}`, so dash lengths and offsets are percentages. */
+const FULL = 100;
+
+const money = (value: number) => `$${value.toFixed(2)}`;
+
+/** Lighter end of the coral, for the program dollar's gradient. */
+const CORAL_LIGHT = "color-mix(in srgb, var(--color-brand) 65%, white)";
+/** Brighter end of the deep red, for the gradient of what the dollar adds. */
+const DEEP_LIGHT = "color-mix(in srgb, var(--color-brand-deep) 70%, var(--color-brand))";
+
+/** How far along a ring's draw-on is, 0 to 1, from where its dash has got to. */
+function drawn(circle: SVGCircleElement, length: number) {
+  const offset = parseFloat(getComputedStyle(circle).strokeDashoffset) || 0;
+  return Math.min(1, Math.max(0, (FULL - offset) / length));
+}
+
+function LegendRow({ swatch, value, label, delay }: { swatch: string; value: string; label: string; delay: string }) {
+  return (
+    <li className="amp-anim amp-rise flex items-center gap-3" style={{ animationDelay: delay }}>
+      <span aria-hidden className={cn("size-3 shrink-0 rounded-full", swatch)} />
+      <span className="w-16 font-semibold text-ink tabular-nums">{value}</span>
+      <span className="text-ink-muted">{label}</span>
+    </li>
+  );
+}
+
+/**
+ * How far a dollar goes, after the expanding pie in the annual report.
+ *
+ * A dollar fills the ring, then what it adds spills past it onto the goal ring
+ * while the figure in the middle counts up. It plays once it is in view, and
+ * again each time it comes back. The rings are CSS animations — the timings
+ * live with the keyframes in `globals.css` — and the figure is read off them
+ * frame by frame, so the two can never drift apart.
+ *
+ * It renders on its first frame and waits for this component to start it. Its
+ * resting state is the finished picture, which is what visitors who prefer
+ * reduced motion, or who have scripts off, see instead.
+ */
+export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
+  const { factor, goal, caption, legend, label } = chart;
+  const extra = factor - 1;
+  // Share of the goal's second dollar reached, as a percentage of the outer ring.
+  const reached = Math.round((extra / (goal - 1)) * FULL);
+
+  const id = useId();
+  const figureRef = useRef<HTMLElement>(null);
+  const fillRef = useRef<SVGCircleElement>(null);
+  const spillRef = useRef<SVGCircleElement>(null);
+  const figureTextRef = useRef<HTMLSpanElement>(null);
+
+  // Bumped to restart every animation from the top.
+  const [cycle, setCycle] = useState(0);
+  const [waiting, setWaiting] = useState(true);
+
+  useEffect(() => {
+    const figure = figureRef.current;
+    if (!figure) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setWaiting(false);
+      return;
+    }
+
+    // Play once it is mostly in view; rewind once it is entirely out of it.
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio >= 0.5) {
+          setWaiting(false);
+        } else if (!entry.isIntersecting) {
+          setWaiting(true);
+          setCycle((value) => value + 1);
+        }
+      },
+      { threshold: [0, 0.5] }
+    );
+    observer.observe(figure);
+    return () => observer.disconnect();
+  }, []);
+
+  // While it plays, keep the figure in the middle level with the rings.
+  useEffect(() => {
+    const fill = fillRef.current;
+    const spill = spillRef.current;
+    // The text node React rendered, updated in place so React still owns it.
+    const text = figureTextRef.current?.firstChild;
+    if (waiting || !fill || !spill || !text) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    const tick = () => {
+      const spilled = drawn(spill, reached);
+      const value = spilled > 0 ? 1 + extra * spilled : drawn(fill, FULL);
+      text.nodeValue = money(value);
+      if (spilled < 1) frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+
+    return () => cancelAnimationFrame(frame);
+  }, [waiting, cycle, extra, reached]);
+
+  return (
+    <figure
+      ref={figureRef}
+      data-amp={waiting ? "waiting" : "live"}
+      className="flex flex-col items-center gap-10 py-2 sm:flex-row sm:justify-center sm:gap-16 sm:py-4"
+    >
+      <figcaption className="sr-only">{label}</figcaption>
+
+      {/* Without scripts nothing would start it, so show the finished picture. */}
+      <noscript>
+        <style>{"[data-amp] .amp-anim{animation:none}[data-amp] .amp-figure{visibility:visible}"}</style>
+      </noscript>
+
+      <Fragment key={cycle}>
+        <div aria-hidden className="relative size-56 shrink-0 sm:size-72">
+          {/* Turned a quarter so the rings start at twelve o'clock and run clockwise. */}
+          <svg viewBox="0 0 240 240" className="size-full -rotate-90">
+            <defs>
+              <linearGradient id={`${id}-dollar`} x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" style={{ stopColor: CORAL_LIGHT }} />
+                <stop offset="1" style={{ stopColor: "var(--color-brand)" }} />
+              </linearGradient>
+              <linearGradient id={`${id}-extra`} x1="0" y1="1" x2="1" y2="0">
+                <stop offset="0" style={{ stopColor: "var(--color-brand-deep)" }} />
+                <stop offset="1" style={{ stopColor: DEEP_LIGHT }} />
+              </linearGradient>
+            </defs>
+
+            {/* The goal: a second dollar's worth, dotted. */}
+            <circle
+              cx={CENTRE}
+              cy={CENTRE}
+              r={OUTER}
+              pathLength={FULL}
+              strokeDasharray="0.01 1.24"
+              strokeLinecap="round"
+              strokeWidth={3}
+              className="amp-anim amp-goal fill-none stroke-ink/25"
+            />
+
+            <circle cx={CENTRE} cy={CENTRE} r={INNER} strokeWidth={18} className="fill-none stroke-brand-tint" />
+
+            {/* The program dollar: drawn on, then swapped for a whole ring, which has no seam where the ends meet. */}
+            <circle
+              ref={fillRef}
+              cx={CENTRE}
+              cy={CENTRE}
+              r={INNER}
+              pathLength={FULL}
+              strokeDasharray={FULL}
+              strokeDashoffset={0}
+              strokeWidth={18}
+              stroke={`url(#${id}-dollar)`}
+              className="amp-anim amp-fill fill-none"
+            />
+            <circle
+              cx={CENTRE}
+              cy={CENTRE}
+              r={INNER}
+              strokeWidth={18}
+              stroke={`url(#${id}-dollar)`}
+              className="amp-anim amp-whole fill-none"
+            />
+
+            {/* What it adds on the way out. */}
+            <circle
+              ref={spillRef}
+              cx={CENTRE}
+              cy={CENTRE}
+              r={OUTER}
+              pathLength={FULL}
+              strokeDasharray={`${FULL} ${FULL}`}
+              strokeDashoffset={FULL - reached}
+              strokeLinecap="round"
+              strokeWidth={8}
+              stroke={`url(#${id}-extra)`}
+              className="amp-anim amp-spill fill-none"
+            />
+          </svg>
+
+          {/* The figure sits dead centre; the caption hangs below it rather than pushing it up. */}
+          <div className="absolute inset-0 grid place-items-center">
+            <div className="relative">
+              <span
+                ref={figureTextRef}
+                className="amp-figure block text-4xl leading-none font-semibold tracking-tight text-brand-deep tabular-nums sm:text-[2.6rem]"
+              >
+                {money(factor)}
+              </span>
+              <span className="absolute top-full left-1/2 mt-2.5 -translate-x-1/2 text-xs font-medium tracking-[0.14em] whitespace-nowrap text-ink-subtle uppercase">
+                {caption}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <ul className="grid gap-5">
+          <LegendRow
+            swatch="bg-linear-to-br from-[color-mix(in_srgb,var(--color-brand)_65%,white)] to-brand"
+            value={money(1)}
+            label={legend.dollar}
+            delay="0.25s"
+          />
+          <LegendRow swatch="bg-brand-deep" value={`+${money(extra)}`} label={legend.extra} delay="1.15s" />
+        </ul>
+      </Fragment>
+    </figure>
+  );
+}
