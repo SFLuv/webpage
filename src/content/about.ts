@@ -43,6 +43,8 @@ export type AmplificationChart = {
   /** Under the figure in the middle. */
   caption: string;
   legend: { dollar: string; extra: string };
+  /** The line under the whole picture. */
+  tagline: string;
   /** Read out in place of the picture. */
   label: string;
 };
@@ -63,10 +65,11 @@ export const howItWorksContent = {
   chart: {
     factor: 1.43,
     goal: 2,
-    caption: "per $1",
+    caption: "Amplification",
     legend: { dollar: "Program spending", extra: "Spent at local shops" },
+    tagline: "Each dollar does more than a dollar's work.",
     label:
-      "Each dollar of program spending produced $1.43 of impact: the dollar itself, plus 43 cents spent at local shops."
+      "An amplification factor of 1.43x: each dollar of program spending produced $1.43 of impact, the dollar itself plus 43 cents spent at local shops."
   } satisfies AmplificationChart,
   steps: [
     {

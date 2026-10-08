@@ -204,7 +204,7 @@
    * The program dollar fills the inner ring (0–1.1s) while the goal ring fades
    * in around it, then what the dollar adds draws on along the goal ring
    * (1.1–2s). The figure in the middle is counted up by the component, which
-   * reads it off these rings as they draw.
+   * reads it off the outer arc as it draws.
    *
    * Each animation runs from its `from` keyframe to the element's own resting
    * value, so the resting state is the finished picture: that is what reduced
