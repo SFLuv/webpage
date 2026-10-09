@@ -218,20 +218,20 @@ export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
               swatch="bg-linear-to-br from-[color-mix(in_srgb,var(--color-brand)_65%,white)] to-brand"
               title={legend.dollar.title}
               detail={legend.dollar.detail}
-              delay="0.25s"
+              delay="0.4s"
             />
             <LegendRow
               swatch="bg-brand-deep"
               title={legend.extra.title}
               detail={legend.extra.detail}
-              delay="1.15s"
+              delay="1.9s"
             />
           </ul>
         </div>
 
         <p
           className="amp-anim amp-rise mt-10 w-full border-t border-line pt-8 text-center text-lg font-semibold text-brand-deep sm:mt-12 sm:pt-10 sm:text-title"
-          style={{ animationDelay: "1.9s" }}
+          style={{ animationDelay: "3.1s" }}
         >
           {tagline}
         </p>

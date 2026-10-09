@@ -68,14 +68,15 @@ export const howItWorksContent = {
     factor: 1.43,
     goal: 2,
     heading: "Amplification",
+    // The amounts behind the factor, from the report's expenditures summary:
+    // program expense, and the part of it paid out in SFLUV.
     legend: {
-      dollar: { title: "The program dollar", detail: "Cleanups, plantings, paid Improvers" },
-      // The report's rounded figure, as in the numbers block at the foot of the page.
-      extra: { title: "What it adds on the way out", detail: "17,000 SFLUV spent at local merchants" }
+      dollar: { title: "The program dollar", detail: "$59,561 in program expense" },
+      extra: { title: "What it adds on the way out", detail: "$24,906 paid out in SFLUV" }
     },
     tagline: "Each dollar does more than a dollar's work.",
     label:
-      "An amplification factor of 1.43x: each program dollar does its own work, then adds 43 cents more as SFLUV spent at local merchants."
+      "An amplification factor of 1.43x: $59,561 in program expense, plus the $24,906 of it paid out in SFLUV, which counts again as it is spent locally."
   } satisfies AmplificationChart,
   steps: [
     {
