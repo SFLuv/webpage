@@ -109,7 +109,9 @@ export const howItWorksContent = {
     title: "Our first year, 2025–2026",
     items: [
       { value: "1.43x", label: "amplification factor" },
-      { value: "$17,000", label: "SFLUV spent at local merchants" },
+      // From the ledger: 16,559.81 SFLUV in 1,140 payments to merchants, 1 Jul 2025 – 30 Jun 2026
+      // (nothing moved on-chain before that). The report rounds it to "~$16,600" and "$17,000".
+      { value: "$16,560", label: "SFLUV spent at local merchants" },
       { value: "8", label: "merchant partners" },
       { value: "1,038", label: "volunteer hours" }
     ],
