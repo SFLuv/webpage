@@ -16,7 +16,6 @@ const OUTER = 108;
 /** Rings use `pathLength={100}`, so dash lengths and offsets are percentages. */
 const FULL = 100;
 
-const money = (value: number) => `$${value.toFixed(2)}`;
 const multiple = (value: number) => `${value.toFixed(2)}x`;
 
 /** Lighter end of the coral, for the program dollar's gradient. */
@@ -30,12 +29,25 @@ function drawn(circle: SVGCircleElement, length: number) {
   return Math.min(1, Math.max(0, (FULL - offset) / length));
 }
 
-function LegendRow({ swatch, value, label, delay }: { swatch: string; value: string; label: string; delay: string }) {
+function LegendRow({
+  swatch,
+  title,
+  detail,
+  delay
+}: {
+  swatch: string;
+  title: string;
+  detail: string;
+  delay: string;
+}) {
   return (
-    <li className="amp-anim amp-rise flex items-center gap-3" style={{ animationDelay: delay }}>
-      <span aria-hidden className={cn("size-3 shrink-0 rounded-full", swatch)} />
-      <span className="w-16 font-semibold text-ink tabular-nums">{value}</span>
-      <span className="text-ink-muted">{label}</span>
+    <li className="amp-anim amp-rise flex gap-3.5" style={{ animationDelay: delay }}>
+      {/* Level with the first line of the title. */}
+      <span aria-hidden className={cn("mt-[0.45em] size-3 shrink-0 rounded-full", swatch)} />
+      <span>
+        <span className="block font-medium text-ink">{title}</span>
+        <span className="mt-0.5 block text-sm text-ink-muted">{detail}</span>
+      </span>
     </li>
   );
 }
@@ -54,7 +66,7 @@ function LegendRow({ swatch, value, label, delay }: { swatch: string; value: str
  * reduced motion, or who have scripts off, see instead.
  */
 export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
-  const { factor, goal, caption, legend, tagline, label } = chart;
+  const { factor, goal, heading, legend, tagline, label } = chart;
   const extra = factor - 1;
   // Share of the goal's second dollar reached, as a percentage of the outer ring.
   const reached = Math.round((extra / (goal - 1)) * FULL);
@@ -122,6 +134,8 @@ export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
         <style>{"[data-amp] .amp-anim{animation:none}[data-amp] .amp-figure{visibility:visible}"}</style>
       </noscript>
 
+      <p className="mb-8 self-start text-xs font-semibold tracking-[0.14em] text-brand uppercase sm:mb-6">{heading}</p>
+
       <Fragment key={cycle}>
         <div className="flex flex-col items-center gap-10 sm:flex-row sm:gap-16">
           <div aria-hidden className="relative size-60 shrink-0 sm:size-72">
@@ -154,7 +168,7 @@ export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
 
               {/* The program dollar: drawn on, then swapped for a whole ring, which has no seam where the ends meet. */}
               <circle
-                  cx={CENTRE}
+                cx={CENTRE}
                 cy={CENTRE}
                 r={INNER}
                 pathLength={FULL}
@@ -189,30 +203,29 @@ export function AmplificationRing({ chart }: { chart: AmplificationChart }) {
               />
             </svg>
 
-            {/* The figure sits dead centre; the caption hangs below it rather than pushing it up. */}
             <div className="absolute inset-0 grid place-items-center">
-              <div className="relative">
-                <span
-                  ref={figureTextRef}
-                  className="amp-figure block text-4xl leading-none font-semibold tracking-tight text-brand-deep tabular-nums sm:text-[2.6rem]"
-                >
-                  {multiple(factor)}
-                </span>
-                <span className="absolute top-full left-1/2 mt-2.5 -translate-x-1/2 text-[0.65rem] font-medium tracking-[0.12em] whitespace-nowrap text-ink-subtle uppercase sm:text-xs sm:tracking-[0.14em]">
-                  {caption}
-                </span>
-              </div>
+              <span
+                ref={figureTextRef}
+                className="amp-figure text-[2.6rem] leading-none font-semibold tracking-tight text-brand-deep tabular-nums sm:text-5xl"
+              >
+                {multiple(factor)}
+              </span>
             </div>
           </div>
 
-          <ul className="grid gap-5">
+          <ul className="grid max-w-xs gap-6">
             <LegendRow
               swatch="bg-linear-to-br from-[color-mix(in_srgb,var(--color-brand)_65%,white)] to-brand"
-              value={money(1)}
-              label={legend.dollar}
+              title={legend.dollar.title}
+              detail={legend.dollar.detail}
               delay="0.25s"
             />
-            <LegendRow swatch="bg-brand-deep" value={`+${money(extra)}`} label={legend.extra} delay="1.15s" />
+            <LegendRow
+              swatch="bg-brand-deep"
+              title={legend.extra.title}
+              detail={legend.extra.detail}
+              delay="1.15s"
+            />
           </ul>
         </div>
 

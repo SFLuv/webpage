@@ -35,14 +35,16 @@ export type HowItWorksStep = {
  * that dollar adds spills past it, along a second ring that stands for the
  * goal. Assumes 1 < factor < goal.
  */
+type LegendEntry = { title: string; detail: string };
+
 export type AmplificationChart = {
   /** Impact per program dollar, from the annual report. */
   factor: number;
   /** What we are working towards: a full outer ring. */
   goal: number;
-  /** Under the figure in the middle. */
-  caption: string;
-  legend: { dollar: string; extra: string };
+  /** The small label in the top left. */
+  heading: string;
+  legend: { dollar: LegendEntry; extra: LegendEntry };
   /** The line under the whole picture. */
   tagline: string;
   /** Read out in place of the picture. */
@@ -65,11 +67,15 @@ export const howItWorksContent = {
   chart: {
     factor: 1.43,
     goal: 2,
-    caption: "Amplification",
-    legend: { dollar: "Program spending", extra: "Spent at local shops" },
+    heading: "Amplification",
+    legend: {
+      dollar: { title: "The program dollar", detail: "Cleanups, plantings, paid Improvers" },
+      // The report's rounded figure, as in the numbers block at the foot of the page.
+      extra: { title: "What it adds on the way out", detail: "17,000 SFLUV spent at local merchants" }
+    },
     tagline: "Each dollar does more than a dollar's work.",
     label:
-      "An amplification factor of 1.43x: each dollar of program spending produced $1.43 of impact, the dollar itself plus 43 cents spent at local shops."
+      "An amplification factor of 1.43x: each program dollar does its own work, then adds 43 cents more as SFLUV spent at local merchants."
   } satisfies AmplificationChart,
   steps: [
     {
