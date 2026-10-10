@@ -24,6 +24,33 @@ Neither is `NEXT_PUBLIC_`, and neither should become so — both are read only i
 server components and route handlers, and prefixing them would inline them into
 the browser bundle.
 
+## Content edited from the admin panel
+
+Some content is not in this repo. Staff change it at **app.sfluv.org → Website** (sidebar)
+and it appears on the site within about 30 seconds, with no deploy:
+
+| What | Where it shows | Edited by |
+|---|---|---|
+| Homepage banner items (the rotating carousel) | beside the homepage title | `website_banner` credential, `website_editor`, or an admin |
+| Financial statements and impact reports | `/financials-and-reports` | `website_financials`, `website_editor`, or an admin |
+| Forms and waivers, and their signatures | `/forms` (nav: About → Forms and Waivers) | `website_forms`, `website_editor`, or an admin |
+| Past events: tiles and their photo galleries | `/volunteers` (Past events) and `/volunteers/past/<event>` | `website_past_events`, `website_editor`, or an admin |
+
+All of it is fetched from the backend's public `/site/*` routes by
+`src/lib/site-content/client.ts`, which is also where the failure behaviour lives:
+financials fall back to `src/content/financials.ts`, the carousel falls back to
+`src/content/spotlight.ts` only if the backend predates the feature (and
+shows nothing on any other failure), past events fall back to the tiles in
+`src/content/volunteers.ts` on the same terms, and forms show a "temporarily unavailable"
+notice. Signing goes through `src/app/api/forms/[slug]/sign`, a proxy that
+forwards the visitor's IP using `SFLUV_VOLUNTEER_PROXY_KEY` — the same setup as
+volunteer signups. Design and data model: `docs/features/website-editing-and-forms.md`
+in the app repo.
+
+**Deploy order matters.** The backend (api.sfluv.org, deployed by hand) must have
+the `/site/*` routes before this site goes live, or the forms pages will report
+"unavailable". The carousel and financials degrade gracefully either way.
+
 ## Project structure
 
 ```

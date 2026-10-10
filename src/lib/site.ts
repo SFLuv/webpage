@@ -53,7 +53,8 @@ export const primaryNav: NavGroup[] = [
       { href: routes.missionAndVision, label: "Mission and Vision" },
       { href: routes.howItWorks, label: "How it Works" },
       { href: routes.ourTeam, label: "Our Team" },
-      { href: routes.financialsAndReports, label: "Financials and Reports" }
+      { href: routes.financialsAndReports, label: "Financials and Reports" },
+      { href: routes.forms, label: "Forms and Waivers" }
     ]
   }
 ];

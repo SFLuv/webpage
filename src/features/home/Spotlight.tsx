@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { RichInline } from "@/components/content/RichDocument";
-import { spotlightSlides, type SpotlightSlide } from "@/content/spotlight";
+import type { SpotlightSlide } from "@/content/spotlight";
 import { EventTime } from "@/features/volunteers/EventTime";
 import { cn } from "@/lib/cn";
+import { getSpotlightSlides } from "@/lib/site-content/client";
 import { emptyFilters, listEvents } from "@/lib/volunteer-events/client";
 import { formatReward } from "@/lib/volunteer-events/format";
 import { eventPath } from "@/lib/volunteer-events/map";
@@ -35,7 +36,7 @@ function Slide({
   priority: boolean;
 }) {
   const reward = event ? formatReward(event.rewardAmountSfluv) : null;
-  const action = event ? { ...slide.action, href: eventPath(event) } : slide.action;
+  const action = event && slide.action ? { ...slide.action, href: eventPath(event) } : slide.action;
 
   return (
     <>
@@ -73,9 +74,10 @@ function Slide({
           <RichInline nodes={slide.body} />
         </p>
 
-        {/* Right padding keeps the button clear of the carousel controls on this row. */}
+        {/* Right padding keeps the button clear of the carousel controls on this row. Without
+            a button the row still holds the controls, so the card keeps its height. */}
         <div className="mt-auto pt-3 pr-24 sm:pt-4">
-          <SpotlightButton action={action} />
+          {action ? <SpotlightButton action={action} /> : <span aria-hidden="true" className="block min-h-9 sm:min-h-11" />}
         </div>
       </div>
     </>
@@ -83,12 +85,14 @@ function Slide({
 }
 
 /**
- * The rotating card beside the homepage title, driven by `src/content/spotlight.ts`.
+ * The rotating card beside the homepage title. Its slides are edited from the admin
+ * app (Website -> Banner items); `src/content/spotlight.ts` holds the
+ * copy that ships with the site, used only while the backend predates that feature.
  *
  * Renders nothing when every slide is switched off.
  */
 export async function Spotlight({ className }: { className?: string }) {
-  const slides = spotlightSlides.filter((slide) => slide.enabled);
+  const slides = await getSpotlightSlides();
   if (slides.length === 0) return null;
 
   // The same request the events section further down the page makes, so it is
