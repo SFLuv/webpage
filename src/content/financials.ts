@@ -7,6 +7,8 @@ export type ReportPeriod = {
 
 export type FiscalYear = {
   label: string;
+  /** The year it ends in. Set on years from the backend; gives the year a stable link. */
+  fiscal_year?: number;
   /** Expanded by default in the accordion — most recent year first. */
   periods: ReportPeriod[];
 };
@@ -24,6 +26,17 @@ export const financialsContent = {
 
 /** Fragment id of the impact reports block, for deep links like the homepage banner. */
 export const annualImpactReportsAnchor = "annual-impact-reports";
+
+/** Fragment id of one fiscal year's block, e.g. `fy-2026`. */
+export function fiscalYearAnchor(year: Pick<FiscalYear, "label" | "fiscal_year">): string {
+  if (year.fiscal_year) return `fy-${year.fiscal_year}`;
+  return year.label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+/** Fragment id of one document, so a link can land on it with its year opened. */
+export function financialDocumentAnchor(id: string): string {
+  return `doc-${id}`;
+}
 
 /** Most recent first. Add each year's report to the top. */
 export const annualImpactReports: DocumentLink[] = [

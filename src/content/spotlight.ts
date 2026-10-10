@@ -35,7 +35,8 @@ export type SpotlightSlide = {
   image: ImageAsset;
   /** CSS `object-position` for that crop, e.g. "center 30%" to keep faces in frame. Centred by default. */
   imagePosition?: string;
-  action: SpotlightAction;
+  /** The button at the bottom of the card. Optional: a card can be just a photo and words. */
+  action?: SpotlightAction;
   /**
    * Ties the slide to a recurring volunteer event. Each occurrence has its own
    * page, so the next upcoming one whose title matches is looked up on every

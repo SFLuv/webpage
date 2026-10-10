@@ -28,7 +28,7 @@ export type PublicSlide = {
 
 export type PublicSpotlight = { slides: PublicSlide[] };
 
-export type PublicFinancialDocument = { label: string; href: string; kind?: string };
+export type PublicFinancialDocument = { id?: string; label: string; href: string; kind?: string };
 
 export type PublicFinancials = {
   years: {
@@ -71,3 +71,21 @@ export type FormLookup =
   | { state: "unavailable" };
 
 export type { DocumentLink };
+
+export type PublicImage = { url: string; width: number; height: number; alt: string };
+
+/** A gallery photo; `caption` is shown under it. */
+export type PublicGalleryPhoto = PublicImage & { caption?: string };
+
+/** A tile in the Past events section; `photos` only on its gallery page. */
+export type PublicPastEvent = {
+  slug: string;
+  title: string;
+  /** YYYY-MM-DD. */
+  date: string;
+  description?: string;
+  /** Null shows the placeholder. */
+  cover: PublicImage | null;
+  photo_count: number;
+  photos?: PublicGalleryPhoto[];
+};

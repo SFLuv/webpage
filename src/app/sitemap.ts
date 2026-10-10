@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
-import { sitemapRoutes } from "@/lib/routes";
+import { pastEventPath, sitemapRoutes } from "@/lib/routes";
+import { listPastEvents } from "@/lib/site-content/client";
 import { siteConfig } from "@/lib/site";
 import { listEvents } from "@/lib/volunteer-events/client";
 import { eventPath } from "@/lib/volunteer-events/map";
@@ -53,5 +54,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority
   }));
 
-  return [...staticEntries, ...(await eventEntries())];
+  // Past event galleries; a failure just leaves them out this hour.
+  const pastEvents = ((await listPastEvents().catch(() => null)) ?? []).map((event) => ({
+    url: absolute(pastEventPath(event.slug)),
+    changeFrequency: "monthly" as const,
+    priority: 0.3
+  }));
+
+  return [...staticEntries, ...(await eventEntries()), ...pastEvents];
 }

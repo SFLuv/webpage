@@ -26,12 +26,16 @@ export function toSpotlightSlide(slide: PublicSlide): SpotlightSlide {
     body: parseInline(slide.body),
     image: { src: slide.image.url, alt: slide.image.alt, width: slide.image.width, height: slide.image.height },
     imagePosition: slide.image_position || undefined,
-    action: {
-      label: slide.action.label,
-      href: slide.action.href,
-      newTab: slide.action.new_tab || undefined,
-      alsoOpen: slide.action.also_open || undefined
-    },
+    // No button unless it has both words and somewhere to go.
+    action:
+      slide.action.label && slide.action.href
+        ? {
+            label: slide.action.label,
+            href: slide.action.href,
+            newTab: slide.action.new_tab || undefined,
+            alsoOpen: slide.action.also_open || undefined
+          }
+        : undefined,
     liveEvent: titleMatch ? { titleMatch } : undefined
   };
 }

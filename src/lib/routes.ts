@@ -35,6 +35,14 @@ export const routes = {
 
 export type Route = (typeof routes)[keyof typeof routes];
 
+/** A past event's photo gallery page. */
+export function pastEventPath(slug: string): string {
+  return `${routes.volunteers}/past/${slug}`;
+}
+
+/** Fragment id of the Past events section on the volunteers page. */
+export const pastEventsAnchor = "past-events";
+
 /** Routes included in sitemap.xml, with their relative crawl priority. */
 export const sitemapRoutes: { path: Route; priority: number }[] = [
   { path: routes.home, priority: 1 },

@@ -1,4 +1,5 @@
 import { fiscalYears, annualImpactReports } from "@/content/financials";
+import { archivedEvents, type ArchivedEvent } from "@/content/volunteers";
 import { spotlightSlides } from "@/content/spotlight";
 import type { SpotlightSlide } from "@/content/spotlight";
 import { API_BASE_URL } from "@/lib/volunteer-events/config";
@@ -8,7 +9,8 @@ import type {
   PublicSpotlight,
   PublicFinancials,
   PublicForm,
-  PublicFormSummary
+  PublicFormSummary,
+  PublicPastEvent
 } from "./types";
 
 /**
@@ -86,4 +88,75 @@ export async function getForm(slug: string): Promise<FormLookup> {
   const data = result.data;
   if (data.status === "closed") return { state: "closed", title: data.title };
   return { state: "open", form: data };
+}
+
+/** The gallery page's address for a title, as the backend makes it. */
+export function pastEventSlug(title: string): string {
+  const slug = title
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f’']/g, "")
+    .replace(/[&+]/g, " and ")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 60)
+    .replace(/-$/, "");
+  return slug || "event";
+}
+
+/** "5/16/26" or "1/24/2026" → "2026-05-16". */
+function isoFromShipped(date: string | undefined): string {
+  const [m, d, y] = (date ?? "").split("/").map(Number);
+  if (!m || !d || !y) return "";
+  const year = y < 100 ? 2000 + y : y;
+  return `${year}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+}
+
+function fromShipped(event: ArchivedEvent): PublicPastEvent {
+  const photos = event.images.map((image) => ({ url: image.src, width: image.width, height: image.height, alt: image.alt }));
+  return {
+    slug: pastEventSlug(event.title),
+    title: event.title,
+    date: isoFromShipped(event.date),
+    cover: photos[0] ?? null,
+    photo_count: photos.length,
+    photos
+  };
+}
+
+/**
+ * Tiles for the Past events section, newest first.
+ *
+ * Failure policy: a 404 means the backend predates this feature, so the tiles
+ * that ship with the site are used. Any other failure shows none (the page
+ * says so) rather than an archive that may have been edited since.
+ */
+export async function listPastEvents(): Promise<PublicPastEvent[] | null> {
+  const result = await get<{ events: PublicPastEvent[] }>("/site/past-events");
+  if (result.ok) return result.data.events;
+  if (result.status === 404 || !API_BASE_URL) return archivedEvents.map(fromShipped);
+  return null;
+}
+
+export type PastEventLookup = { state: "found"; event: PublicPastEvent } | { state: "missing" } | { state: "unavailable" };
+
+/** One event's gallery page. */
+export async function getPastEvent(slug: string): Promise<PastEventLookup> {
+  const result = await get<PublicPastEvent>(`/site/past-events/${encodeURIComponent(slug)}`);
+  if (result.ok) return { state: "found", event: result.data };
+  if (result.status === 404) {
+    // Either no such event, or a backend that predates this feature.
+    const shipped = archivedEvents.map(fromShipped).find((event) => event.slug === slug);
+    return shipped && !(await backendHasPastEvents()) ? { state: "found", event: shipped } : { state: "missing" };
+  }
+  if (!API_BASE_URL) {
+    const shipped = archivedEvents.map(fromShipped).find((event) => event.slug === slug);
+    return shipped ? { state: "found", event: shipped } : { state: "missing" };
+  }
+  return { state: "unavailable" };
+}
+
+async function backendHasPastEvents(): Promise<boolean> {
+  const result = await get<{ events: PublicPastEvent[] }>("/site/past-events");
+  return result.ok;
 }

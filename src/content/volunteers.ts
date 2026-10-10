@@ -1,10 +1,13 @@
 import type { ImageAsset } from "./types";
 
+/**
+ * A past event as the site shipped it before Past events moved to the backend.
+ * Only used if the backend predates that feature; see `listPastEvents`.
+ */
 export type ArchivedEvent = {
   title: string;
   /** Display date exactly as published. */
   date?: string;
-  href?: string;
   images: ImageAsset[];
 };
 
@@ -13,7 +16,7 @@ export const volunteersContent = {
   /** Metadata only — not rendered on the page. */
   description:
     "Browse upcoming SFLuv volunteer events. All volunteers are thanked with SFLuv perks redeemable at participating community merchants.",
-  archiveTitle: "Earlier events",
+  archiveTitle: "Past events",
   archiveLead:
     "A look back at what our volunteers have built, cleaned, planted, and served across the neighborhood."
 };
@@ -76,7 +79,6 @@ export const archivedEvents: ArchivedEvent[] = [
   {
     title: "St. Anthony Foundation Dining Room Second Shift",
     date: "2/9/26",
-    href: "https://www.stanthonysf.org/volunteer/sign-up-now/",
     images: [
       {
         src: "/assets/wp-content/uploads/2026/01/St-Anthony-Dining-volunteer-image.jpg",
@@ -89,7 +91,6 @@ export const archivedEvents: ArchivedEvent[] = [
   {
     title: "SuperBowl Saturday Clean Up",
     date: "2/8/26",
-    href: "https://www.mobilize.us/civicjoyfund/event/891269/",
     images: [
       {
         src: "/assets/wp-content/uploads/2026/01/Super-Bowl-Saturday.jpeg",

@@ -22,6 +22,9 @@ export function Disclosure({ summary, children, defaultOpen = false, className, 
     <details
       id={id}
       open={defaultOpen}
+      // The browser opens a closed one by itself when a link points inside it,
+      // which can happen before the page hydrates; that difference is expected.
+      suppressHydrationWarning
       className={cn("group rounded-lg border border-line bg-surface", className)}
     >
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 font-medium text-ink marker:hidden [&::-webkit-details-marker]:hidden">

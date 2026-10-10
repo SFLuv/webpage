@@ -4,12 +4,13 @@ import { Section } from "@/components/ui/Section";
 import { EventSearchSection } from "@/features/volunteers/EventSearchSection";
 import { EventPagination } from "@/features/volunteers/EventPagination";
 import { VolunteerEventCard } from "@/features/volunteers/VolunteerEventCard";
-import { ArchiveEventCard } from "@/features/volunteers/ArchiveEventCard";
+import { PastEventCard } from "@/features/past-events/PastEventCard";
 import { listEvents } from "@/lib/volunteer-events/client";
+import { listPastEvents } from "@/lib/site-content/client";
 import type { EventFilters as Filters } from "@/lib/volunteer-events/types";
-import { archivedEvents, volunteersContent } from "@/content/volunteers";
+import { volunteersContent } from "@/content/volunteers";
 import { pageMetadata } from "@/lib/metadata";
-import { routes } from "@/lib/routes";
+import { pastEventsAnchor, routes } from "@/lib/routes";
 
 export const metadata = pageMetadata({
   title: volunteersContent.title,
@@ -40,7 +41,7 @@ function parseFilters(params: Record<string, string | string[] | undefined>): Fi
 
 export default async function VolunteersPage({ searchParams }: { searchParams: SearchParams }) {
   const filters = parseFilters(await searchParams);
-  const result = await listEvents(filters);
+  const [result, pastEvents] = await Promise.all([listEvents(filters), listPastEvents()]);
 
   const hasFilters = Boolean(filters.search || filters.organizer || filters.openSpotsOnly);
 
@@ -98,16 +99,28 @@ export default async function VolunteersPage({ searchParams }: { searchParams: S
       </section>
 
       {/*
-        Community history from before the events system existed. Kept as a static
-        archive so a year of photos does not vanish when live events take over
-        this page — see comms.md [6].
+        What the community has done, each with a photo gallery. Edited in the app
+        (Website → Past events); separate from the live events above, so adding one
+        creates no volunteer event, QR codes or rewards.
       */}
-      <Section title={volunteersContent.archiveTitle} lead={volunteersContent.archiveLead} width="wide" spacing="lg">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {archivedEvents.map((event) => (
-            <ArchiveEventCard key={event.title} event={event} />
-          ))}
-        </div>
+      <Section
+        id={pastEventsAnchor}
+        title={volunteersContent.archiveTitle}
+        lead={volunteersContent.archiveLead}
+        width="wide"
+        spacing="lg"
+      >
+        {pastEvents === null ? (
+          <Panel padding="lg" className="text-center">
+            <p className="text-ink-muted">Past events are temporarily unavailable. Please try again shortly.</p>
+          </Panel>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {pastEvents.map((event) => (
+              <PastEventCard key={event.slug} event={event} />
+            ))}
+          </div>
+        )}
       </Section>
     </>
   );

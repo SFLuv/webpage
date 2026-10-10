@@ -3,12 +3,13 @@
 import { useEffect } from "react";
 
 /**
- * Opens and scrolls to a `<details>` when the URL fragment names it.
+ * Opens and scrolls to whatever the URL fragment names, opening any
+ * `<details>` it is, or sits inside, on the way.
  *
  * Browsers scroll to a fragment but leave a closed disclosure closed, so a
- * deep link like `/financials-and-reports#annual-impact-reports` would land on
- * a collapsed box. Runs on mount (covering client-side navigation) and on
- * later hash changes.
+ * deep link like `/financials-and-reports#annual-impact-reports`, or one to a
+ * single document inside a collapsed year, would land on a closed box. Runs on
+ * mount (covering client-side navigation) and on later hash changes.
  */
 export function OpenOnHash() {
   useEffect(() => {
@@ -16,12 +17,15 @@ export function OpenOnHash() {
       const id = decodeURIComponent(window.location.hash.slice(1));
       if (!id) return;
       const target = document.getElementById(id);
-      if (!(target instanceof HTMLDetailsElement)) return;
-      target.open = true;
+      if (!target) return;
+      for (let node: HTMLElement | null = target; node; node = node.parentElement) {
+        if (node instanceof HTMLDetailsElement) node.open = true;
+      }
       // Deferred past the router's own scroll handling, and instant because
       // the site-wide smooth scroll gets cancelled by it mid-animation — either
       // way a client-side navigation would otherwise land at the top.
-      setTimeout(() => target.scrollIntoView({ block: "start", behavior: "instant" }), 50);
+      const block = target instanceof HTMLDetailsElement ? "start" : "center";
+      setTimeout(() => target.scrollIntoView({ block, behavior: "instant" }), 50);
     }
 
     openTarget();
