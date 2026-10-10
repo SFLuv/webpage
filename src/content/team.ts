@@ -48,7 +48,7 @@ const photos = {
     height: 999
   },
   // Jacky's head shot is from the 2025–2026 Annual Impact Report; PJ's and Sanchez's are the
-  // originals behind it, cropped square.
+  // originals behind it, cropped square. Jamie's was sent by Beth in Oct 2026, cropped square.
   pj: {
     src: "/assets/team/pj-oleary-2026.jpg",
     alt: "PJ O’Leary",
@@ -58,6 +58,12 @@ const photos = {
   sanchez: {
     src: "/assets/team/sanchez-oleary-2026.jpg",
     alt: "Sanchez O’Leary",
+    width: 800,
+    height: 800
+  },
+  jamie: {
+    src: "/assets/team/jamie-flanagan-2026.jpg",
+    alt: "Jamie Flanagan",
     width: 800,
     height: 800
   },
@@ -130,7 +136,7 @@ export const teamSections: TeamSection[] = [
         links: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/vipulnvyas" }]
       },
       { name: "Marci Harris" },
-      { name: "Jamie Flanagan" }
+      { name: "Jamie Flanagan", photo: photos.jamie }
     ]
   },
   {
