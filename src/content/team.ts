@@ -62,6 +62,19 @@ const photos = {
     height: 800
   },
   // Marci's is her official POPVOX Foundation head shot (popvox.org/team), cropped square.
+  // Brooke's and Nimisha's are their own profile photos, saved by Sanchez (Oct 2026).
+  brooke: {
+    src: "/assets/team/brooke-barry.jpg",
+    alt: "Brooke Barry",
+    width: 400,
+    height: 400
+  },
+  nimisha: {
+    src: "/assets/team/nimisha-ganesh.jpg",
+    alt: "Nimisha Ganesh",
+    width: 336,
+    height: 336
+  },
   marci: {
     src: "/assets/team/marci-harris.jpg",
     alt: "Marci Harris",
@@ -115,7 +128,7 @@ export const teamSections: TeamSection[] = [
         ]
       },
       { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
-      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
+      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator", photo: photos.brooke },
       {
         name: "Sanchez O’Leary",
         role: "Software Developer",
@@ -186,7 +199,7 @@ export const teamSections: TeamSection[] = [
           }
         ]
       },
-      { name: "Nimisha Ganesh", role: "Strategic Adviser" },
+      { name: "Nimisha Ganesh", role: "Strategic Adviser", photo: photos.nimisha },
       {
         name: "Billy Riggs, PhD",
         role: "Co-Creator and Strategic Adviser",
