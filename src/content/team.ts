@@ -102,14 +102,26 @@ export const teamSections: TeamSection[] = [
           {
             type: "paragraph",
             children: [
-              "Born and raised in San Francisco, PJ has an intimate connection with the city and its culture. As a native San Franciscan, he has seen firsthand both the challenges that the city faces, and the resilience of communities that take them on. Alongside his love of innovation and wonder at the possibilities that blockchain unlocks, this understanding led him to the logical conclusion that brought him to work on SFLUV today: We must utilize new technologies to aid our communities and bring about social good for all."
+              "Born and raised in San Francisco, PJ has always loved the city and its people, and he got into building technology because it seemed like a fun way to give back to his community. As SFLuv’s lead software developer, he designs and builds most of the technology behind SFLuv, from the tools our volunteers, improvers, and partner organizations use every day to the systems that keep track of every SFLUV transaction."
             ]
           }
         ]
       },
       { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
       { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
-      { name: "Sanchez O’Leary", role: "Software Developer", photo: photos.sanchez }
+      {
+        name: "Sanchez O’Leary",
+        role: "Software Developer",
+        photo: photos.sanchez,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Sanchez is a software developer at SFLuv, where he works on the tools that residents, merchants, and our staff rely on. He built the first version of the SFLuv merchant map, and he focuses on areas like cashing out SFLUV, tax reporting, and the systems that help SFLuv run day to day. He holds a Bachelor of Arts in Cognitive Systems from the University of British Columbia."
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -136,7 +148,19 @@ export const teamSections: TeamSection[] = [
         links: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/vipulnvyas" }]
       },
       { name: "Marci Harris" },
-      { name: "Jamie Flanagan", photo: photos.jamie }
+      {
+        name: "Jamie Flanagan",
+        role: "Board Member",
+        photo: photos.jamie,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Jamie Flanagan is an experienced people and operations leader in San Francisco hospitality. He served as Managing Partner of the Phoenix Hotel and its restaurant, Chambers Eat + Drink, and as Regional Director of Operations at 31 Madison Management Group. As co-founder of the Tenderloin Business Coalition, he helped organize neighborhood businesses around public safety and conditions affecting commerce. Jamie collaborates with community, civic, and police leadership in connection with San Francisco’s Drug Market Agency Coordination Center and remains active in the neighborhood business community through Alchemy Springs. His experience gives him a practical understanding of the challenges facing neighborhood businesses."
+            ]
+          }
+        ]
+      }
     ]
   },
   {
