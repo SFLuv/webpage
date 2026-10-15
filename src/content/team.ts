@@ -61,6 +61,13 @@ const photos = {
     width: 800,
     height: 800
   },
+  // Marci's is her official POPVOX Foundation head shot (popvox.org/team), cropped square.
+  marci: {
+    src: "/assets/team/marci-harris.jpg",
+    alt: "Marci Harris",
+    width: 800,
+    height: 800
+  },
   jamie: {
     src: "/assets/team/jamie-flanagan-2026.jpg",
     alt: "Jamie Flanagan",
@@ -147,7 +154,7 @@ export const teamSections: TeamSection[] = [
         ],
         links: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/vipulnvyas" }]
       },
-      { name: "Marci Harris" },
+      { name: "Marci Harris", photo: photos.marci },
       {
         name: "Jamie Flanagan",
         role: "Board Member",

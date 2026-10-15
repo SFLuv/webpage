@@ -36,7 +36,8 @@ export default function OurTeamPage() {
               <h2 id={headingId} className="mb-6 text-headline">
                 {section.title}
               </h2>
-              <div className="grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {/* Every row the height of the tallest tile, so a long name or title never makes one tile bigger than the rest. */}
+              <div className="grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {[...section.members].sort(byLastName).map((member) => (
                   <TeamMemberCard key={member.name} member={member} />
                 ))}

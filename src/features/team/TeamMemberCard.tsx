@@ -64,7 +64,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
         type="button"
         onClick={() => dialogRef.current?.showModal()}
         aria-haspopup="dialog"
-        className="group block w-full rounded-panel text-left transition-transform duration-200 hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
+        className="group block h-full w-full rounded-panel text-left transition-transform duration-200 hover:-translate-y-1 focus-visible:-translate-y-1 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
       >
         <Panel
           padding="sm"
@@ -88,7 +88,8 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
             ) : null}
           </div>
 
-          <div className="min-w-0">
+          {/* The same room for every name and title (up to 2 lines of name, 3 of title), so tiles match across sections. */}
+          <div className="min-h-[7.75rem] min-w-0">
             <h3 className="text-title font-medium text-ink">{member.name}</h3>
             {member.role ? <p className="mt-1 text-sm text-ink-subtle">{member.role}</p> : null}
           </div>
