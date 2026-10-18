@@ -3,6 +3,11 @@ import type { ImageAsset } from "./types";
 
 export type TeamMember = {
   name: string;
+  /**
+   * The surname to alphabetize by, when it is not simply the last word of
+   * `name` (e.g. "Tijerino Gomez", which sorts under T).
+   */
+  sortSurname?: string;
   /** Title(s). Optional: some board members are listed by name only. */
   role?: string;
   /** Head shot. Without one the card shows a neutral silhouette. */
@@ -89,7 +94,7 @@ const photos = {
   },
   jacky: {
     src: "/assets/team/jacky-2026.jpg",
-    alt: "Jacky Gomez-Tijerino",
+    alt: "Jaqueline Tijerino Gomez",
     width: 500,
     height: 667
   }
@@ -127,7 +132,12 @@ export const teamSections: TeamSection[] = [
           }
         ]
       },
-      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
+      {
+        name: "Jaqueline Tijerino Gomez",
+        sortSurname: "Tijerino Gomez",
+        role: "Social Media & Communications Coordinator",
+        photo: photos.jacky
+      },
       { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator", photo: photos.brooke },
       {
         name: "Sanchez O’Leary",

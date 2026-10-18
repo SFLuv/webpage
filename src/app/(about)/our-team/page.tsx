@@ -16,7 +16,12 @@ export const metadata = pageMetadata({
  * ignoring credentials after the comma and apostrophes.
  */
 function sortKey(member: TeamMember): string {
-  const words = member.name.split(",")[0].trim().split(/\s+/);
+  const name = member.name.split(",")[0].trim();
+  if (member.sortSurname) {
+    const first = name.replace(member.sortSurname, "").trim();
+    return `${member.sortSurname} ${first}`.toLowerCase().replace(/[’'.]/g, "");
+  }
+  const words = name.split(/\s+/);
   const last = words[words.length - 1];
   return `${last} ${words.slice(0, -1).join(" ")}`.toLowerCase().replace(/[’'.]/g, "");
 }
