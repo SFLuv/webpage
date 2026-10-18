@@ -4,7 +4,7 @@ import type { Merchant } from "@/content/get-involved";
 
 export function MerchantGrid({ merchants }: { merchants: Merchant[] }) {
   return (
-    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    <ul className="grid auto-rows-fr gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {merchants.map((merchant) => (
         <li key={merchant.href} className="flex">
           <Card href={merchant.href} className="items-center gap-4 p-6 text-center">
