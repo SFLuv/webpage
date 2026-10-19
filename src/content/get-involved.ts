@@ -82,12 +82,12 @@ export const merchants: Merchant[] = [
     }
   },
   {
-    name: "Felafalland",
+    name: "Falafel Land",
     description: "Fresh Mediterranean cuisine served in traditional Yemeni style.",
     href: "https://falafelland.restaurant/",
     logo: {
       src: "/assets/wp-content/uploads/2026/01/Screenshot-2025-11-23-at-1.39.14-PM.jpg",
-      alt: "Felafalland logo",
+      alt: "Falafel Land logo",
       width: 432,
       height: 284
     }
