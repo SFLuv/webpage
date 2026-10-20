@@ -22,7 +22,7 @@ export const externalLinks = {
 
 export const contactEmails = {
   inquiries: "inquiries@sfluv.org",
-  support: "techsupport@sfluv.com",
+  support: "techsupport@sfluv.org",
   accountDeletion: "techsupport@sfluv.org"
 } as const;
 
