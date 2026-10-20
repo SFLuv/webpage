@@ -142,7 +142,11 @@ export const teamSections: TeamSection[] = [
         name: "Jaqueline Tijerino Gomez",
         sortSurname: "Tijerino Gomez",
         role: "Social Media & Communications Coordinator",
-        photo: photos.jacky
+        photo: photos.jacky,
+        bio: [
+          { type: "paragraph", children: ["Jaqueline Tijerino Gomez is a San Francisco native and SFLuv’s Social Media & Communications Coordinator. Having spent part of her childhood in the Tenderloin and later worked in the neighborhood, she brings a personal connection to the community. Her background in landscaping and the restaurant industry reflects her hands-on experience caring for spaces and connecting with people."] },
+          { type: "paragraph", children: ["Through video, storytelling, and communications, Jacky shares SFLuv’s work and highlights the residents, volunteers, and local businesses behind it. She also gives her time as a volunteer, supporting her community beyond her communications role. Whether filming neighborhood events or participating herself, she helps connect people with SFLuv’s mission and shares the everyday efforts that make the Tenderloin special."] }
+        ]
       },
       {
         name: "Brooke Barry",
