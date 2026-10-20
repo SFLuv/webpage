@@ -25,14 +25,6 @@ export const donorsContent: AudiencePage = {
   cta: { href: externalLinks.donate, label: "Donate" }
 };
 
-export const communityContent: AudiencePage = {
-  metaDescription:
-    "Support San Francisco businesses that accept SFLuv tokens and help keep money circulating in your own neighborhood.",
-  title: "Community Members",
-  body: "Support local businesses that accept SFLuv tokens. By choosing to spend your money at these establishments, you are helping to strengthen the local economy and ensuring that resources remain within the community. Check our directory of participating businesses and plan your next purchase with them.",
-  cta: { href: externalLinks.getInvolvedForm, label: "Contact Us" }
-};
-
 export const improversContent: AudiencePage = {
   metaDescription:
     "Earn SFLuv tokens for improving your neighborhood, then spend them with participating San Francisco merchants.",

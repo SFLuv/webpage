@@ -41,7 +41,6 @@ export const primaryNav: NavGroup[] = [
     label: "Get Involved",
     items: [
       { href: routes.donors, label: "Donors" },
-      { href: routes.community, label: "Community Members" },
       { href: routes.merchants, label: "Merchants" },
       { href: routes.improvers, label: "Improvers" },
       { href: routes.volunteers, label: "Volunteers" }

@@ -71,7 +71,7 @@ export const homeSplits: SplitSection[] = [
     {
       title: "Our Mission",
       body: "At SFLuv, our mission is to support local merchants and small businesses in underserved neighborhoods through community improvements, civic engagement, and purposeful development of local economies. By harnessing blockchain technology, we are developing a community project management platform that enables small businesses and merchants to identify community needs, cultivate consensus, and direct improvement funds effectively. We further boost economic development by rewarding laborers and others who address these needs with SFLuv tokens, encouraging them to redeem their rewards at participating merchants.",
-      cta: { href: routes.community, label: "Get Involved" },
+      cta: { href: routes.volunteers, label: "Get Involved" },
       image: {
         src: "/assets/wp-content/uploads/2024/06/AdobeStock_599890447-resize.jpg",
         alt: "",
