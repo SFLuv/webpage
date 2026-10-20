@@ -10,23 +10,9 @@ export type MailtoFormConfig = {
   noscriptNote: string;
 };
 
-export const contactFormConfig: MailtoFormConfig = {
-  title: "Contact Us",
-  lead: "Use this form to start an email to the SFLUV team.",
-  recipient: contactEmails.inquiries,
-  topics: [
-    "General Inquiry",
-    "Merchant Onboarding",
-    "Events",
-    "Volunteering",
-    "Donations",
-    "Press or Media",
-    "Other"
-  ],
-  note: `This will open your email app with the message addressed to ${contactEmails.inquiries}.`,
-  noscriptNote: "JavaScript is required for the form button. You can also email us directly at"
-};
-
+// contactFormConfig is gone with the mailto: contact page. The Get in touch
+// page replaced it and keeps its own content in src/content/get-in-touch.ts;
+// leaving a second, unused copy of that copy here is how the two drift apart.
 export const supportFormConfig: MailtoFormConfig = {
   title: "Contact Technical Support",
   lead: "Use this form to start an email to the SFLUV technical support team.",

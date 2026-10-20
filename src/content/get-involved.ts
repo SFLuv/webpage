@@ -30,7 +30,7 @@ export const communityContent: AudiencePage = {
     "Support San Francisco businesses that accept SFLuv tokens and help keep money circulating in your own neighborhood.",
   title: "Community Members",
   body: "Support local businesses that accept SFLuv tokens. By choosing to spend your money at these establishments, you are helping to strengthen the local economy and ensuring that resources remain within the community. Check our directory of participating businesses and plan your next purchase with them.",
-  cta: { href: externalLinks.getInvolvedForm, label: "Contact Us" }
+  cta: { href: externalLinks.getInvolvedForm, label: "Get in touch" }
 };
 
 export const improversContent: AudiencePage = {
@@ -38,7 +38,7 @@ export const improversContent: AudiencePage = {
     "Earn SFLuv tokens for improving your neighborhood, then spend them with participating San Francisco merchants.",
   title: "Improvers",
   body: "Service providers and individual community members can become SFLuv Improvers by performing work in the neighborhood in exchange for SFLuv tokens. This alternative currency is accepted by neighborhood merchants and boosts the local economy by keeping money circulating within it.",
-  cta: { href: externalLinks.getInvolvedForm, label: "Become an SFLuv Improver" }
+  cta: { href: externalLinks.becomeImproverForm, label: "Become an SFLuv Improver" }
 };
 
 export const merchantsContent: AudiencePage = {

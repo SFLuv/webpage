@@ -1,21 +1,13 @@
-import { Container } from "@/components/ui/Container";
-import { MailtoForm } from "@/features/contact/MailtoForm";
-import { contactFormConfig } from "@/content/forms";
-import { pageMetadata } from "@/lib/metadata";
+import { permanentRedirect } from "next/navigation";
 import { routes } from "@/lib/routes";
 
-export const metadata = pageMetadata({
-  title: contactFormConfig.title,
-  description: contactFormConfig.lead,
-  path: routes.contact
-});
-
+/**
+ * /contact is now /get-in-touch.
+ *
+ * Kept as a redirect rather than deleted: the old path is in printed material,
+ * in other people's links and in search results, and a 404 there costs us the
+ * message somebody was trying to send. Permanent, so search engines move on.
+ */
 export default function ContactPage() {
-  return (
-    <section className="py-10 sm:py-16">
-      <Container>
-        <MailtoForm config={contactFormConfig} />
-      </Container>
-    </section>
-  );
+  permanentRedirect(routes.getInTouch);
 }

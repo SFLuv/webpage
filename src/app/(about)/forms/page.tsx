@@ -32,7 +32,7 @@ export default async function FormsPage() {
             <Panel padding="lg" bordered>
               <p className="text-center text-ink-muted">
                 Forms are temporarily unavailable. Please try again in a few minutes, or{" "}
-                <Link className="font-medium text-brand-deep underline underline-offset-2" href={routes.contact}>
+                <Link className="font-medium text-brand-deep underline underline-offset-2" href={routes.getInTouch}>
                   contact us
                 </Link>
                 .

@@ -6,8 +6,12 @@ export const externalLinks = {
   merchantApproval: "https://app.sfluv.org/settings/merchant-approval",
   appDeleteAccount: "https://app.sfluv.org/delete-account",
   donate: "https://donate.stripe.com/14k7uH2ng6Jvg1ydQQ",
-  getInvolvedForm:
-    "https://docs.google.com/forms/d/e/1FAIpQLSe5WDo_iwW2mblew-6RuUQhr9w7Zsc38s3UBCD7_2w-p8NsqA/viewform?usp=sf_link",
+  // The Get Involved Google Form is retired: it sent mail to one inbox with no
+  // record, no reference for the sender and no way to tell whether anyone had
+  // answered. Those buttons now point at our own page, which carries the
+  // subject through so the form arrives knowing what it is about.
+  getInvolvedForm: `${routes.getInTouch}?subject=general`,
+  becomeImproverForm: `${routes.getInTouch}?subject=become-an-improver`,
   treeStewardSignup: "https://forms.gle/5qRpV47YFmQk6PHh9",
   appStore: {
     ios: "https://apps.apple.com/us/app/sfluv/id6762672190",
@@ -76,7 +80,7 @@ export const footerNav: NavGroup[] = [
     label: "Resources",
     items: [
       { href: routes.resources, label: "Learn More" },
-      { href: routes.contact, label: "Contact Us" },
+      { href: routes.getInTouch, label: "Get in touch" },
       { href: routes.support, label: "Support" }
     ]
   },
