@@ -144,7 +144,19 @@ export const teamSections: TeamSection[] = [
         role: "Social Media & Communications Coordinator",
         photo: photos.jacky
       },
-      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator", photo: photos.brooke },
+      {
+        name: "Brooke Barry",
+        role: "Volunteer & Affiliate Coordinator",
+        photo: photos.brooke,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Brooke is passionate about community building and the continued growth of San Francisco’s Tenderloin neighborhood. Before moving to San Francisco, she volunteered on Skid Row and interned with the LA Department of Mental Health, where she developed a passion for psychiatry and supporting people experiencing homelessness. Since moving, Brooke has remained committed to serving this community through volunteering at St. Anthony’s Foundation and joining its Young Professionals Council. She also founded a chapter of Best Buddies at the University of California, San Francisco, promoting inclusion and connection between people with and without intellectual and developmental disabilities. Through these experiences, Brooke has seen the profound impact of a close-knit, supportive community and believes SFLuv offers an exciting opportunity to foster meaningful connections and strengthen the fabric of the Tenderloin community."
+            ]
+          }
+        ]
+      },
       {
         name: "Sanchez O’Leary",
         role: "Software Developer",

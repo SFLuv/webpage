@@ -1,5 +1,4 @@
 import { Container } from "@/components/ui/Container";
-import { PageHeader } from "@/components/ui/PageHeader";
 import { TeamMemberCard } from "@/features/team/TeamMemberCard";
 import { teamSections, type TeamMember } from "@/content/team";
 import { pageMetadata } from "@/lib/metadata";
@@ -33,7 +32,8 @@ const byLastName = (a: TeamMember, b: TeamMember) =>
 export default function OurTeamPage() {
   return (
     <>
-      <PageHeader title="Our Team" />
+      {/* No visible banner (the section headings say it), but the page keeps its one h1 for screen readers and search. */}
+      <h1 className="sr-only">Our Team</h1>
 
       {teamSections.map((section) => {
         const headingId = `team-${section.title.toLowerCase().replace(/\s+/g, "-")}`;
