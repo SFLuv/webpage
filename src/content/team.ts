@@ -8,8 +8,11 @@ export type TeamMember = {
    * `name` (e.g. "Tijerino Gomez", which sorts under T).
    */
   sortSurname?: string;
-  /** Shown first in its section, ahead of the alphabetical order (e.g. the executive director). */
-  leadsSection?: boolean;
+  /**
+   * Places this member ahead of the alphabetical order in their section:
+   * 1 first, 2 second, and so on. Everyone without one follows, by last name.
+   */
+  leadOrder?: number;
   /** Title(s). Optional: some board members are listed by name only. */
   role?: string;
   /** Head shot. Without one the card shows a neutral silhouette. */
@@ -117,7 +120,7 @@ export const teamSections: TeamSection[] = [
     members: [
       {
         name: "Beth O’Leary, CPA/MPA",
-        leadsSection: true,
+        leadOrder: 1,
         role: "Executive Director, Board President and Co-Creator",
         photo: photos.beth,
         bio: bethBio
@@ -162,12 +165,14 @@ export const teamSections: TeamSection[] = [
     members: [
       {
         name: "Beth O’Leary, CPA/MPA",
+        leadOrder: 1,
         role: "President, Executive Director and Co-Creator",
         photo: photos.beth,
         bio: bethBio
       },
       {
         name: "Vipul Vyas, MBA",
+        leadOrder: 2,
         role: "Treasurer and Co-Creator",
         photo: photos.vipul,
         bio: [

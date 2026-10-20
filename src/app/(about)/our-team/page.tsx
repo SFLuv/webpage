@@ -26,9 +26,9 @@ function sortKey(member: TeamMember): string {
   return `${last} ${words.slice(0, -1).join(" ")}`.toLowerCase().replace(/[’'.]/g, "");
 }
 
-/** A member marked `leadsSection` comes first; everyone else by last name. */
+/** Members with a `leadOrder` come first, in that order; everyone else by last name. */
 const byLastName = (a: TeamMember, b: TeamMember) =>
-  Number(Boolean(b.leadsSection)) - Number(Boolean(a.leadsSection)) || sortKey(a).localeCompare(sortKey(b));
+  (a.leadOrder ?? Infinity) - (b.leadOrder ?? Infinity) || sortKey(a).localeCompare(sortKey(b));
 
 export default function OurTeamPage() {
   return (
