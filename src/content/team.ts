@@ -8,6 +8,8 @@ export type TeamMember = {
    * `name` (e.g. "Tijerino Gomez", which sorts under T).
    */
   sortSurname?: string;
+  /** Shown first in its section, ahead of the alphabetical order (e.g. the executive director). */
+  leadsSection?: boolean;
   /** Title(s). Optional: some board members are listed by name only. */
   role?: string;
   /** Head shot. Without one the card shows a neutral silhouette. */
@@ -115,6 +117,7 @@ export const teamSections: TeamSection[] = [
     members: [
       {
         name: "Beth O’Leary, CPA/MPA",
+        leadsSection: true,
         role: "Executive Director, Board President and Co-Creator",
         photo: photos.beth,
         bio: bethBio
