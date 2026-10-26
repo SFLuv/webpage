@@ -49,6 +49,10 @@ export async function POST(request: Request) {
     email,
     name: String(body.name ?? "").trim().slice(0, 200),
     subject: String(body.subject ?? "").trim().slice(0, 200),
+    // Passed through rather than re-derived: this proxy has no business
+    // knowing the subject list, and the backend validates the slug against its
+    // own catalog anyway.
+    subject_slug: String(body.subject_slug ?? "").trim().slice(0, 64),
     message: message.slice(0, MAX_MESSAGE)
   };
 

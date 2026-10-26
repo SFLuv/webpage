@@ -51,8 +51,8 @@ export function GetInTouchFlow({ initialSubject, communityUrl, startOnForm = fal
 
     const form = event.currentTarget;
     const data = new FormData(form);
-    const subjectLabel =
-      getInTouchSubjects.find((option) => option.slug === String(data.get("subject")))?.label ?? "";
+    const subjectSlug = subjectFromSlug(String(data.get("subject")));
+    const subjectLabel = getInTouchSubjects.find((option) => option.slug === subjectSlug)?.label ?? "";
 
     setSending(true);
     setStatus(null);
@@ -65,6 +65,10 @@ export function GetInTouchFlow({ initialSubject, communityUrl, startOnForm = fal
           email: String(data.get("email") ?? "").trim(),
           name: String(data.get("name") ?? "").trim(),
           subject: subjectLabel,
+          // Both, and they do different jobs. The label is what a person
+          // reads on the alert; the slug is what the backend routes on, and it
+          // is stable where the label is editable copy.
+          subject_slug: subjectSlug,
           message: String(data.get("message") ?? "").trim(),
           // Honeypot. Hidden from people, irresistible to bots.
           company: String(data.get("company") ?? "")
@@ -168,7 +172,10 @@ export function GetInTouchFlow({ initialSubject, communityUrl, startOnForm = fal
                   hint: option.hint
                 }))}
                 value={subject}
-                onChange={setSubject}
+                // The Listbox hands back a plain string; narrowed through
+                // subjectFromSlug so an unknown value falls back to the default
+                // rather than being stored as a slug nothing routes on.
+                onChange={(value) => setSubject(subjectFromSlug(value))}
               />
             </Field>
 

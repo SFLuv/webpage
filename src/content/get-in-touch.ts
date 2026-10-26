@@ -1,4 +1,13 @@
 import { contactEmails } from "@/lib/site";
+import {
+  defaultSubjectSlug,
+  getInTouchLink,
+  type GetInTouchSubjectSlug
+} from "@/lib/get-in-touch-link";
+
+// Re-exported so the page and its flow keep importing subjects from one place.
+export { defaultSubjectSlug, getInTouchLink };
+export type { GetInTouchSubjectSlug };
 
 /**
  * The Get in touch page.
@@ -11,7 +20,7 @@ import { contactEmails } from "@/lib/site";
 
 export type GetInTouchSubject = {
   /** Stable slug, used in the ?subject= link so a page can preselect one. */
-  slug: string;
+  slug: GetInTouchSubjectSlug;
   /** What the sender sees, and what we see in the alert. */
   label: string;
   hint?: string;
@@ -38,10 +47,8 @@ export const getInTouchSubjects: GetInTouchSubject[] = [
   { slug: "other", label: "Something else" }
 ];
 
-export const defaultSubjectSlug = "general";
-
 /** Resolves a ?subject= value, falling back rather than failing. */
-export function subjectFromSlug(slug: string | null | undefined): string {
+export function subjectFromSlug(slug: string | null | undefined): GetInTouchSubjectSlug {
   const match = getInTouchSubjects.find((subject) => subject.slug === slug);
   return (match ?? getInTouchSubjects.find((s) => s.slug === defaultSubjectSlug)!).slug;
 }

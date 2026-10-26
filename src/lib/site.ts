@@ -1,4 +1,5 @@
 import { routes } from "./routes";
+import { getInTouchLink } from "./get-in-touch-link";
 
 /** Off-site destinations. Kept together so a moved URL is a one-line change. */
 export const externalLinks = {
@@ -10,8 +11,13 @@ export const externalLinks = {
   // record, no reference for the sender and no way to tell whether anyone had
   // answered. Those buttons now point at our own page, which carries the
   // subject through so the form arrives knowing what it is about.
-  getInvolvedForm: `${routes.getInTouch}?subject=general`,
-  becomeImproverForm: `${routes.getInTouch}?subject=become-an-improver`,
+  getInvolvedForm: getInTouchLink(),
+  becomeImproverForm: getInTouchLink("become-an-improver"),
+  merchantEnquiry: getInTouchLink("merchant-onboarding"),
+  eventsEnquiry: getInTouchLink("events"),
+  donationsEnquiry: getInTouchLink("donations"),
+  pressEnquiry: getInTouchLink("press"),
+  technicalSupport: getInTouchLink("technical-support"),
   treeStewardSignup: "https://forms.gle/5qRpV47YFmQk6PHh9",
   appStore: {
     ios: "https://apps.apple.com/us/app/sfluv/id6762672190",
