@@ -11,10 +11,18 @@ export const metadata = pageMetadata({
 });
 
 /**
- * The community chat invite is read on the server so the link is configured in
- * one place with everything else, rather than being baked into the client
- * bundle — it changes when the group does, and a stale invite in a cached
- * bundle is worse than no invite.
+ * The page is a wrapper now.
+ *
+ * It used to read NEXT_PUBLIC_TELEGRAM_COMMUNITY_URL on the server and hand the
+ * invite down, so the link lived in configuration rather than the client bundle.
+ * The community chat step is gone — pending a link to chat inside the SFLuv app
+ * — so there is nothing left to read. The env var is deliberately left in
+ * .env.example and in the deployment: it costs nothing unset, and the
+ * replacement step will want somewhere to put a link.
+ *
+ * `startOnForm` went with it. The form is the only thing on the page, so it is
+ * always open and arriving with a ?subject= no longer needs to skip a step —
+ * it just preselects the subject.
  */
 export default async function GetInTouchPage({
   searchParams
@@ -22,19 +30,11 @@ export default async function GetInTouchPage({
   searchParams: Promise<{ subject?: string }>;
 }) {
   const { subject } = await searchParams;
-  const communityUrl = process.env.NEXT_PUBLIC_TELEGRAM_COMMUNITY_URL?.trim() ?? "";
 
   return (
     <section className="py-10 sm:py-16">
       <Container>
-        <GetInTouchFlow
-          initialSubject={subject ?? null}
-          communityUrl={communityUrl}
-          // Arriving with a subject means arriving from a button that already
-          // said what this is about, so the form opens rather than making
-          // somebody click again to say the same thing.
-          startOnForm={Boolean(subject)}
-        />
+        <GetInTouchFlow initialSubject={subject ?? null} />
       </Container>
     </section>
   );
