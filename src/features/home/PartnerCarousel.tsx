@@ -28,8 +28,8 @@ function PartnerLogo({ partner, decorative }: { partner: Partner; decorative?: b
       >
         {/*
           A fixed box gives every logo the same footprint. Scaling by height
-          alone would blow up wide wordmarks like INTN.CITY next to logos with
-          tall glyphs, which is why the original banner sized them by width.
+          alone would blow up a 5:1 wordmark like St. Anthony's next to a square
+          badge like City Hope's, which is why these are sized by width.
         */}
         <span className="flex h-10 w-28 items-center justify-center transition-transform duration-200 ease-out group-hover:scale-110 group-focus-visible:scale-110 motion-reduce:transition-none motion-reduce:group-hover:scale-100 sm:h-12 sm:w-36 lg:h-14 lg:w-44">
           <Image
@@ -39,7 +39,7 @@ function PartnerLogo({ partner, decorative }: { partner: Partner; decorative?: b
             width={partner.logo.width}
             height={partner.logo.height}
             // Repeats scroll in from offscreen, where a lazy loader would never
-            // fire. Only three files back the whole strip, so eager is cheap.
+            // fire. Five files back the whole strip, so eager is cheap.
             loading="eager"
           />
         </span>

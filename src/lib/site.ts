@@ -24,9 +24,14 @@ export const externalLinks = {
     android: "https://play.google.com/store/apps/details?id=org.sfluv.wallet&pcampaignid=web_share"
   },
   partners: {
-    intnCity: "https://intn.city",
     citizenWallet: "https://citizenwallet.xyz",
-    celo: "https://celo.org/"
+    celo: "https://celo.org/",
+    // Affiliate partners: organizations running volunteer events that pay in
+    // SFLuv. They hold an approved affiliate role in the admin panel, which is
+    // what distinguishes them from the merchants on the map.
+    glide: "https://www.glide.org/",
+    stAnthonys: "https://www.stanthonysf.org/",
+    cityHope: "https://cityhopesf.org/"
   }
 } as const;
 
@@ -76,9 +81,11 @@ export const footerNav: NavGroup[] = [
   {
     label: "Our Partners",
     items: [
-      { href: externalLinks.partners.intnCity, label: "INTN.CITY" },
+      { href: externalLinks.partners.celo, label: "Celo" },
       { href: externalLinks.partners.citizenWallet, label: "Citizen Wallet" },
-      { href: externalLinks.partners.celo, label: "Celo" }
+      { href: externalLinks.partners.glide, label: "GLIDE" },
+      { href: externalLinks.partners.stAnthonys, label: "St. Anthony's" },
+      { href: externalLinks.partners.cityHope, label: "City Hope" }
     ]
   },
   {

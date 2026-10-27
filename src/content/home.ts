@@ -27,13 +27,13 @@ export const homeContent = {
     title: "Our Partners",
     logos: [
       {
-        name: "INTN.CITY",
-        href: externalLinks.partners.intnCity,
+        name: "Celo",
+        href: externalLinks.partners.celo,
         logo: {
-          src: "/assets/partners/intn-city.png",
-          alt: "INTN.CITY",
-          width: 421,
-          height: 66
+          src: "/assets/partners/celo.png",
+          alt: "Celo",
+          width: 680,
+          height: 166
         }
       },
       {
@@ -47,13 +47,33 @@ export const homeContent = {
         }
       },
       {
-        name: "Celo",
-        href: externalLinks.partners.celo,
+        name: "GLIDE",
+        href: externalLinks.partners.glide,
         logo: {
-          src: "/assets/partners/celo.png",
-          alt: "Celo",
-          width: 680,
-          height: 166
+          src: "/assets/partners/glide.png",
+          alt: "GLIDE",
+          width: 600,
+          height: 464
+        }
+      },
+      {
+        name: "St. Anthony's",
+        href: externalLinks.partners.stAnthonys,
+        logo: {
+          src: "/assets/partners/st-anthonys.png",
+          alt: "St. Anthony's",
+          width: 1412,
+          height: 279
+        }
+      },
+      {
+        name: "City Hope",
+        href: externalLinks.partners.cityHope,
+        logo: {
+          src: "/assets/partners/city-hope.png",
+          alt: "City Hope San Francisco",
+          width: 700,
+          height: 700
         }
       }
     ] satisfies Partner[]
