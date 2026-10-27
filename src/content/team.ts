@@ -3,6 +3,16 @@ import type { ImageAsset } from "./types";
 
 export type TeamMember = {
   name: string;
+  /**
+   * The surname to alphabetize by, when it is not simply the last word of
+   * `name` (e.g. "Tijerino Gomez", which sorts under T).
+   */
+  sortSurname?: string;
+  /**
+   * Places this member ahead of the alphabetical order in their section:
+   * 1 first, 2 second, and so on. Everyone without one follows, by last name.
+   */
+  leadOrder?: number;
   /** Title(s). Optional: some board members are listed by name only. */
   role?: string;
   /** Head shot. Without one the card shows a neutral silhouette. */
@@ -61,6 +71,26 @@ const photos = {
     width: 800,
     height: 800
   },
+  // Marci's is her official POPVOX Foundation head shot (popvox.org/team), cropped square.
+  // Brooke's and Nimisha's are their own profile photos, saved by Sanchez (Oct 2026).
+  brooke: {
+    src: "/assets/team/brooke-barry.jpg",
+    alt: "Brooke Barry",
+    width: 400,
+    height: 400
+  },
+  nimisha: {
+    src: "/assets/team/nimisha-ganesh.jpg",
+    alt: "Nimisha Ganesh",
+    width: 336,
+    height: 336
+  },
+  marci: {
+    src: "/assets/team/marci-harris.jpg",
+    alt: "Marci Harris",
+    width: 800,
+    height: 800
+  },
   jamie: {
     src: "/assets/team/jamie-flanagan-2026.jpg",
     alt: "Jamie Flanagan",
@@ -69,7 +99,7 @@ const photos = {
   },
   jacky: {
     src: "/assets/team/jacky-2026.jpg",
-    alt: "Jacky Gomez-Tijerino",
+    alt: "Jaqueline Tijerino Gomez",
     width: 500,
     height: 667
   }
@@ -90,6 +120,7 @@ export const teamSections: TeamSection[] = [
     members: [
       {
         name: "Beth O’Leary, CPA/MPA",
+        leadOrder: 1,
         role: "Executive Director, Board President and Co-Creator",
         photo: photos.beth,
         bio: bethBio
@@ -102,14 +133,47 @@ export const teamSections: TeamSection[] = [
           {
             type: "paragraph",
             children: [
-              "Born and raised in San Francisco, PJ has an intimate connection with the city and its culture. As a native San Franciscan, he has seen firsthand both the challenges that the city faces, and the resilience of communities that take them on. Alongside his love of innovation and wonder at the possibilities that blockchain unlocks, this understanding led him to the logical conclusion that brought him to work on SFLUV today: We must utilize new technologies to aid our communities and bring about social good for all."
+              "Born and raised in San Francisco, PJ has always loved the city and its people, and he got into building technology because it seemed like a fun way to give back to his community. As SFLuv’s lead software developer, he designs and builds most of the technology behind SFLuv, from the tools our volunteers, improvers, and partner organizations use every day to the systems that keep track of every SFLUV transaction."
             ]
           }
         ]
       },
-      { name: "Jacky Gomez-Tijerino", role: "Social Media & Communications Coordinator", photo: photos.jacky },
-      { name: "Brooke Barry", role: "Volunteer & Affiliate Coordinator" },
-      { name: "Sanchez O’Leary", role: "Software Developer", photo: photos.sanchez }
+      {
+        name: "Jaqueline Tijerino Gomez",
+        sortSurname: "Tijerino Gomez",
+        role: "Social Media & Communications Coordinator",
+        photo: photos.jacky,
+        bio: [
+          { type: "paragraph", children: ["Jaqueline Tijerino Gomez is a San Francisco native and SFLuv’s Social Media & Communications Coordinator. Having spent part of her childhood in the Tenderloin and later worked in the neighborhood, she brings a personal connection to the community. Her background in landscaping and the restaurant industry reflects her hands-on experience caring for spaces and connecting with people."] },
+          { type: "paragraph", children: ["Through video, storytelling, and communications, Jacky shares SFLuv’s work and highlights the residents, volunteers, and local businesses behind it. She also gives her time as a volunteer, supporting her community beyond her communications role. Whether filming neighborhood events or participating herself, she helps connect people with SFLuv’s mission and shares the everyday efforts that make the Tenderloin special."] }
+        ]
+      },
+      {
+        name: "Brooke Barry",
+        role: "Volunteer & Affiliate Coordinator",
+        photo: photos.brooke,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Brooke is passionate about community building and the continued growth of San Francisco’s Tenderloin neighborhood. Before moving to San Francisco, she volunteered on Skid Row and interned with the LA Department of Mental Health, where she developed a passion for psychiatry and supporting people experiencing homelessness. Since moving, Brooke has remained committed to serving this community through volunteering at St. Anthony’s Foundation and joining its Young Professionals Council. She also founded a chapter of Best Buddies at the University of California, San Francisco, promoting inclusion and connection between people with and without intellectual and developmental disabilities. Through these experiences, Brooke has seen the profound impact of a close-knit, supportive community and believes SFLuv offers an exciting opportunity to foster meaningful connections and strengthen the fabric of the Tenderloin community."
+            ]
+          }
+        ]
+      },
+      {
+        name: "Sanchez O’Leary",
+        role: "Software Developer",
+        photo: photos.sanchez,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Sanchez is a software developer at SFLuv, where he works on the tools that residents, merchants, and our staff rely on. He built the first version of the SFLuv merchant map, and he focuses on areas like cashing out SFLUV, tax reporting, and the systems that help SFLuv run day to day. He holds a Bachelor of Arts in Cognitive Systems from the University of British Columbia."
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -117,12 +181,14 @@ export const teamSections: TeamSection[] = [
     members: [
       {
         name: "Beth O’Leary, CPA/MPA",
+        leadOrder: 1,
         role: "President, Executive Director and Co-Creator",
         photo: photos.beth,
         bio: bethBio
       },
       {
         name: "Vipul Vyas, MBA",
+        leadOrder: 2,
         role: "Treasurer and Co-Creator",
         photo: photos.vipul,
         bio: [
@@ -135,8 +201,20 @@ export const teamSections: TeamSection[] = [
         ],
         links: [{ label: "LinkedIn", href: "https://www.linkedin.com/in/vipulnvyas" }]
       },
-      { name: "Marci Harris" },
-      { name: "Jamie Flanagan", photo: photos.jamie }
+      { name: "Marci Harris", photo: photos.marci },
+      {
+        name: "Jamie Flanagan",
+        role: "Board Member",
+        photo: photos.jamie,
+        bio: [
+          {
+            type: "paragraph",
+            children: [
+              "Jamie Flanagan is an experienced people and operations leader in San Francisco hospitality. He served as Managing Partner of the Phoenix Hotel and its restaurant, Chambers Eat + Drink, and as Regional Director of Operations at 31 Madison Management Group. As co-founder of the Tenderloin Business Coalition, he helped organize neighborhood businesses around public safety and conditions affecting commerce. Jamie collaborates with community, civic, and police leadership in connection with San Francisco’s Drug Market Agency Coordination Center and remains active in the neighborhood business community through Alchemy Springs. His experience gives him a practical understanding of the challenges facing neighborhood businesses."
+            ]
+          }
+        ]
+      }
     ]
   },
   {
@@ -155,7 +233,7 @@ export const teamSections: TeamSection[] = [
           }
         ]
       },
-      { name: "Nimisha Ganesh", role: "Strategic Adviser" },
+      { name: "Nimisha Ganesh", role: "Strategic Adviser", photo: photos.nimisha },
       {
         name: "Billy Riggs, PhD",
         role: "Co-Creator and Strategic Adviser",

@@ -25,14 +25,6 @@ export const donorsContent: AudiencePage = {
   cta: { href: externalLinks.donate, label: "Donate" }
 };
 
-export const communityContent: AudiencePage = {
-  metaDescription:
-    "Support San Francisco businesses that accept SFLuv tokens and help keep money circulating in your own neighborhood.",
-  title: "Community Members",
-  body: "Support local businesses that accept SFLuv tokens. By choosing to spend your money at these establishments, you are helping to strengthen the local economy and ensuring that resources remain within the community. Check our directory of participating businesses and plan your next purchase with them.",
-  cta: { href: externalLinks.getInvolvedForm, label: "Get in touch" }
-};
-
 export const improversContent: AudiencePage = {
   metaDescription:
     "Earn SFLuv tokens for improving your neighborhood, then spend them with participating San Francisco merchants.",
@@ -69,17 +61,7 @@ export const merchants: Merchant[] = [
       height: 270
     }
   },
-  {
-    name: "Chamber’s Eat + Drink",
-    description: "SF’s premier lounge, restaurant, and event venue.",
-    href: "https://www.chambers-sf.com/",
-    logo: {
-      src: "/assets/external/pbs.twimg.com/kYMkMFps_400x400-086d5a43e2e9.jpg",
-      alt: "Chamber’s Eat + Drink logo",
-      width: 400,
-      height: 400
-    }
-  },
+
   {
     name: "Estrellita’s",
     description: "Authentic Salvadoran food in the Tenderloin.",
@@ -92,14 +74,25 @@ export const merchants: Merchant[] = [
     }
   },
   {
-    name: "Felafalland",
+    name: "Falafel Land",
     description: "Fresh Mediterranean cuisine served in traditional Yemeni style.",
     href: "https://falafelland.restaurant/",
     logo: {
       src: "/assets/wp-content/uploads/2026/01/Screenshot-2025-11-23-at-1.39.14-PM.jpg",
-      alt: "Felafalland logo",
+      alt: "Falafel Land logo",
       width: 432,
       height: 284
+    }
+  },
+  {
+    name: "Niebla SF",
+    description: "Latin American focused bookstore and coffee shop.",
+    href: "https://www.nieblasf.com/",
+    logo: {
+      src: "/assets/merchants/niebla.png",
+      alt: "Niebla logo",
+      width: 364,
+      height: 378
     }
   },
   {
@@ -126,6 +119,28 @@ export const merchants: Merchant[] = [
     }
   },
   {
+    name: "Sheba Clothing & Gifts",
+    description: "A cultural store celebrating the beauty, heritage, and traditions of the Middle East and North Africa.",
+    href: "https://shebasf.com/",
+    logo: {
+      src: "/assets/merchants/sheba.png",
+      alt: "Sheba Clothing Store logo",
+      width: 300,
+      height: 300
+    }
+  },
+  {
+    name: "SPRO Coffee Lab",
+    description: "Specialty coffee and matcha drinks, serves breakfast and lunch.",
+    href: "https://www.sprocoffeelab.com/",
+    logo: {
+      src: "/assets/merchants/spro.png",
+      alt: "SPRO Coffee Lab logo",
+      width: 500,
+      height: 500
+    }
+  },
+  {
     name: "Tilted Brim",
     description:
       "San Francisco based brand and multi-label retailer, offering high quality clothing and accessories that fuse old-school cool and contemporary fit.",
@@ -140,7 +155,7 @@ export const merchants: Merchant[] = [
   {
     name: "Z Zoul Cafe",
     description: "Authentic Sudanese & Middle Eastern dishes in a casual setting.",
-    href: "https://zzoulcafesanfranciscoonline.com/",
+    href: "https://www.zzoulcafe.com/",
     logo: {
       src: "/assets/wp-content/uploads/2025/12/z-zoul.jpeg",
       alt: "Z Zoul Cafe logo",

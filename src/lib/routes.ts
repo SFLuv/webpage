@@ -14,7 +14,6 @@ export const routes = {
   forms: "/forms",
 
   donors: "/donors",
-  community: "/community",
   merchants: "/merchants",
   improvers: "/improvers",
   volunteers: "/volunteers",
@@ -54,7 +53,6 @@ export const sitemapRoutes: { path: Route; priority: number }[] = [
   { path: routes.financialsAndReports, priority: 0.6 },
   { path: routes.forms, priority: 0.3 },
   { path: routes.donors, priority: 0.8 },
-  { path: routes.community, priority: 0.8 },
   { path: routes.merchants, priority: 0.8 },
   { path: routes.improvers, priority: 0.8 },
   { path: routes.volunteers, priority: 0.8 },

@@ -22,6 +22,11 @@ const nextConfig = {
         : [])
     ]
   },
+  // The Community Members page was taken down on 2026-10-20. Not permanent,
+  // so the page can come back without browsers having cached the redirect.
+  async redirects() {
+    return [{ source: "/community", destination: "/volunteers", permanent: false }];
+  },
   turbopack: {
     root: process.cwd()
   }
