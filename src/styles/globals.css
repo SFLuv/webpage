@@ -310,7 +310,18 @@
   .marquee__track {
     display: flex;
     width: max-content;
-    animation: marquee-scroll 45s linear infinite;
+    /*
+     * 90s, which is half the old speed.
+     *
+     * The animation always travels the same distance — exactly 50% of the
+     * track, see the keyframes below — so the duration is the only thing
+     * setting the speed, and doubling it halves the pace. It is NOT affected by
+     * how many partners there are: adding a sixth widens the track and the
+     * halfway point with it, so the strip covers more ground in the same 90s
+     * and the apparent speed goes up. If the pace needs adjusting again after
+     * a partner is added, this is why.
+     */
+    animation: marquee-scroll 90s linear infinite;
   }
 
   .marquee__group {
