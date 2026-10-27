@@ -1,4 +1,3 @@
-import { contactEmails } from "@/lib/site";
 import {
   defaultSubjectSlug,
   getInTouchLink,
@@ -12,10 +11,19 @@ export type { GetInTouchSubjectSlug };
 /**
  * The Get in touch page.
  *
- * Two ways to reach us, offered in the order most people want them: the
- * community chat first, because most questions are answered there in minutes
- * by someone who has already asked them, and the form second for anything that
- * needs a reply from us specifically.
+ * One way to reach us: this form.
+ *
+ * It offered two others and both were withdrawn. The Telegram community chat
+ * came first on the page, on the reasoning that most questions are answered
+ * there faster than we could; it is gone pending a link to chat inside the
+ * SFLuv app, which is the replacement rather than a removal. And a "prefer
+ * email?" fallback sat under the form, which is now the worse thing to offer
+ * than nothing: that inbox is not actively monitored, so pointing somebody at
+ * it sends their message somewhere nobody is reading.
+ *
+ * The consequence is that this form is load-bearing in a way it was not before.
+ * Anything that weakens it — a failure message that shrugs, a reply address we
+ * do not watch — now has no second route behind it.
  */
 
 export type GetInTouchSubject = {
@@ -55,15 +63,7 @@ export function subjectFromSlug(slug: string | null | undefined): GetInTouchSubj
 
 export const getInTouchContent = {
   title: "Get in touch",
-  lead: "Ask in the community chat, or send us a message and we will reply by email.",
-
-  chat: {
-    heading: "Join the community chat",
-    body: "Our Telegram group is where merchants, improvers and volunteers talk to each other and to us. Most questions get answered there first.",
-    cta: "Open the community chat",
-    /** Shown when no community link is configured, so the step degrades. */
-    unavailable: "The community chat link is not available right now — please use the form below."
-  },
+  lead: "Send us a message and we will reply by email.",
 
   form: {
     heading: "Send us a message",
@@ -73,7 +73,9 @@ export const getInTouchContent = {
     /** The reference is the point of the confirmation, so it leads. */
     success: (reference: string) =>
       `Thank you — your reference is ${reference}. We have emailed you a copy and we will be in touch.`,
-    failure: "We could not send that. Please try again, or email us directly.",
-    fallbackEmail: contactEmails.inquiries
+    // No "or email us directly" any more: that inbox is not monitored, so the
+    // advice would have been to send it where nobody is looking. Asking for a
+    // retry is all we can honestly offer, so it is all this says.
+    failure: "We could not send that. Please check your connection and try again."
   }
 } as const;
