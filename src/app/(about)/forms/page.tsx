@@ -6,6 +6,7 @@ import { ArrowRightIcon } from "@/components/icons";
 import { listOpenForms } from "@/lib/site-content/client";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
+import { externalLinks } from "@/lib/site";
 
 export const metadata = pageMetadata({
   title: "Forms and Waivers",
@@ -32,7 +33,7 @@ export default async function FormsPage() {
             <Panel padding="lg" bordered>
               <p className="text-center text-ink-muted">
                 Forms are temporarily unavailable. Please try again in a few minutes, or{" "}
-                <Link className="font-medium text-brand-deep underline underline-offset-2" href={routes.contact}>
+                <Link className="font-medium text-brand-deep underline underline-offset-2" href={externalLinks.technicalSupport}>
                   contact us
                 </Link>
                 .

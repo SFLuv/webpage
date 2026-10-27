@@ -30,7 +30,7 @@ export const improversContent: AudiencePage = {
     "Earn SFLuv tokens for improving your neighborhood, then spend them with participating San Francisco merchants.",
   title: "Improvers",
   body: "Service providers and individual community members can become SFLuv Improvers by performing work in the neighborhood in exchange for SFLuv tokens. This alternative currency is accepted by neighborhood merchants and boosts the local economy by keeping money circulating within it.",
-  cta: { href: externalLinks.getInvolvedForm, label: "Become an SFLuv Improver" }
+  cta: { href: externalLinks.becomeImproverForm, label: "Become an SFLuv Improver" }
 };
 
 export const merchantsContent: AudiencePage = {

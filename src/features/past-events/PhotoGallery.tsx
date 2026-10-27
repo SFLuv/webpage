@@ -1,17 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DownloadIcon } from "@/components/icons";
 import { RemoteImage } from "@/features/volunteers/RemoteImage";
 import type { PublicGalleryPhoto } from "@/lib/site-content/types";
+import { downloadAllPhotos, downloadPhoto, photoFileName } from "./download";
 
 /**
  * An event's photos as a grid, each with its caption if it has one; clicking a
  * photo opens it full size, with previous and next. Built on the native `<dialog>`, so focus is trapped and Escape
  * closes it without extra code. Arrow keys move between photos.
+ *
+ * Every photo can be downloaded at full size, one at a time from the viewer or
+ * all at once from above the grid, named after the event; see `./download`.
  */
 export function PhotoGallery({ photos, title }: { photos: PublicGalleryPhoto[]; title: string }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState<number | null>(null);
+  const [savingAll, setSavingAll] = useState(false);
 
   const show = useCallback((index: number) => {
     setOpen(index);
@@ -43,8 +49,26 @@ export function PhotoGallery({ photos, title }: { photos: PublicGalleryPhoto[]; 
 
   const current = open === null ? null : photos[open];
 
+  const saveAll = async () => {
+    setSavingAll(true);
+    await downloadAllPhotos(photos, title);
+    setSavingAll(false);
+  };
+
   return (
     <>
+      <div className="mb-5 flex justify-end">
+        <button
+          type="button"
+          onClick={() => void saveAll()}
+          disabled={savingAll}
+          className="inline-flex items-center gap-2 rounded-full border border-ink/15 bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:bg-ink/5 disabled:opacity-70"
+        >
+          <DownloadIcon className="size-4 fill-current" />
+          {savingAll ? "Saving…" : photos.length > 1 ? `Download all ${photos.length} photos` : "Download photo"}
+        </button>
+      </div>
+
       <ul className="columns-1 gap-4 sm:columns-2 lg:columns-3">
         {photos.map((photo, index) => (
           <li key={`${photo.url}-${index}`} className="mb-5 break-inside-avoid">
@@ -91,7 +115,7 @@ export function PhotoGallery({ photos, title }: { photos: PublicGalleryPhoto[]; 
               priority
             />
             {current.caption ? <p className="max-w-2xl text-center text-sm text-white">{current.caption}</p> : null}
-            <figcaption className="flex items-center gap-4 text-sm text-white">
+            <figcaption className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm text-white">
               {photos.length > 1 ? (
                 <button type="button" onClick={() => step(-1)} className="rounded-full bg-white/15 px-3 py-1.5 hover:bg-white/25">
                   ← Previous
@@ -105,6 +129,14 @@ export function PhotoGallery({ photos, title }: { photos: PublicGalleryPhoto[]; 
                   Next →
                 </button>
               ) : null}
+              <button
+                type="button"
+                onClick={() => void downloadPhoto(current.url, photoFileName(title, open!, photos.length))}
+                className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 hover:bg-white/25"
+              >
+                <DownloadIcon className="size-4 fill-current" />
+                Download
+              </button>
               <button type="button" onClick={close} className="rounded-full bg-white/15 px-3 py-1.5 hover:bg-white/25">
                 Close
               </button>

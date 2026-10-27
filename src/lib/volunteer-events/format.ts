@@ -105,7 +105,12 @@ export function formatSpots(
   event: Pick<VolunteerEvent, "spotsRemaining" | "maxParticipants" | "signup">
 ) {
   const { spotsRemaining, maxParticipants } = event;
-  if (event.signup.mode !== "internal") return null;
+  // Internal signups we count ourselves. External ones used to be excluded
+  // outright, because the partner owned the list and we could not know. For a
+  // partner who publishes availability — a Volunteers for Salesforce site — the
+  // backend now fills these in from their own page, so the test is simply
+  // whether we have a number, not where it came from.
+  if (event.signup.mode === "none") return null;
   if (spotsRemaining === null) return null;
 
   if (spotsRemaining <= 0) return "Full";

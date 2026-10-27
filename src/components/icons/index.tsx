@@ -28,6 +28,14 @@ export function CloseIcon({ className }: IconProps) {
   );
 }
 
+export function DownloadIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="M12 3v10.19l3.47-3.47 1.06 1.06L12 15.31l-4.53-4.53 1.06-1.06L12 13.19V3zM4.5 19.5v-4h1.5v2.5h12V15.5h1.5v4z" />
+    </svg>
+  );
+}
+
 export function ChevronDownIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">

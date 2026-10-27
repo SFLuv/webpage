@@ -1,4 +1,5 @@
 import { routes } from "./routes";
+import { getInTouchLink } from "./get-in-touch-link";
 
 /** Off-site destinations. Kept together so a moved URL is a one-line change. */
 export const externalLinks = {
@@ -6,17 +7,31 @@ export const externalLinks = {
   merchantApproval: "https://app.sfluv.org/settings/merchant-approval",
   appDeleteAccount: "https://app.sfluv.org/delete-account",
   donate: "https://donate.stripe.com/14k7uH2ng6Jvg1ydQQ",
-  getInvolvedForm:
-    "https://docs.google.com/forms/d/e/1FAIpQLSe5WDo_iwW2mblew-6RuUQhr9w7Zsc38s3UBCD7_2w-p8NsqA/viewform?usp=sf_link",
+  // The Get Involved Google Form is retired: it sent mail to one inbox with no
+  // record, no reference for the sender and no way to tell whether anyone had
+  // answered. Those buttons now point at our own page, which carries the
+  // subject through so the form arrives knowing what it is about.
+  getInvolvedForm: getInTouchLink(),
+  becomeImproverForm: getInTouchLink("become-an-improver"),
+  merchantEnquiry: getInTouchLink("merchant-onboarding"),
+  eventsEnquiry: getInTouchLink("events"),
+  donationsEnquiry: getInTouchLink("donations"),
+  pressEnquiry: getInTouchLink("press"),
+  technicalSupport: getInTouchLink("technical-support"),
   treeStewardSignup: "https://forms.gle/5qRpV47YFmQk6PHh9",
   appStore: {
     ios: "https://apps.apple.com/us/app/sfluv/id6762672190",
     android: "https://play.google.com/store/apps/details?id=org.sfluv.wallet&pcampaignid=web_share"
   },
   partners: {
-    intnCity: "https://intn.city",
     citizenWallet: "https://citizenwallet.xyz",
-    celo: "https://celo.org/"
+    celo: "https://celo.org/",
+    // Affiliate partners: organizations running volunteer events that pay in
+    // SFLuv. They hold an approved affiliate role in the admin panel, which is
+    // what distinguishes them from the merchants on the map.
+    glide: "https://www.glide.org/",
+    stAnthonys: "https://www.stanthonysf.org/",
+    cityHope: "https://cityhopesf.org/"
   }
 } as const;
 
@@ -66,16 +81,18 @@ export const footerNav: NavGroup[] = [
   {
     label: "Our Partners",
     items: [
-      { href: externalLinks.partners.intnCity, label: "INTN.CITY" },
+      { href: externalLinks.partners.celo, label: "Celo" },
       { href: externalLinks.partners.citizenWallet, label: "Citizen Wallet" },
-      { href: externalLinks.partners.celo, label: "Celo" }
+      { href: externalLinks.partners.glide, label: "GLIDE" },
+      { href: externalLinks.partners.stAnthonys, label: "St. Anthony's" },
+      { href: externalLinks.partners.cityHope, label: "City Hope" }
     ]
   },
   {
     label: "Resources",
     items: [
       { href: routes.resources, label: "Learn More" },
-      { href: routes.contact, label: "Contact Us" },
+      { href: routes.getInTouch, label: "Get in touch" },
       { href: routes.support, label: "Support" }
     ]
   },
