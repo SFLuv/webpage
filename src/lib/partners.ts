@@ -42,6 +42,18 @@ function mapPartner(raw: ApiPartner): Partner | null {
  * Falls back to the built-in list when the API is unreachable or has no
  * partners configured yet — a backend hiccup must never blank out a section of
  * the marketing site.
+ *
+ * ── Which source is live ─────────────────────────────────────────────────────
+ *
+ * As of Oct 2026: the FALLBACK. Production's `partners` table has no rows that
+ * survive `mapPartner`, so `partners.length` is 0 and `homeContent.partners`
+ * is what renders. Editing that list is therefore how the live banner changes
+ * today — the admin panel does not need touching.
+ *
+ * Worth stating because it is not obvious from here and is easy to get
+ * backwards: reading this function alone suggests the API is authoritative, and
+ * it only becomes so once somebody adds a row with a name, a link AND a logo.
+ * The day that happens, the built-in list stops being what visitors see.
  */
 export async function getPartners(): Promise<Partner[]> {
   if (!API_BASE_URL) return homeContent.partners.logos;
