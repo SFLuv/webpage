@@ -27,6 +27,7 @@ const extraTitles: Partial<Record<string, string>> = {
   [routes.treeStewardProgram]: "Tree Steward Program",
   [routes.roadmap]: "Roadmap",
   [routes.quiz]: "SFLUV Quiz",
+  [routes.quizEs]: "SFLUV Quiz (Español)",
   [routes.deleteAccount]: "Delete Your Account"
 };
 

@@ -7,7 +7,7 @@ import { Disclosure } from "@/components/ui/Disclosure";
 import { Panel } from "@/components/ui/Panel";
 import { StatusMessage, type Status } from "@/components/ui/StatusMessage";
 import { cn } from "@/lib/cn";
-import { quizContent, quizSections, type QuizQuestion } from "@/content/quiz";
+import type { QuizContent, QuizQuestion } from "@/content/quiz";
 
 type QuestionState = {
   selected: string[];
@@ -15,9 +15,7 @@ type QuestionState = {
   solved: boolean;
 };
 
-const allQuestions = quizSections.flatMap((section) => section.questions);
-
-function initialState(): Record<number, QuestionState> {
+function initialState(allQuestions: QuizQuestion[]): Record<number, QuestionState> {
   return Object.fromEntries(
     allQuestions.map((question) => [question.number, { selected: [], feedback: null, solved: false }])
   );
@@ -37,10 +35,13 @@ function isCorrect(question: QuizQuestion, selected: string[]) {
  *
  * Each question must be answered correctly before the quiz can be submitted,
  * matching the original: wrong answers can be retried, correct ones lock.
+ * All text comes from `content`, so the same quiz runs in each language.
  */
-export function Quiz() {
+export function Quiz({ content }: { content: QuizContent }) {
+  const { sections: quizSections, ui } = content;
+  const allQuestions = quizSections.flatMap((section) => section.questions);
   const [sectionIndex, setSectionIndex] = useState(0);
-  const [state, setState] = useState<Record<number, QuestionState>>(initialState);
+  const [state, setState] = useState<Record<number, QuestionState>>(() => initialState(allQuestions));
   const [globalFeedback, setGlobalFeedback] = useState<Status>(null);
   const [finished, setFinished] = useState(false);
 
@@ -79,7 +80,7 @@ export function Quiz() {
           ...previous,
           [question.number]: {
             ...current,
-            feedback: { tone: "error", message: "Please choose an option before submitting." }
+            feedback: { tone: "error", message: ui.chooseFirst }
           }
         };
       }
@@ -90,7 +91,7 @@ export function Quiz() {
           [question.number]: {
             ...current,
             solved: true,
-            feedback: { tone: "success", message: "Correct." }
+            feedback: { tone: "success", message: ui.correct }
           }
         };
       }
@@ -99,7 +100,7 @@ export function Quiz() {
         ...previous,
         [question.number]: {
           ...current,
-          feedback: { tone: "error", message: "Not quite. Try again." }
+          feedback: { tone: "error", message: ui.tryAgain }
         }
       };
     });
@@ -120,10 +121,12 @@ export function Quiz() {
     const blockers = unanswered.length ? unanswered : incorrect;
 
     if (blockers.length) {
-      const verb = unanswered.length ? "finish" : "correct";
       setGlobalFeedback({
         tone: "error",
-        message: `Please ${verb} questions ${blockers.map((question) => question.number).join(", ")} before submitting.`
+        message: (unanswered.length ? ui.blockedUnanswered : ui.blockedIncorrect).replace(
+          "{numbers}",
+          blockers.map((question) => question.number).join(", ")
+        )
       });
 
       // The first blocker is often in an earlier section, which is not mounted.
@@ -143,12 +146,12 @@ export function Quiz() {
       return;
     }
 
-    setGlobalFeedback({ tone: "success", message: "All answers are correct. Submitting quiz…" });
+    setGlobalFeedback({ tone: "success", message: ui.allCorrect });
     setState((previous) =>
       Object.fromEntries(
         Object.entries(previous).map(([key, value]) => [
           key,
-          { ...value, solved: true, feedback: { tone: "success", message: "Correct." } as Status }
+          { ...value, solved: true, feedback: { tone: "success", message: ui.correct } as Status }
         ])
       )
     );
@@ -197,7 +200,7 @@ export function Quiz() {
 
                   <fieldset className="mt-3 flex flex-col gap-2" disabled={questionState.solved}>
                     {question.answerType === "multiple" ? (
-                      <legend className="mb-1 text-sm text-ink-subtle">Select all that apply.</legend>
+                      <legend className="mb-1 text-sm text-ink-subtle">{ui.selectAll}</legend>
                     ) : null}
 
                     {question.options.map((option) => (
@@ -219,7 +222,7 @@ export function Quiz() {
 
                   <div className="mt-4 flex flex-wrap items-center gap-3">
                     <Button size="sm" onClick={() => submitQuestion(question)} disabled={questionState.solved}>
-                      Submit Answer
+                      {ui.submitAnswer}
                     </Button>
                     <StatusMessage status={questionState.feedback} />
                   </div>
@@ -234,16 +237,16 @@ export function Quiz() {
           <div className="mt-8 flex items-center justify-between gap-3">
             {sectionIndex > 0 ? (
               <Button variant="secondary" onClick={() => goToSection(sectionIndex - 1)}>
-                Previous Section
+                {ui.previousSection}
               </Button>
             ) : (
               <span />
             )}
 
             {isLastSection ? (
-              <Button onClick={submitQuiz}>Submit Quiz</Button>
+              <Button onClick={submitQuiz}>{ui.submitQuiz}</Button>
             ) : (
-              <Button onClick={() => goToSection(sectionIndex + 1)}>Next Section</Button>
+              <Button onClick={() => goToSection(sectionIndex + 1)}>{ui.nextSection}</Button>
             )}
           </div>
         </div>
@@ -252,14 +255,14 @@ export function Quiz() {
       {finished ? (
         <div ref={finishRef} className="scroll-mt-24">
           <Panel padding="lg" bordered className="text-center">
-            <h3 className="text-title font-medium">{quizContent.finish.title}</h3>
-            <p className="mt-2 text-ink-muted">{quizContent.finish.body}</p>
+            <h3 className="text-title font-medium">{content.finish.title}</h3>
+            <p className="mt-2 text-ink-muted">{content.finish.body}</p>
             <Image
               className="mx-auto mt-6 h-auto w-32"
-              src={quizContent.finish.logo.src}
-              alt={quizContent.finish.logo.alt}
-              width={quizContent.finish.logo.width}
-              height={quizContent.finish.logo.height}
+              src={content.finish.logo.src}
+              alt={content.finish.logo.alt}
+              width={content.finish.logo.width}
+              height={content.finish.logo.height}
             />
           </Panel>
         </div>

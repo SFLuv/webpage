@@ -1,3 +1,5 @@
+import type { ImageAsset } from "./types";
+
 export type QuizOption = {
   /** Answer key as published (A, B, C, …). */
   value: string;
@@ -26,22 +28,42 @@ export type QuizSection = {
   questions: QuizQuestion[];
 };
 
-export const quizContent = {
-  title: "SFLuv Community Currency Quiz",
-  subtitle: "Grow the Luv Edition",
-  finish: {
-    title: "Congratulations, you’ve finished the “About SFLUV” quiz!",
-    body: "Please present this to your SFLUV representative to recieve your Gratitude Perks.",
-    logo: {
-      src: "/assets/wp-content/uploads/2024/06/cropped-SFLUV-Currency-Symbol-Logo-1.png",
-      alt: "SFLUV logo",
-      width: 512,
-      height: 512
-    }
-  }
+/** Every piece of quiz text that is not a question, so the quiz can run in more than one language. */
+export type QuizUi = {
+  selectAll: string;
+  submitAnswer: string;
+  chooseFirst: string;
+  correct: string;
+  tryAgain: string;
+  previousSection: string;
+  nextSection: string;
+  submitQuiz: string;
+  allCorrect: string;
+  /** Shown when some questions are unanswered / wrong; "{numbers}" becomes the question numbers. */
+  blockedUnanswered: string;
+  blockedIncorrect: string;
+  /** Link to the same quiz in the other language. */
+  otherLanguage: { href: string; label: string };
 };
 
-export const quizSections: QuizSection[] = [
+export type QuizContent = {
+  title: string;
+  subtitle: string;
+  /** Short line for search results and link previews. */
+  description: string;
+  finish: { title: string; body: string; logo: ImageAsset };
+  ui: QuizUi;
+  sections: QuizSection[];
+};
+
+const finishLogo: ImageAsset = {
+  src: "/assets/wp-content/uploads/2024/06/cropped-SFLUV-Currency-Symbol-Logo-1.png",
+  alt: "SFLUV logo",
+  width: 512,
+  height: 512
+};
+
+const sectionsEn: QuizSection[] = [
   {
     id: "tenderloin",
     title: "Section 1: The Tenderloin",
@@ -349,3 +371,29 @@ export const quizSections: QuizSection[] = [
     ]
   }
 ];
+
+export const quizEn: QuizContent = {
+  title: "SFLuv Community Currency Quiz",
+  subtitle: "Grow the Luv Edition",
+  description: "Grow the Luv Edition — learn about the Tenderloin, community finance, and SFLuv.",
+  finish: {
+    title: "Congratulations, you’ve finished the “About SFLUV” quiz!",
+    body: "Please present this to your SFLUV representative to recieve your Gratitude Perks.",
+    logo: finishLogo
+  },
+  ui: {
+    selectAll: "Select all that apply.",
+    submitAnswer: "Submit Answer",
+    chooseFirst: "Please choose an option before submitting.",
+    correct: "Correct.",
+    tryAgain: "Not quite. Try again.",
+    previousSection: "Previous Section",
+    nextSection: "Next Section",
+    submitQuiz: "Submit Quiz",
+    allCorrect: "All answers are correct. Submitting quiz…",
+    blockedUnanswered: "Please finish questions {numbers} before submitting.",
+    blockedIncorrect: "Please correct questions {numbers} before submitting.",
+    otherLanguage: { href: "/sfluv-quiz/es", label: "Ver en español" }
+  },
+  sections: sectionsEn
+};

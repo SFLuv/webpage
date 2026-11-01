@@ -1,26 +1,14 @@
-import { Container } from "@/components/ui/Container";
-import { PageHeader } from "@/components/ui/PageHeader";
-import { Quiz } from "@/features/quiz/Quiz";
-import { quizContent } from "@/content/quiz";
+import { quizEn } from "@/content/quiz";
+import { QuizPage } from "@/features/quiz/QuizPage";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
 
 export const metadata = pageMetadata({
-  title: quizContent.title,
-  description: `${quizContent.subtitle} — learn about the Tenderloin, community finance, and SFLuv.`,
+  title: quizEn.title,
+  description: quizEn.description,
   path: routes.quiz
 });
 
-export default function QuizPage() {
-  return (
-    <>
-      <PageHeader title={quizContent.title} lead={quizContent.subtitle} />
-
-      <section className="py-8">
-        <Container>
-          <Quiz />
-        </Container>
-      </section>
-    </>
-  );
+export default function EnglishQuizPage() {
+  return <QuizPage content={quizEn} lang="en" />;
 }

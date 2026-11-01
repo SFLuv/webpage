@@ -22,6 +22,7 @@ export const routes = {
   resources: "/resources",
   roadmap: "/roadmap",
   quiz: "/sfluv-quiz",
+  quizEs: "/sfluv-quiz/es",
 
   /** The old /contact path redirects here; see (support)/contact/page.tsx. */
   getInTouch: "/get-in-touch",
@@ -60,6 +61,7 @@ export const sitemapRoutes: { path: Route; priority: number }[] = [
   { path: routes.resources, priority: 0.5 },
   { path: routes.roadmap, priority: 0.3 },
   { path: routes.quiz, priority: 0.4 },
+  { path: routes.quizEs, priority: 0.4 },
   { path: routes.getInTouch, priority: 0.6 },
   { path: routes.support, priority: 0.5 },
   { path: routes.deleteAccount, priority: 0.3 },
