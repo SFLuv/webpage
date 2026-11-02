@@ -42,8 +42,6 @@ export type QuizUi = {
   /** Shown when some questions are unanswered / wrong; "{numbers}" becomes the question numbers. */
   blockedUnanswered: string;
   blockedIncorrect: string;
-  /** Link to the same quiz in the other language. */
-  otherLanguage: { href: string; label: string };
 };
 
 export type QuizContent = {
@@ -392,8 +390,7 @@ export const quizEn: QuizContent = {
     submitQuiz: "Submit Quiz",
     allCorrect: "All answers are correct. Submitting quiz…",
     blockedUnanswered: "Please finish questions {numbers} before submitting.",
-    blockedIncorrect: "Please correct questions {numbers} before submitting.",
-    otherLanguage: { href: "/sfluv-quiz/es", label: "Ver en español" }
+    blockedIncorrect: "Please correct questions {numbers} before submitting."
   },
   sections: sectionsEn
 };

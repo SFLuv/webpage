@@ -338,8 +338,7 @@ export const quizEs: QuizContent = {
     submitQuiz: "Enviar cuestionario",
     allCorrect: "Todas las respuestas son correctas. Enviando el cuestionario…",
     blockedUnanswered: "Por favor, responda las preguntas {numbers} antes de enviar.",
-    blockedIncorrect: "Por favor, corrija las preguntas {numbers} antes de enviar.",
-    otherLanguage: { href: "/sfluv-quiz", label: "View in English" }
+    blockedIncorrect: "Por favor, corrija las preguntas {numbers} antes de enviar."
   },
   sections: sectionsEs
 };

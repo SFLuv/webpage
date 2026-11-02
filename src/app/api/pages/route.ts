@@ -28,6 +28,7 @@ const extraTitles: Partial<Record<string, string>> = {
   [routes.roadmap]: "Roadmap",
   [routes.quiz]: "SFLUV Quiz",
   [routes.quizEs]: "SFLUV Quiz (Español)",
+  [routes.quizZh]: "SFLUV Quiz (中文)",
   [routes.deleteAccount]: "Delete Your Account"
 };
 
