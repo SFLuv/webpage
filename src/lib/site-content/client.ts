@@ -1,3 +1,4 @@
+import { isLiveEventGallery } from "@/content/event-galleries";
 import { fiscalYears, annualImpactReports } from "@/content/financials";
 import { archivedEvents, type ArchivedEvent } from "@/content/volunteers";
 import { spotlightSlides } from "@/content/spotlight";
@@ -133,7 +134,7 @@ function fromShipped(event: ArchivedEvent): PublicPastEvent {
  */
 export async function listPastEvents(): Promise<PublicPastEvent[] | null> {
   const result = await get<{ events: PublicPastEvent[] }>("/site/past-events");
-  if (result.ok) return result.data.events;
+  if (result.ok) return result.data.events.filter((event) => !isLiveEventGallery(event.slug));
   if (result.status === 404 || !API_BASE_URL) return archivedEvents.map(fromShipped);
   return null;
 }

@@ -3,12 +3,15 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
+import { liveEventGallery } from "@/content/event-galleries";
+import { PhotoGallery } from "@/features/past-events/PhotoGallery";
 import { CoverPhotoGallery } from "@/features/volunteers/CoverPhotoGallery";
 import { EventJsonLd } from "@/features/volunteers/EventJsonLd";
 import { EventSpotsProvider } from "@/features/volunteers/EventSpotsContext";
 import { EventTime } from "@/features/volunteers/EventTime";
 import { OrganizerBadge } from "@/features/volunteers/OrganizerBadge";
 import { SignupPanel } from "@/features/volunteers/SignupPanel";
+import { getPastEvent } from "@/lib/site-content/client";
 import { getEvent } from "@/lib/volunteer-events/client";
 import { formatReward } from "@/lib/volunteer-events/format";
 import { eventPath, parseEventId } from "@/lib/volunteer-events/map";
@@ -64,6 +67,11 @@ export default async function VolunteerEventPage({ params }: PageProps) {
   if (`/volunteers/${eventSlug}` !== canonical) redirect(canonical);
 
   const reward = formatReward(event.rewardAmountSfluv);
+
+  // Photos from earlier occurrences, for a recurring event that has a gallery.
+  const gallery = liveEventGallery(event.seriesId);
+  const galleryLookup = gallery ? await getPastEvent(gallery.slug) : null;
+  const galleryPhotos = galleryLookup?.state === "found" ? (galleryLookup.event.photos ?? []) : [];
 
   return (
     <article className="py-8 sm:py-12">
@@ -167,6 +175,15 @@ export default async function VolunteerEventPage({ params }: PageProps) {
             </div>
           </div>
         </EventSpotsProvider>
+
+        {gallery && galleryPhotos.length > 0 ? (
+          <section className="mt-12" aria-labelledby="event-gallery-heading">
+            <h2 id="event-gallery-heading" className="mb-6 text-title font-medium">
+              {gallery.heading}
+            </h2>
+            <PhotoGallery photos={galleryPhotos} title={event.title} />
+          </section>
+        ) : null}
       </Container>
     </article>
   );
