@@ -3,7 +3,6 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
-import { liveEventGallery } from "@/content/event-galleries";
 import { PhotoGallery } from "@/features/past-events/PhotoGallery";
 import { CoverPhotoGallery } from "@/features/volunteers/CoverPhotoGallery";
 import { EventJsonLd } from "@/features/volunteers/EventJsonLd";
@@ -11,7 +10,7 @@ import { EventSpotsProvider } from "@/features/volunteers/EventSpotsContext";
 import { EventTime } from "@/features/volunteers/EventTime";
 import { OrganizerBadge } from "@/features/volunteers/OrganizerBadge";
 import { SignupPanel } from "@/features/volunteers/SignupPanel";
-import { getPastEvent } from "@/lib/site-content/client";
+import { getEventGallery } from "@/lib/site-content/client";
 import { getEvent } from "@/lib/volunteer-events/client";
 import { formatReward } from "@/lib/volunteer-events/format";
 import { eventPath, parseEventId } from "@/lib/volunteer-events/map";
@@ -68,10 +67,9 @@ export default async function VolunteerEventPage({ params }: PageProps) {
 
   const reward = formatReward(event.rewardAmountSfluv);
 
-  // Photos from earlier occurrences, for a recurring event that has a gallery.
-  const gallery = liveEventGallery(event.seriesId);
-  const galleryLookup = gallery ? await getPastEvent(gallery.slug) : null;
-  const galleryPhotos = galleryLookup?.state === "found" ? (galleryLookup.event.photos ?? []) : [];
+  // Photos of what the event has looked like, if it has a gallery.
+  const gallery = await getEventGallery(event.id);
+  const galleryPhotos = gallery?.photos ?? [];
 
   return (
     <article className="py-8 sm:py-12">
@@ -176,10 +174,10 @@ export default async function VolunteerEventPage({ params }: PageProps) {
           </div>
         </EventSpotsProvider>
 
-        {gallery && galleryPhotos.length > 0 ? (
+        {galleryPhotos.length > 0 ? (
           <section className="mt-12" aria-labelledby="event-gallery-heading">
             <h2 id="event-gallery-heading" className="mb-6 text-title font-medium">
-              {gallery.heading}
+              Photos from past events
             </h2>
             <PhotoGallery photos={galleryPhotos} title={event.title} />
           </section>

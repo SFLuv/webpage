@@ -1,4 +1,3 @@
-import { isLiveEventGallery } from "@/content/event-galleries";
 import { fiscalYears, annualImpactReports } from "@/content/financials";
 import { archivedEvents, type ArchivedEvent } from "@/content/volunteers";
 import { spotlightSlides } from "@/content/spotlight";
@@ -134,7 +133,7 @@ function fromShipped(event: ArchivedEvent): PublicPastEvent {
  */
 export async function listPastEvents(): Promise<PublicPastEvent[] | null> {
   const result = await get<{ events: PublicPastEvent[] }>("/site/past-events");
-  if (result.ok) return result.data.events.filter((event) => !isLiveEventGallery(event.slug));
+  if (result.ok) return result.data.events;
   if (result.status === 404 || !API_BASE_URL) return archivedEvents.map(fromShipped);
   return null;
 }
@@ -155,6 +154,15 @@ export async function getPastEvent(slug: string): Promise<PastEventLookup> {
     return shipped ? { state: "found", event: shipped } : { state: "missing" };
   }
   return { state: "unavailable" };
+}
+
+/**
+ * The gallery shown under a live volunteer event. Null when it has none, or
+ * when the backend can't say: the event page is fine without one.
+ */
+export async function getEventGallery(eventId: string): Promise<PublicPastEvent | null> {
+  const result = await get<PublicPastEvent>(`/site/event-galleries/${encodeURIComponent(eventId)}`);
+  return result.ok ? result.data : null;
 }
 
 async function backendHasPastEvents(): Promise<boolean> {
