@@ -36,7 +36,18 @@ export function CoverPhotoGallery({ photos, title, className }: CoverPhotoGaller
     setIndex((value) => (value + delta + photos.length) % photos.length);
 
   return (
-    <div className={cn("relative", className)}>
+    <div className={cn("relative overflow-hidden rounded-panel", className)}>
+      {/* A blurred copy fills whatever space the photo's own shape leaves empty. */}
+      <RemoteImage
+        src={current.url}
+        alt=""
+        width={current.width}
+        height={current.height}
+        sizes="(max-width: 1024px) 100vw, 560px"
+        priority
+        className="absolute inset-0 h-full w-full scale-110 object-cover blur-xl"
+      />
+      {/* Shown whole, never cropped: covers often have a title across them. */}
       <RemoteImage
         src={current.url}
         alt={`${title} — photo ${index + 1} of ${photos.length}`}
@@ -44,7 +55,7 @@ export function CoverPhotoGallery({ photos, title, className }: CoverPhotoGaller
         height={current.height}
         sizes="(max-width: 1024px) 100vw, 560px"
         priority
-        className="h-full w-full rounded-panel object-cover"
+        className="relative h-full w-full !bg-transparent object-contain"
       />
 
       {multiple ? (
