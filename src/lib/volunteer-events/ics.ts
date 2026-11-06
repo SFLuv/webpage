@@ -89,7 +89,7 @@ export function buildEventIcs(event: VolunteerEvent, now: Date) {
       ? [`GEO:${event.location.lat};${event.location.lng}`]
       : []),
     `URL:${url}`,
-    `ORGANIZER;CN=${escapeText(event.organizer.name)}:MAILTO:inquiries@sfluv.org`,
+    `ORGANIZER;CN=${escapeText(event.organizer.name)}:MAILTO:support@sfluv.org`,
     `STATUS:${event.status === "cancelled" ? "CANCELLED" : "CONFIRMED"}`,
     "END:VEVENT",
     "END:VCALENDAR"

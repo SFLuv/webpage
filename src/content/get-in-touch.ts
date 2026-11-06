@@ -18,8 +18,8 @@ export type { GetInTouchSubjectSlug };
  * there faster than we could; it is gone pending a link to chat inside the
  * SFLuv app, which is the replacement rather than a removal. And a "prefer
  * email?" fallback sat under the form, which is now the worse thing to offer
- * than nothing: that inbox is not actively monitored, so pointing somebody at
- * it sends their message somewhere nobody is reading.
+ * than nothing: only the form can tell the right people a message arrived, so
+ * mail sent straight to the inbox can sit unnoticed.
  *
  * The consequence is that this form is load-bearing in a way it was not before.
  * Anything that weakens it — a failure message that shrugs, a reply address we
@@ -52,6 +52,7 @@ export const getInTouchSubjects: GetInTouchSubject[] = [
   { slug: "donations", label: "Donations" },
   { slug: "press", label: "Press or media" },
   { slug: "technical-support", label: "Technical support" },
+  { slug: "w9", label: "W-9 and tax questions" },
   { slug: "other", label: "Something else" }
 ];
 
@@ -73,9 +74,8 @@ export const getInTouchContent = {
     /** The reference is the point of the confirmation, so it leads. */
     success: (reference: string) =>
       `Thank you — your reference is ${reference}. We have emailed you a copy and we will be in touch.`,
-    // No "or email us directly" any more: that inbox is not monitored, so the
-    // advice would have been to send it where nobody is looking. Asking for a
-    // retry is all we can honestly offer, so it is all this says.
+    // No "or email us directly": mail sent to the inbox notifies nobody, so a
+    // retry is the better thing to ask for.
     failure: "We could not send that. Please check your connection and try again."
   }
 } as const;

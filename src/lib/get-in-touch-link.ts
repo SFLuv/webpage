@@ -22,6 +22,8 @@ export type GetInTouchSubjectSlug =
   | "donations"
   | "press"
   | "technical-support"
+  | "w9"
+  | "account-deletion"
   | "other";
 
 export const defaultSubjectSlug: GetInTouchSubjectSlug = "general";
