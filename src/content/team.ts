@@ -57,8 +57,8 @@ const photos = {
     width: 860,
     height: 999
   },
-  // Jacky's head shot is from the 2025–2026 Annual Impact Report; PJ's and Sanchez's are the
-  // originals behind it, cropped square. Jamie's was sent by Beth in Oct 2026, cropped square.
+  // PJ's and Sanchez's head shots are the originals behind the 2025–2026 Annual Impact Report's,
+  // cropped square. Jamie's was sent by Beth in Oct 2026, and Jacky chose hers in Nov 2026, both cropped square.
   pj: {
     src: "/assets/team/pj-oleary-2026.jpg",
     alt: "PJ O’Leary",
@@ -98,10 +98,10 @@ const photos = {
     height: 800
   },
   jacky: {
-    src: "/assets/team/jacky-2026.jpg",
+    src: "/assets/team/jacky-tijerino-gomez.jpg",
     alt: "Jaqueline Tijerino Gomez",
-    width: 500,
-    height: 667
+    width: 800,
+    height: 800
   }
 } satisfies Record<string, ImageAsset>;
 
