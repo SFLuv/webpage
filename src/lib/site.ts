@@ -36,9 +36,7 @@ export const externalLinks = {
 } as const;
 
 export const contactEmails = {
-  inquiries: "inquiries@sfluv.org",
-  support: "techsupport@sfluv.org",
-  accountDeletion: "techsupport@sfluv.org"
+  support: "support@sfluv.org"
 } as const;
 
 export const socialLinks = [

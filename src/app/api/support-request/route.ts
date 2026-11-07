@@ -66,7 +66,7 @@ export async function POST(request: Request) {
   if (!API_BASE_URL) {
     console.error("[support-request] SFLUV_API_BASE_URL is not set; a message was lost");
     return NextResponse.json(
-      { error: "We could not send that right now. Please email us directly." },
+      { error: "We could not send that right now. Please email support@sfluv.org." },
       { status: 503 }
     );
   }
@@ -98,7 +98,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[support-request] upstream failed", error);
     return NextResponse.json(
-      { error: "We could not send that right now. Please email us directly." },
+      { error: "We could not send that right now. Please email support@sfluv.org." },
       { status: 502 }
     );
   }

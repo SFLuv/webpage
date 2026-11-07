@@ -1,3 +1,4 @@
+import { getInTouchLink } from "@/lib/get-in-touch-link";
 import { contactEmails, externalLinks } from "@/lib/site";
 import { routes } from "@/lib/routes";
 
@@ -66,7 +67,7 @@ export const deleteAccountContent = {
     loginMethods: ["Google", "Apple", "Email", "Wallet", "Not sure"],
     confirmation:
       "I request deletion of my SFLuv account and associated account data. I understand SFLuv may need to verify account ownership before processing this request.",
-    supportEmail: contactEmails.accountDeletion
+    supportLink: getInTouchLink("technical-support")
   },
   policies: {
     title: "Policies",
