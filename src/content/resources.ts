@@ -14,8 +14,25 @@ export type Podcast = {
   embedUrl: string;
 };
 
+export type HowToVideo = {
+  title: string;
+  description: string;
+  /** YouTube embed URL. */
+  embedUrl: string;
+  watchUrl: string;
+};
+
+export type TechnicalLink = { label: string; href: string };
+
+/**
+ * The Resources page is edited in the SFLuv admin panel (Website → Resources &
+ * how-to) and fetched from the backend; see `getResources`. What is here is
+ * only the copy the site falls back to when the backend cannot be reached, and
+ * it is the page as it was moved onto the backend.
+ */
 export const resourcesContent = {
   title: "Resources",
+  howToTitle: "How To",
   readingTitle: "What We’re Reading",
   podcastsTitle: "Podcasts We Love",
   technicalTitle: "Get Technical"
@@ -70,7 +87,11 @@ export const podcasts: Podcast[] = [
   }
 ];
 
-export const technicalLinks = [
+/** Added in the admin panel; none ship with the site. */
+export const howToVideos: HowToVideo[] = [];
+
+export const technicalLinks: TechnicalLink[] = [
   { label: "ethereum.org — What is Ethereum?", href: "https://ethereum.org/en/what-is-ethereum/" },
-  { label: "polygon.technology", href: "https://polygon.technology/" }
+  // SFLuv runs on Celo. This was Polygon until 2026-11.
+  { label: "docs.celo.org — Discover Celo", href: "https://docs.celo.org/learn" }
 ];

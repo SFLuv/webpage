@@ -1,4 +1,5 @@
 import { fiscalYears, annualImpactReports } from "@/content/financials";
+import { books, howToVideos, podcasts, technicalLinks, type Book, type HowToVideo, type Podcast, type TechnicalLink } from "@/content/resources";
 import { archivedEvents, type ArchivedEvent } from "@/content/volunteers";
 import { spotlightSlides } from "@/content/spotlight";
 import type { SpotlightSlide } from "@/content/spotlight";
@@ -10,7 +11,8 @@ import type {
   PublicFinancials,
   PublicForm,
   PublicFormSummary,
-  PublicPastEvent
+  PublicPastEvent,
+  PublicResources
 } from "./types";
 
 /**
@@ -69,6 +71,42 @@ export async function getFinancials(): Promise<PublicFinancials> {
   if (result.ok) return result.data;
 
   return { years: fiscalYears, impact_reports: annualImpactReports };
+}
+
+export type ResourcesPageContent = {
+  howTo: HowToVideo[];
+  books: Book[];
+  podcasts: Podcast[];
+  technicalLinks: TechnicalLink[];
+};
+
+/**
+ * The Resources page's How to videos, books, podcasts and technical links.
+ *
+ * Failure policy: fall back to the copy that ships with the site. It is
+ * reference material, so an older list is stale but never harmful.
+ */
+export async function getResources(): Promise<ResourcesPageContent> {
+  const result = await get<PublicResources>("/site/resources");
+  if (!result.ok) return { howTo: howToVideos, books, podcasts, technicalLinks };
+
+  const data = result.data;
+  return {
+    howTo: data.how_to.map((video) => ({
+      title: video.title,
+      description: video.description,
+      embedUrl: video.embed_url,
+      watchUrl: video.watch_url
+    })),
+    books: data.books.map((book) => ({
+      title: book.title,
+      author: book.author,
+      href: book.href,
+      cover: { src: book.cover.url, alt: book.cover.alt, width: book.cover.width, height: book.cover.height }
+    })),
+    podcasts: data.podcasts.map((podcast) => ({ name: podcast.name, href: podcast.href, embedUrl: podcast.embed_url })),
+    technicalLinks: data.technical_links.map((link) => ({ label: link.label, href: link.href }))
+  };
 }
 
 /** Forms open for signing right now, or null if they could not be loaded. */
