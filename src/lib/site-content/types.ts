@@ -28,6 +28,20 @@ export type PublicSlide = {
 
 export type PublicSpotlight = { slides: PublicSlide[] };
 
+/** The Resources page: only items switched on in the admin panel. Embeds are built by the backend. */
+export type PublicResources = {
+  how_to: { id: string; title: string; description: string; video_id: string; embed_url: string; watch_url: string }[];
+  books: {
+    id: string;
+    title: string;
+    author: string;
+    href: string;
+    cover: { url: string; width: number; height: number; alt: string };
+  }[];
+  podcasts: { id: string; name: string; href: string; embed_url: string }[];
+  technical_links: { id: string; label: string; href: string }[];
+};
+
 export type PublicFinancialDocument = { id?: string; label: string; href: string; kind?: string };
 
 export type PublicFinancials = {
