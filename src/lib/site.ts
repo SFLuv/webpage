@@ -4,7 +4,7 @@ import { getInTouchLink } from "./get-in-touch-link";
 /** Off-site destinations. Kept together so a moved URL is a one-line change. */
 export const externalLinks = {
   webWallet: "https://app.sfluv.org/map",
-  merchantApproval: "https://app.sfluv.org/settings/merchant-approval",
+  merchantApproval: "https://app.sfluv.org/merchant-onboarding",
   appDeleteAccount: "https://app.sfluv.org/delete-account",
   donate: "https://donate.stripe.com/14k7uH2ng6Jvg1ydQQ",
   // The Get Involved Google Form is retired: it sent mail to one inbox with no

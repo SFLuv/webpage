@@ -1,7 +1,6 @@
-import { Suspense } from "react";
 import { Container } from "@/components/ui/Container";
 import { Panel } from "@/components/ui/Panel";
-import { W9NotifyForm } from "@/features/w9/W9NotifyForm";
+import { W9NextSteps } from "@/features/w9/W9NextSteps";
 import { w9Content } from "@/content/forms";
 import { pageMetadata } from "@/lib/metadata";
 import { routes } from "@/lib/routes";
@@ -24,10 +23,7 @@ export default function SubmitW9Page() {
             </p>
           ))}
 
-          {/* The wallet address comes from the query string, so the form reads search params. */}
-          <Suspense fallback={null}>
-            <W9NotifyForm />
-          </Suspense>
+          <W9NextSteps />
         </Panel>
       </Container>
     </section>

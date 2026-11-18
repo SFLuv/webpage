@@ -30,11 +30,12 @@ export const supportFormConfig: MailtoFormConfig = {
 };
 
 export const w9Content = {
-  title: "Please Submit a W9 Form to Continue",
+  title: "Your W-9 is filed in the SFLuv app",
   paragraphs: [
-    "Thank you for your continued involvement in SFLUV! In order to keep receiving perks, you will need to fill out a W9 form, which should only take a few minutes",
-    "Please fill out/validate the email below, then click Notify to let us know! We will follow up with a W9 form for you via email shortly."
-  ]
+    "Thank you for your continued involvement in SFLuv! To keep receiving perks once you earn past the IRS reporting threshold, we need a W-9 from you. It only takes a few minutes.",
+    "W-9s are now filled in on a secure form inside the SFLuv app, not here. Open the app on your phone and tap the W-9 prompt; it appears whenever one is needed."
+  ],
+  help: "Don't see the prompt, or something isn't working? Send us a message and pick W-9 as the topic. It reaches the team with a reference number you can quote."
 };
 
 export const deleteAccountContent = {
